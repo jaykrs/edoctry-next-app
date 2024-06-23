@@ -7,7 +7,8 @@ export default function Page(props) {
 }
 export async function getStaticProps({ params }) {
   const templateId = params.id;
-  let posts = templateId !== '' ? await getCachedTemplate(templateId) : "Request param is missing";
+   let posts = "Error";
+    posts = await getCachedTemplate(templateId);
   return {
     props: {
       posts,
@@ -18,7 +19,7 @@ export async function getStaticProps({ params }) {
 export async function getCachedTemplate(templateId) {
   const endpointUrl = process.env.API_HOST + 'templates?filters[name][$eq]=' + templateId;
   let templateData = "No Data Available";
-  await fetch(endpointUrl).then(async (response) => { if (response.status === 200) templateData = await response.json(); templateData = templateData.data[0].attributes.template; }).then((result) => console.log(result)).catch((error) => console.error(error));
+  await fetch(endpointUrl,{ next: { revalidate: 3600 }}).then(async (response) => { if (response.status === 200) templateData = await response.json(); templateData = templateData.data[0].attributes.template; }).catch((error) => console.error("Error "+error));
   return templateData;
 };
 
