@@ -3,7 +3,6 @@ import { useState } from "react";
 import Link from "next/link";
 import css from "./Footer.module.css";
 import Button1 from "../../utils/Buttons/Button1/Button1"; 
-
 const Footer = () => {
   const [showLanguageSettingsModal, setShowLanguageSettingsModal] = useState(false);
 
@@ -28,48 +27,48 @@ const Footer = () => {
                 <Link href="/">Get the app</Link>
               </li>
               <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=about")}>About us</a>
+                <Link href="/blog/about" >About us</Link>
               </li>
               <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=contacts")}>Contact us</a>
-              </li>
-            </ul>
-          </div>
-          <div className={css.clmn}>
-            <ul className={css.cul}>
-              <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=carrers")}>Careers</a>
-              </li>
-              <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=blogs")}>Blog</a>
-              </li>
-              <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=supports")}>Help and Support</a>
-              </li>
-              <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=affiliate")}>Affiliate</a>
-              </li>
-              <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=investors")}>Investors</a>
+                <Link href="/blog/contacts">Contact us</Link>
               </li>
             </ul>
           </div>
           <div className={css.clmn}>
             <ul className={css.cul}>
               <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=terms")}>Terms</a>
+                <Link href={"/blog/carrers"}>Careers</Link>
               </li>
               <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=privacy")}>Privacy policy</a>
+                <Link href={"/blog/blogs"} >Blog</Link>
               </li>
               <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=cookieSetting")}>Cookie settings</a>
+                <Link href={"/blog/supports"}>Help and Support</Link>
               </li>
               <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=sitemap")}>Sitemap</a>
+                <Link href={"/blog/affiliate"}>Affiliate</Link>
               </li>
               <li className={css.cli}>
-                <a onClick={() => handleNavigate("/page?pageid=accessibility")}>Accessibility statement</a>
+                <Link href={"/blog/investors"}>Investors</Link>
+              </li>
+            </ul>
+          </div>
+          <div className={css.clmn}>
+            <ul className={css.cul}>
+              <li className={css.cli}>
+                <Link href={"/blog/investors"}>Terms</Link>
+              </li>
+              <li className={css.cli}>
+                <Link href={"/blog/privacy"}>Privacy policy</Link>
+              </li>
+              <li className={css.cli}>
+                <Link href={"/blog/cookieSetting"}>Cookie settings</Link>
+              </li>
+              <li className={css.cli}>
+                <Link href={"/blog/sitemap"}>Sitemap</Link>
+              </li>
+              <li className={css.cli}>
+                <Link href={"/blog/accessibility"}>Accessibility statement</Link>
               </li>
             </ul>
           </div>

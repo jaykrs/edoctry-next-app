@@ -35,7 +35,7 @@ const Navbar = () => {
           <div className={css.searchBox}>
             <SearchBar />
           </div>
-          <Link href="/bussiness">
+          <Link href="/bussiness" style={{textDecoration:"none"}}>
             <p className={css.hovBox}>Teach on Edoctry</p>
           </Link>
           <Link href="/cart" className={css.cartBox}>
@@ -44,12 +44,12 @@ const Navbar = () => {
             </p>
           </Link>
           <div className={css.btns}>
-            <Link href="/user/login">
+            <Link href="/user/login" style={{textDecoration:"none"}}>
               <p>
                 <Button1 txt="Login" />
               </p>
             </Link>
-            <Link href="/user/signup">
+            <Link href="/user/signup" style={{textDecoration:"none"}}>
               <p>
                 <Button1
                   txt="Sign up"
@@ -59,7 +59,7 @@ const Navbar = () => {
                 />
               </p>
             </Link>
-            <Button1 disableBtn={true} img={"/publicContent/icons/globe.png"} txt="" onClick={() => setModal(true)} />
+            {/* <Button1 disableBtn={true} img={"/publicContent/icons/globe.png"} txt="" onClick={() => setModal(true)} /> */}
           </div>
         </div>
       </div>

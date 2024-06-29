@@ -40,7 +40,7 @@
   
   .catDropdown {
     cursor: pointer;
-    color: var(--gray);
+    color: #1c1d1f;
   }
   
   .searchBox {
@@ -51,13 +51,13 @@
   .hovBox {
     width: max-content;
     text-decoration: none;
-    color: var(--gray);
+    color: #1c1d1f;
     margin: 0 0.5rem;
   }
   
   .hovBox:hover,
   .catDropdown:hover {
-    color: var(--purple-dark);
+    color: #8710d8;
   }
   
   .cartBox {
@@ -83,7 +83,7 @@
     height: calc(100vh - 3.5rem);
     overflow: auto;
     position: absolute;
-    background-color: var(--white);
+    background-color: #fff;
     box-shadow: 0 2px 4px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 8%);
     z-index: 2;
   }
@@ -141,7 +141,7 @@
   
   .catDropdownM {
     cursor: pointer;
-    color: var(--gray);
+    color: #1c1d1f;
     text-align: center;
     margin: 0.5rem 0;
   }
