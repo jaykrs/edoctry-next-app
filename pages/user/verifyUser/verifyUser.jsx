@@ -1,19 +1,9 @@
 import { useState } from "react";
-
-import { Link, useNavigate } from "react-router-dom";
-
-import Layout1 from "../../Layout1/Layout1";
-
-import InputUtil from "../../../utils/FormUtils/InputUtil/InputUtil";
-import Button1 from "../../../utils/Buttons/Button1/Button1";
-
-import fImg from "../../../../src/publicContent/icons/facebook.svg";
-import gImg from "../../../../src/publicContent/icons/google.svg";
-import aImg from "../../../../src/publicContent/icons/apple-logo.svg";
-import email from "../../../../src/publicContent/icons/email.png";
-import lock from "../../../../src/publicContent/icons/lock.png";
-import { CMS_URL } from "../../../components/const/urlConst";
-
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import Layout1 from "../../components/Layout1/Layout1";
+import InputUtil from "../../utils/FormUtils/InputUtil/InputUtil";
+import Button1 from "../../utils/Buttons/Button1/Button1";
 import css from "./verifyUser.module.css";
 import axios from "axios";
 
@@ -24,12 +14,12 @@ const VerifyUser = () => {
   });
   const [message, setMessage] = useState('');
 
-  const navigate = useNavigate();
+  const navigate = useRouter();
 
   const oauth = [
-    { img: fImg, txt: "Continue with Facebook", link: "/facebook-auth" },
-    { img: gImg, txt: "Continue with Google", link: "/google-auth" },
-    { img: aImg, txt: "Continue with Apple", link: "/apple-auth" },
+    { img: "/publicContent/icons/facebook.svg", txt: "Continue with Facebook", link: "/facebook-auth" },
+    { img: "/publicContent/icons/google.svg", txt: "Continue with Google", link: "/google-auth" },
+    { img: "/publicContent/icons/apple-logo.svg", txt: "Continue with Apple", link: "/apple-auth" },
   ];
 
   let changeHanlder = (e) => {
@@ -64,11 +54,11 @@ const VerifyUser = () => {
               .then(res => {
                 localStorage.setItem("customerid", res.data.data[0].id)
                 if (localStorage.getItem("orderPage") === "backToOrderPage") {
-                  navigate("/cart")
+                  navigate.push("/cart")
                 }else if("buyItem" === "backToCourseDetails"){
                    navigate("/coursesDetails")
                 } else {
-                  navigate("/")
+                  navigate.push("/")
                 }
               })
               .catch(err => {
@@ -83,7 +73,7 @@ const VerifyUser = () => {
               .then(res => {
                 console.log('ins',res)
                 localStorage.setItem("instructorid", res.data.data[0].id)
-                navigate("/user/profile/courses")
+                navigate.push("/user/profile/courses");
               })
               .catch(err => {
                 console.log(err);
@@ -97,7 +87,6 @@ const VerifyUser = () => {
         }
       })
       .catch(error => {
-        console.log('error', error)
         setMessage("Status code: " + error.response.data.error.status + ", message : " + error.response.data.error.message)
       });
 
@@ -117,7 +106,7 @@ const VerifyUser = () => {
                 type="email"
                 name="email"
                 state={state.email}
-                icon={email}
+                icon={"/publicContent/icons/email.png"}
                 placeholderTxt="Email"
                 onChange={changeHanlder}
               />
@@ -125,15 +114,15 @@ const VerifyUser = () => {
                 type="number"
                 name="otp"
                 state={state.otp}
-                icon={lock}
-                placeholderTxt="Enter your 6 digit otp"
+                icon={"/publicContent/icons/lock.png"}
+                placeholderTxt="6 digit otp"
                 onChange={changeHanlder}
               />
               <Button1
                 txt="Login"
-                color="var(--white)"
-                bck="var(--purple)"
-                hovBck="var(--purple-dark)"
+                color="#fff"
+                bck="#a435f0"
+                hovBck="#8710d8"
                 extraCss={{
                   width: "100%",
                   margin: "0",
@@ -144,23 +133,23 @@ const VerifyUser = () => {
               />
               <div className={css.blck}>
                 <span className={css.blckTxt}>or</span>
-                <Link to="/join/forgot-password" className={css.anchor}>
+                <Link to="/user/ForgotPassword" className={css.anchor}>
                   Forgot password
                 </Link>
               </div>
               <div className={css.blck}>
-                <Link to="/join/login" className={css.anchor}>
+                <Link to="/user/login" className={css.anchor}>
                   Log in to a different account
                 </Link>
               </div>
               <div className={css.blck}>
                 <span className={css.blckTxt}>Dont have an account?</span>
-                <Link to="/join/signup" className={css.anchor}>
+                <Link to="/user/signup" className={css.anchor}>
                   <b>Signup</b>
                 </Link>
               </div>
               <div className={css.blck}>
-                <Link to="/join/login" className={css.anchor}>
+                <Link to="/user/login" className={css.anchor}>
                   <b>Login with your organization</b>
                 </Link>
               </div>

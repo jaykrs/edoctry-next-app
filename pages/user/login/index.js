@@ -150,13 +150,14 @@ const Page = () => {
               )}
               <div className={css.blck}>
                 <span className={css.blckTxt}>or</span>
-                <a href="/join/forgot-password" className={css.anchor}>
+                <a href="/user/ForgotPassword" className={css.anchor}>
                   Forgot password
                 </a>
               </div>
               <div className={css.blck}>
+              <span className={css.blckTxt}>Log in to a different account?</span>
                 <Link href="/user/login" className={css.anchor}>
-                  Log in to a different account
+                  Login
                 </Link>
               </div>
               <div className={css.blck}>
