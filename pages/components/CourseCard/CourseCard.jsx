@@ -1,0 +1,110 @@
+import React from "react";
+import css from "./CourseCard.module.css";
+import { MdArrowOutward } from "react-icons/md";
+const CourseCard = (props) => {
+  let data = props.data;
+  const extraCss = props.extraCss;
+  // let totalRating = (
+  //   (1 * stars?.a + 2 * stars?.b + 3 * stars?.c + 4 * stars?.d + 5 * stars?.e) /
+  //     stars?.a +
+  //   stars?.b +
+  //   stars?.c +
+  //   stars?.d +
+  //   stars?.e
+  // ).toFixed(2);
+
+  // let duration = new Date(courseDuration * 1000);
+  // let hours = duration.getUTCHours();
+  // let minutes = duration.getUTCMinutes();
+
+  // let durationInHrs =
+  //   hours?.toString().padStart(2, "0") +
+  //   "." +
+  //   minutes?.toString().padStart(1, "0");
+
+  
+  let handleOnClick = () => {
+
+    if (localStorage.getItem("usertype") === "instructor") {
+      sessionStorage.setItem("courseInsId", data.id);
+      sessionStorage.setItem("courseTitle", data.attributes.course_title);
+    } else {
+      localStorage.setItem("courseId", data.id);
+    }
+
+   // navigate(link,{state:{id:data.id,title:data.attributes.course_title,desc:data.attributes.course_brief}})
+  }
+  return (
+    <>
+      <div className={css.outerDiv} id={data.id} style={extraCss}>
+        {/* <Link className={css.innerDiv} to={link}> */}
+        <div className={css.imgBox}>
+          <img src={data.attributes.course_logo !== null ? data.attributes.course_logo : ""} alt="course thumbnail" className={css.courseImg} />
+        </div>
+        <div className={css.cardBdy}>
+          <div className={css.ttl}>
+            <div  dangerouslySetInnerHTML={{ __html: data.attributes.course_title.substring(0, 30) + " ..." }} ></div>
+          </div>
+          <div className={css.prc}>
+            <span className={css.newPrc}>
+              {new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+              }).format(data.attributes.course_fee)}
+            </span>
+            <span className={css.oldPrc}>
+              {new Intl.NumberFormat("en-IN", {
+                style: "currency",
+                currency: "INR",
+              }).format(data.attributes.course_fee_premium)}
+            </span>
+            <button className="btn btn-outline-primary btn-sm" style={{marginLeft:"2px"}} onClick={handleOnClick}>View <MdArrowOutward size={20}  /></button>
+          </div>
+          {/* <div className={css.tags}>
+            
+          </div> */}
+        </div>
+        {/* </Link> */}
+        {/* <div className={css.hovCard}>
+          <div className={css.innerBox}> */}
+            {/* <div className="d-flex justify-content-between">
+              {/* <div className={css.ttl} dangerouslySetInnerHTML={{__html : data.attributes.course_title}} > </div> */}
+              {/* <div className={css.ttl}>
+                <div dangerouslySetInnerHTML={{ __html: data.attributes.course_title }} ></div>
+              </div>
+              <button className="btn btn-primary" onClick={handleOnClick}>View</button> */}
+            {/* </div>  */}
+           
+            {/* <div className={css.shrtDet}>
+              <div className={css.tags}>
+                <TAG1 />
+              </div>
+              <div className={css.lstUpdt}>
+                Updated <b>{data.attributes.updatedAt}</b>
+              </div>
+            </div> */}
+            {/* <div className={css.btns}>
+              {
+                localStorage.getItem("usertype") != "instructor" &&
+                <>
+                  <Button1
+                    onClick={addToCartHandler}
+                    txt="Add to cart"
+                    color="#fff"
+                    bck="#a435f0"
+                    hovBck="#8710d8"
+                    extraCss={{ width: "100%", border: "none" }}
+                  />
+                  <CircleButton onClick={addToWishListHandler} img={heartIcon} />
+                </>
+              }
+
+            </div> */}
+          {/* </div>
+        </div> */}
+      </div>
+    </>
+  );
+};
+
+export default CourseCard;
