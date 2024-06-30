@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CourseCarouselComp from "../../components/CourseCarouselComp/CourseCarouselComp";
 const VerticalCourseDraftCard = (props) => {
-  console.log("props vertical draft card data",props);
   const {
     courseName = "xxxxx",
     courseType = "xxxxx",
