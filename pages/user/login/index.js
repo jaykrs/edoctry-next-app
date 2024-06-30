@@ -88,7 +88,7 @@ const Page = () => {
  console.log("state",state);
   return (
     <>
-       <Layout1>
+       <Layout1 title="Login">
        <ToastContainer />
         <div className={css.outerDiv}>
           <div className={css.loginBox}>

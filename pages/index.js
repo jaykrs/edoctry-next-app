@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Navbar from "./components/Navbar";
 import Layout1 from "./components/Layout1/Layout1";
 import VerticalCategoryMenuBar from "./components/VerticalCategoryMenuBar/VerticalCategoryMenuBar";
 import VerticalCourseDraftCard from "./utils/VerticalCourseDraftCard/VerticalCourseDraftCard";
@@ -7,7 +5,6 @@ import css from "./index.module.css";
 import BannerComp from "./components/BannerComp/BannerComp";
 import 'bootstrap/dist/css/bootstrap.min.css';
 export default function Page(props) {
-  console.log("props data",props);
   return (
     <>
       {/* {
@@ -23,7 +20,7 @@ export default function Page(props) {
           </div>
           : ""
       } */}
-      <Layout1>
+      <Layout1 title="Home Page">
         <VerticalCategoryMenuBar />
         <div className={css.ma}>
           <div className={css.banner}>

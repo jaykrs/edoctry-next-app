@@ -95,7 +95,7 @@ const VerifyUser = () => {
 
   return (
     <>
-      <Layout1>
+      <Layout1 title="verify user">
         <div className={css.outerDiv}>
           <div className={css.loginBox}>
             <div className={css.ttl}>Verify your Edoctry account</div>

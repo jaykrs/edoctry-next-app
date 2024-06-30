@@ -20,13 +20,8 @@ const LoggedInNavbar = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("jwt");
-    localStorage.removeItem("username");
-    localStorage.removeItem("usertype");
-    localStorage.removeItem("email");
-    localStorage.setItem("loginStatus", false);
-    localStorage.removeItem("customerData");
-    localStorage.removeItem("orderPage");
+    localStorage.clear();
+    sessionStorage.clear()
     window.location.reload(true);
   };
 

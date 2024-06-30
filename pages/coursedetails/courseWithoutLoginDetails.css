@@ -1,0 +1,50 @@
+
+
+.course_heading {
+    background-color: blanchedalmond;
+    width: 100%;
+    height: auto;
+    padding: 20px;
+}
+
+.course_heading div p {
+    margin-right: 20px;
+}
+
+.card1 {
+    margin: 30px 0 0 15%;
+    width: 50%;
+    position: static;
+}
+
+.outModelDiv{
+    width: 100%;
+    top: 100px;
+    position: absolute;
+    display: flex;
+    justify-content: left;
+}
+.innerModelDiv{
+    width: 48%;
+    height: 400px;
+    background-color: #fff;
+    margin-left: 15%;
+    border: 1px solid #aeaddf;
+    border-radius: 5px;
+    padding: 10px;
+    position: relative;
+}
+.innerModelDiv button{
+    position: absolute;
+    right: -18px;
+    top: -1px;
+    color: #000;
+    font-size: 20px;
+    width: 50px;
+    border: none;
+    border-radius: 5px;
+    background-color: #fff;
+}
+.innerModelDiv div{
+    position: static;
+}

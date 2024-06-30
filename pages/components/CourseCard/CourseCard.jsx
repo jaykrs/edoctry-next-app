@@ -1,9 +1,11 @@
 import React from "react";
 import css from "./CourseCard.module.css";
 import { MdArrowOutward } from "react-icons/md";
+import { useRouter } from "next/navigation";
 const CourseCard = (props) => {
   let data = props.data;
   const extraCss = props.extraCss;
+  const router = useRouter();
   // let totalRating = (
   //   (1 * stars?.a + 2 * stars?.b + 3 * stars?.c + 4 * stars?.d + 5 * stars?.e) /
   //     stars?.a +
@@ -32,7 +34,7 @@ const CourseCard = (props) => {
       localStorage.setItem("courseId", data.id);
     }
 
-   // navigate(link,{state:{id:data.id,title:data.attributes.course_title,desc:data.attributes.course_brief}})
+    router.push(`/coursedetails/${data.id}`)
   }
   return (
     <>

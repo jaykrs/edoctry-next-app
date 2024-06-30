@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 import LoggedInNavbar from "../LoggedInNavbar/LoggedInNavbar"; // Assuming custom path alias configured
 import Footer from "../Footer/Footer"; // Assuming custom path alias configured
 // import LoginModal from "@/components/Auth/LoginModal/LoginModal"; // Assuming custom path alias configured
-
-const Layout1 = ({ modal = false, setModal = () => {}, children }) => {
+import Head from "next/head";
+const Layout1 = ({ modal = false, setModal = () => {},title, children }) => {
  // const router = useRouter();
   const [auth, setAuth] = useState(false); // Next.js does not rely on localStorage for initial state, use cookies or server-side data fetching for authentication
 
@@ -33,6 +33,12 @@ const Layout1 = ({ modal = false, setModal = () => {}, children }) => {
         //   document.getElementById("modal")
         // )
       )} */}
+      <Head>
+        <title>{title ? title : "MyShop"} </title>
+        <meta name="description" content="web app content" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/publicContent/favicon.ico" />
+      </Head>
       {comp}
       <div>{children}</div>
       <Footer />

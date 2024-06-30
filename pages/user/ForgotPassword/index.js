@@ -68,7 +68,7 @@ const ForgotPassword = () => {
   console.log("btn",btn);
   return (
     <>
-      <Layout1>
+      <Layout1 title="forgot-password">
         <ToastContainer />
         <div className={css.outerDiv}>
           <div className={css.loginBox}>
