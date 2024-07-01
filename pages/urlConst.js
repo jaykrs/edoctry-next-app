@@ -59,7 +59,8 @@
     ForgotPassword:"Email sent to your register email, please verify your email",
     newPasswordUpdate:"Your password does't match!",
     passwordSuccess:"Password updated successfully",
-    addToCart:"Course Added to cart"
+    addToCart:"Course Added to cart",
+    edoctryBusiness: "Your request submitted successfully"
  }
 
  export const countryJson = [

@@ -18,7 +18,7 @@ const Footer = () => {
           <div className={css.clmn}>
             <ul className={css.cul}>
               <li className={css.cli}>
-                <Link href="/bussiness">Edoctry Business</Link>
+                <Link href="/business">Edoctry Business</Link>
               </li>
               <li className={css.cli}>
                 <Link href="/">Teach on Edoctry</Link>
@@ -37,7 +37,7 @@ const Footer = () => {
           <div className={css.clmn}>
             <ul className={css.cul}>
               <li className={css.cli}>
-                <Link href={"/blog/carrers"}>Careers</Link>
+                <Link href={"/blog/careers"}>Careers</Link>
               </li>
               <li className={css.cli}>
                 <Link href={"/blog/blogs"} >Blog</Link>

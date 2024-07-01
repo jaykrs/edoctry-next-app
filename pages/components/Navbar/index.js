@@ -35,7 +35,7 @@ const Navbar = () => {
           <div className={css.searchBox}>
             <SearchBar />
           </div>
-          <Link href="/bussiness" style={{textDecoration:"none"}}>
+          <Link href="/business" style={{textDecoration:"none"}}>
             <p className={css.hovBox}>Teach on Edoctry</p>
           </Link>
           <Link href="/cart" className={css.cartBox}>

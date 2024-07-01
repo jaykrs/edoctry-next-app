@@ -7,19 +7,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export default function Page(props) {
   return (
     <>
-      {/* {
-        props.coursesSet1.length > 0 ?
-          <div>
-            <h1>{props.coursesSet1[0].attributes.course_title}</h1>
-            <img
-              src="/logo192.png" // Adjust path relative to public folder
-              alt="Logo"
-              width={200} // Adjust dimensions as needed
-              height={100}
-            />
-          </div>
-          : ""
-      } */}
       <Layout1 title="Home Page">
         <VerticalCategoryMenuBar />
         <div className={css.ma}>
