@@ -1,0 +1,92 @@
+
+.topDiv{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10%;
+    margin: 30px 0 0 0;
+}
+.topDiv p {
+    width: 200px;
+}
+.topDiv div {
+    padding-bottom: 10px;
+    width: 100%;
+}
+
+.outerDiv {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 50px;
+    overflow-x: scroll;
+}
+.div1{
+    width: 5%;
+    height: auto;
+}
+.innerDiv{
+    width: 80%;
+    height: auto;
+}
+.thead{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.oldPrc {
+    font-size: 1rem;
+    text-decoration: line-through;
+    color: var(--light-gray);
+  }
+.cardDiv{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 10px 17px;
+    background-color: "beige";
+    border-radius: 5px;
+    background-color: beige;
+    cursor: pointer;
+}
+  .cardDiv:hover {
+      background-color: rgb(183, 183, 139);
+      padding: 10px 14px;
+  }
+ 
+@media screen and (max-width: 600px) {
+    /* .topDiv {
+        width: 100%;
+        height: auto;
+        padding: 0;
+    }
+    .outerDiv {
+        width: 100%;
+        height: auto;
+        margin-left: -70px;
+        
+    }
+    .div1{
+        width: 5%;
+        height: auto;
+    }
+    
+    .innerDiv{
+        width: 100%;
+    }
+    #tableItem {
+       display: none;
+    } */
+}
