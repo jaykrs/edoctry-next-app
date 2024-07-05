@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import css from "./Login.module.css"; 
 import Link from "next/link";
 import toastComponent from "../../toastComponent";
+import { CMS_URL } from "../../urlConst";
 const Page = () => {
   const router = useRouter();
   const [state, setState] = useState({
@@ -34,7 +35,7 @@ const Page = () => {
       return;
     }
 // process.env.API_HOST + 
-    axios.post( process.env.API_HOST +  "auth/local", { identifier: state.email, password: state.password })
+    axios.post( CMS_URL +  "auth/local", { identifier: state.email, password: state.password })
       .then(result => {
         console.log("result",result)
         if (result.request.status === 200) {
@@ -56,9 +57,10 @@ const Page = () => {
       })
       .catch(error => {
         toastComponent("error",error.message);
-        if (error.response.data.error.status === 400 && error.response.data.error.message === "Your account has been blocked by an administrator") {
+        if (error.response.status === 400 && error.response.statusText === "Your account has been blocked by an administrator") {
           setBtnStatus(true);
         }
+        console.log("err",error.response);
       });
   };
 
@@ -85,7 +87,6 @@ const Page = () => {
         setMessage("Something went wrong, please try again.");
       });
    };
- console.log("state",state);
   return (
     <>
        <Layout1 title="Login">
