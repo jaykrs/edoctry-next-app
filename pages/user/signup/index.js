@@ -2,8 +2,7 @@
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
  import axios from "axios";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import('bootstrap/dist/js/bootstrap.bundle.min.js');
+
 import { FaUserPlus } from "react-icons/fa6";
 import toastComponent from "../../toastComponent";
 import { ToastContainer } from "react-toastify";
@@ -93,7 +92,7 @@ const Signup = () => {
 
   return (
     <>
-    <Layout1>
+    <Layout1 title="signup">
       <ToastContainer />
       <div className={css.outerDiv}>
         <div className={css.loginBox}>

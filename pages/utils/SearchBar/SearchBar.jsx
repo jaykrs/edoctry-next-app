@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import css from "./SearchBar.module.css";
 import axios from "axios";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import('bootstrap/dist/js/bootstrap.bundle.min.js');
 import { CMS_URL } from "../../urlConst";
 import { useRouter } from "next/navigation";
 export default function SearchBar(props) {

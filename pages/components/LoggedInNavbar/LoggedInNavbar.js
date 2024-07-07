@@ -1,4 +1,4 @@
-"use client"
+//"use client"
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import SearchBar from "../../utils/SearchBar/SearchBar"; // Adjust path as per your setup
@@ -8,8 +8,9 @@ const LoggedInNavbar = () => {
   const [menuState, setMenuState] = useState(false);
   const [showLanguageSettingsModal, setShowLanguageSettingsModal] = useState(false);
   const [login, setLogin] = useState(false);
-  const userEmail = localStorage.getItem("email");
-  const userName = localStorage.getItem("username");
+  const userEmail = typeof window !== 'undefined' ? localStorage.getItem("email") : "";
+  const userName = typeof window !== 'undefined' ? localStorage.getItem("username") : "";
+  const userType = typeof window !== 'undefined' ? localStorage.getItem("usertype"): "";
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const LoggedInNavbar = () => {
   return (
     <div className={css.navbar}>
       <div className={css.left}>
-        <Link href="/">
+        <Link href="/" className={css.linkOver}>
           <div className={css.logoBox}>
             <img src={"/publicContent/images/logo/svg/logo-no-background.svg"} alt="logo" className={css.logo} />
           </div>
@@ -39,21 +40,21 @@ const LoggedInNavbar = () => {
           <SearchBar />
         </div>
         <div className={css.hovBox} target="_blank">
-          <Link href="/business" passHref>
+          <Link href="/business" passHref className={css.linkOver}>
             <p className={css.anchor}>Edoctry Business</p>
           </Link>
         </div>
-        {localStorage.getItem("usertype") === "instructor" && (
-          <Link href="/user/profile/courses" passHref>
+        { userType === "instructor" && (
+          <Link href="/user/profile/courses" passHref className={css.linkOver} >
             <p className={css.hovBox}>Instructor</p>
           </Link>
         )}
-        {localStorage.getItem("usertype") === "customer" && (
-          <Link href="/user/my-courses/learning" passHref>
+        { userType === "customer" && (
+          <Link href="/user/my-courses" passHref className={css.linkOver}>
             <p className={css.hovBox}>My Learning</p>
           </Link>
         )}
-        <Link href="/cart" passHref>
+        <Link href="/cart" passHref className={css.linkOver}>
           <p className={css.cartBox} style={{ marginRight: "23px" }}>
             <img className={css.cartIcon} src={"/publicContent/icons/heart.png"} alt="wishlist icon" />
           </p>
@@ -61,7 +62,7 @@ const LoggedInNavbar = () => {
         <p style={{ margin: "-23px -23px 0 0" }} className={css.cartValue}>
           {data.length}
         </p>
-        <Link href="/cart" passHref>
+        <Link href="/cart" passHref className={css.linkOver}>
           <p className={css.cartBox}>
             <img className={css.cartIcon} src={"/publicContent/icons/shopping-cart.png"} alt="cart icon" />
           </p>
@@ -89,16 +90,16 @@ const LoggedInNavbar = () => {
                 <hr className={css.hr} />
                 <div className={css.prflDiv}>
                   {
-                    localStorage.getItem("usertype") === "customer" &&
+                    userType === "customer" &&
                     <Link href="/user/my-courses/learning" className={css.menuItem}>
                       My Learning
                     </Link>
                   }
-                  {localStorage.getItem("usertype") === "customer" &&
+                  {userType === "customer" &&
                     <Link href="/cart" className={css.menuItem} style={{ display: 'flex', justifyContent: "space-between" }}>
                       <p>My Cart</p> <h6>{data.length}</h6>
                     </Link>}
-                  {localStorage.getItem("usertype") === "customer" &&
+                  {userType === "customer" &&
                     <Link href="/user/my-courses/wishlist" className={css.menuItem}>
                       My Wishlist
                     </Link>}
@@ -122,7 +123,7 @@ const LoggedInNavbar = () => {
                   {/* <Link to="/user/account" className={css.menuItem}>
                     Account Settings
                   </Link> */}
-                  {localStorage.getItem("usertype") === "customer" &&
+                  { userType === "customer" &&
                     <Link href="/" className={css.menuItem}>
                       Payment Methods
                     </Link>}

@@ -1,9 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-
 import css from "./Button1.module.css";
-
-
 const Button1 = ({
   txt = null,
   img = "",
@@ -59,7 +56,7 @@ const Button1 = ({
   if (link) {
     btn = (
       <Link
-        to={link}
+        href={link}
         onMouseOver={mouseOverHandler}
         onMouseLeave={mouseLeaveHandler}
         style={{

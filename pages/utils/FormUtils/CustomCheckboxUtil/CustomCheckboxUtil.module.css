@@ -23,7 +23,7 @@
 
 .checkbox:checked {
   background-color: var(--gray);
-  background-image: url("../../../../src/publicContent/icons/white-check.png");
+  background-image: url("/publicContent/icons/white-check.png");
   background-repeat: no-repeat;
   background-size: 11px;
 }

@@ -3,7 +3,6 @@ import Link from "next/link";
 import css from "./BannerComp.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import('bootstrap/dist/js/bootstrap.bundle.min.js');
 const BannerComp = (props) => {
   const [cState, setCState] = useState(1);
   const [bannData, setBannData] = useState("");

@@ -1,7 +1,5 @@
+ "use client"
 import React , {useState, useEffect} from "react";
-// import { Outlet, NavLink } from "react-router-dom";
-import Link from "next/link";
-import { NavLink } from "react-router-dom";
 import Layout1 from "../../components/Layout1/Layout1";
 import { useRouter } from "next/navigation";
 import css from "./MyCoursesPage.module.css";
@@ -31,10 +29,9 @@ const MyCoursesPage = () => {
           })
       }
     }
-  }, [])
-  console.log("coursedata",courseData)
+  }, []);
   return (
-    <Layout1>
+    <Layout1 title={"my-courses"}>
       <div className={css.outerDiv}>
         <div className={css.topBar}>
           <div className={css.topBarTtl}>My Learning</div>
@@ -45,7 +42,7 @@ const MyCoursesPage = () => {
             <p
               // key={item.name}
               // href={item.link}
-              style={{ textDecoration: "none", color: "#fff" }}
+              style={{ textDecoration: "none", color: "#fff",margin:"0" }}
             >
               All Courses
             </p>
@@ -81,7 +78,7 @@ const MyCoursesPage = () => {
             )
           })
           : <img
-          src="publicContent/images/progress-circle.gif"
+          src="/publicContent/images/progress-circle.gif"
           alt="progress"
       />
         }

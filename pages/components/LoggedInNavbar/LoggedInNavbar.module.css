@@ -54,6 +54,10 @@
   margin: 0 1rem;
 }
 
+.linkOver {
+  text-decoration: none;
+}
+
 .hovBox {
   width: max-content;
   text-decoration: none;

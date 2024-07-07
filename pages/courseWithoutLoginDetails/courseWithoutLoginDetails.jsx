@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Layout1 from "../components/Layout1/Layout1";
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import('bootstrap/dist/js/bootstrap.bundle.min.js');
 // import css from "./courseWithoutLoginDetails.css";
 import { FaGlobe, FaBookTanakh, FaPlay, FaFileCircleExclamation, FaCircle } from "react-icons/fa6";
 import CourseFloatingBuyCard from "../components/CourseFloatingBuyCard/CourseFloatingBuyCard";

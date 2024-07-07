@@ -26,7 +26,7 @@ const Layout1 = ({ modal = false, setModal = () => {},title, children }) => {
         // )
       )} */}
       <Head>
-        <title>{title ? title : "MyShop"} </title>
+        <title>{title ? title : "Edoctry"} </title>
         <meta name="description" content="web app content" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/publicContent/favicon.ico" />

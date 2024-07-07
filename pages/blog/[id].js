@@ -3,7 +3,6 @@ import Layout1 from '../components/Layout1/Layout1';
 
 export default function Page(props) {
   const router = useRouter()
-   console.log("props.posts",props.posts);
   return (
     <>
       <Layout1 title={props.templateId}>

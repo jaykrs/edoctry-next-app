@@ -51,7 +51,7 @@ const CourseFloatingBuyCard = (props) => {
       navigate.push("/checkout/page")
     } else {
       localStorage.setItem("buyItem", "backToCourseDetails")
-      navigate.push("/join/login");
+      navigate.push("/user/login");
     }
   }
   const handleVideoPlayer = () => {
