@@ -101,13 +101,13 @@ const CourseViewPage = () => {
                       desc="Made by Edoctry, this generalized assessment is a great way to check in on your skills."
                       btnTxt="Launch Assessment"
                     />
-                    {/* <CourseContentComponent
+                    <CourseContentComponent
                       title="Course Content"
                       id={item.id}
                       playerWidthSetter={setPlayerFullWidth}
                       getdata={getdata}
                       updateCourseViewContent={updateCourseViewContent}
-                    /> */}
+                    />
                   </div>
                 </div>
               </div>

@@ -76,7 +76,7 @@ const CourseViewTabComponent = (props) => {
             >
               {item?.name ?
                <div>
-                 {path === item.name ? <div style={{color:"blue"}}>{item.name}</div> : <div>{item.name}</div>}
+                 {path === item.name ? <div style={{color:"blue",cursor:"pointer"}}>{item.name}</div> : <div style={{cursor:"pointer"}}>{item.name}</div>}
                </div> 
                : null}
               {item?.icon ? (
