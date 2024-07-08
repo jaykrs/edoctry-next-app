@@ -86,7 +86,7 @@ const CourseAssesmentCardPage = () => {
                     </div>
                   </div>
                   <div onClick={() => {
-                    navigate.push("/user/my-courses/assesment/list")
+                    navigate.push("/user/my-courses/assessment")
                     sessionStorage.setItem("courseAid", sessionStorage.getItem("courseVid"))
                   }} >
                     <StepCard

@@ -1,0 +1,43 @@
+.menuDiv1 {
+    width: 10%;
+}
+.menuDiv2 {
+    width: 80%;
+
+}
+.menuDiv3 {
+    width: 10%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 2%;
+}
+.menuBtn1 {
+    border: none;
+    background-color: #8873ca;
+    color: #fff;
+    height: 50px;
+    width: 115px;
+    font-size: 23px;
+    border-radius: 5px;
+}
+.menuBtn1:hover {
+    background-color: #4b28bf;
+    color: #fff;
+}
+.menuSubDiv3 {
+   margin-top: -32px;
+}
+.subDivBtn {
+    border: none;
+    background-color: #8873ca;
+    color: #fff;
+    width: 115px;
+    height: 50px;
+    font-size: 20px;
+    border-radius: 5px;
+}
+.subDivBtn:hover {
+    background-color: #4b28bf;
+    color: #fff;
+}

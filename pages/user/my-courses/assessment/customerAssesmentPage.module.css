@@ -1,0 +1,82 @@
+.plainTxt {
+    margin: 4rem 0;
+    text-align: center;
+  }
+  
+  .box1 {
+    margin: 2rem 0;
+    width: 100%;
+    height: auto;
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .box2 {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .box3 {
+    width: 100%;
+    height: auto;
+    min-height: 200px;
+    margin: 2rem 0;
+    display: flex;
+    gap: 2rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .txt {
+    font-size: 1rem;
+  }
+  
+  .topNav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .left {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  
+  .coursesBox {
+    margin: 1rem;
+  }
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+  z-index: 9999; /* Ensure it covers everything */
+}
+
+.spinner_wrapper {
+  position: fixed;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000; /* Ensure it's on top of the overlay */
+  color: white; /* Spinner color */
+}
+  
+  @media screen and (max-width: 1020px) {
+    .box1 {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+  

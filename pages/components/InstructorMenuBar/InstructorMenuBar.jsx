@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
 
-import smallLogoIcon from "../../../../src/publicContent/images/logo/svg/logo-black.svg";
-import queryIcon from "../../../../src/publicContent/icons/query-question-mark.png";
-import captionIcon from "../../../../src/publicContent/icons/caption.png";
-import playTvIcon from "../../../../src/publicContent/icons/tv-monitor.png";
-import analyticsIcon from "../../../../src/publicContent/icons/data-analytics.png";
-import settingsIcon from "../../../../src/publicContent/icons/settings.png";
+// import smallLogoIcon from "../../../../src/publicContent/images/logo/svg/logo-black.svg";
+// import queryIcon from "../../../../src/publicContent/icons/query-question-mark.png";
+// import captionIcon from "../../../../src/publicContent/icons/caption.png";
+// import playTvIcon from "../../../../src/publicContent/icons/tv-monitor.png";
+// import analyticsIcon from "../../../../src/publicContent/icons/data-analytics.png";
+// import settingsIcon from "../../../../src/publicContent/icons/settings.png";
 import css from "./InstructorMenuBar.module.css";
 import { FaCircleUser } from "react-icons/fa6";
 const InstructorMenuBar = (props) => {
   const { cusAnsData = [], setNextIndex, setState, quesData = [] } = props;
+  const userName = typeof window !== 'undefined' ? localStorage.getItem("username") : "";
   const handleCurrState = (index) => {
     setNextIndex(index);
     if (cusAnsData[index] !== undefined) {
@@ -32,8 +32,8 @@ const InstructorMenuBar = (props) => {
     <>
       <div className={css.outerDiv}>
         <div>
-          <p className={css.userStyle1}><FaCircleUser size={20} />{localStorage.getItem("username").substring(0, 6).toUpperCase()}</p>
-          <p className={css.userStyle2} ><FaCircleUser size={30} style={{ marginRight: "5px" }} />{localStorage.getItem("username").toUpperCase()}</p>
+          <p className={css.userStyle1}><FaCircleUser size={20} />{userName.substring(0, 6).toUpperCase()}</p>
+          <p className={css.userStyle2} ><FaCircleUser size={30} style={{ marginRight: "5px" }} />{userName.toUpperCase()}</p>
         </div>
         <div className={css.menuItem}>
 
