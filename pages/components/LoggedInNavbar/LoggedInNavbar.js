@@ -3,16 +3,17 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import SearchBar from "../../utils/SearchBar/SearchBar"; // Adjust path as per your setup
 import css from "./LoggedInNavbar.module.css";
-
+import { useRouter } from "next/navigation";
 const LoggedInNavbar = () => {
   const [menuState, setMenuState] = useState(false);
   const [showLanguageSettingsModal, setShowLanguageSettingsModal] = useState(false);
   const [login, setLogin] = useState(false);
   const userEmail = typeof window !== 'undefined' ? localStorage.getItem("email") : "";
   const userName = typeof window !== 'undefined' ? localStorage.getItem("username") : "";
-  const userType = typeof window !== 'undefined' ? localStorage.getItem("usertype"): "";
+  const userType = typeof window !== 'undefined' ? localStorage.getItem("usertype") : "";
   const [data, setData] = useState([]);
-
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const jwtToken = localStorage.getItem("jwt");
     if (jwtToken) {
@@ -21,13 +22,25 @@ const LoggedInNavbar = () => {
   }, []);
 
   const handleLogout = () => {
+    setLoading(true);
     localStorage.clear();
     sessionStorage.clear()
-    window.location.reload(true);
+    router.push("/");
+    setLoading(false);
+   // window.location.reload(true);
+
   };
 
   return (
     <div className={css.navbar}>
+      <div style={{ display: loading ? 'block' : 'none' }}>
+        <div className={"overlay"}></div>
+        <div className={"spinner_wrapper"}>
+          <div className="spinner-border text-danger" role="status" style={{ width: "3rem", height: "3rem" }}>
+            <span class="sr-only"></span>
+          </div>
+        </div>
+      </div>
       <div className={css.left}>
         <Link href="/" className={css.linkOver}>
           <div className={css.logoBox}>
@@ -44,12 +57,12 @@ const LoggedInNavbar = () => {
             <p className={css.anchor}>Edoctry Business</p>
           </Link>
         </div>
-        { userType === "instructor" && (
-          <Link href="/user/profile/courses" passHref className={css.linkOver} >
+        {userType === "instructor" && (
+          <Link href="/user/my-courses/courseView" passHref className={css.linkOver} >
             <p className={css.hovBox}>Instructor</p>
           </Link>
         )}
-        { userType === "customer" && (
+        {userType === "customer" && (
           <Link href="/user/my-courses" passHref className={css.linkOver}>
             <p className={css.hovBox}>My Learning</p>
           </Link>
@@ -123,7 +136,7 @@ const LoggedInNavbar = () => {
                   {/* <Link to="/user/account" className={css.menuItem}>
                     Account Settings
                   </Link> */}
-                  { userType === "customer" &&
+                  {userType === "customer" &&
                     <Link href="/" className={css.menuItem}>
                       Payment Methods
                     </Link>}

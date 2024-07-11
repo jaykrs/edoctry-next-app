@@ -57,7 +57,7 @@ const CustomerAssesmentTestPage = () => {
                     scoreMark += quesData[i].attributes.marks
                 }
                 if (cusAnsData.length - 1 === i) {
-                    await axios.post(CMS_URL + "/api/scores", {
+                    await axios.post(CMS_URL + "scores", {
                         "data": {
                             "customeremail": localStorage.getItem("email"),
                             "customerAnswer": JSON.stringify(cusAnsData),

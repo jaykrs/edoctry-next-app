@@ -1,19 +1,17 @@
- "use client"
 import React, { useEffect, useState } from "react";
+import InstructorLayout from "../../../pages/InstructorLayout/InstructorLayout";
 import axios from "axios";
-import { CMS_URL } from "../../../urlConst";
-import { useRouter } from "next/router";
+import { CMS_URL } from "../../const/urlConst";
+import { useNavigate } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { ToastContainer } from "react-toastify";
-import Layout1 from "../../../components/Layout1/Layout1";
 
 const InstructorCourseViewPage = () => {
-    const userType = typeof window !== 'undefined' ? localStorage.getItem("usertype"): "";
     const [data, setData] = useState("");
     const [unitData, setUnitData] = useState("");
-    const navigate = useRouter();
+    const navigate = useNavigate();
     const [stateList, setStateList] = useState("");
     const [recordDeleted,setRecordDeleted] = useState(false);
     const [state, setState] = useState({
@@ -25,23 +23,19 @@ const InstructorCourseViewPage = () => {
         pagPreBtn: false
     })
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            searchData();
-        }
+        searchData();
     }, [])
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            searchData();
-        }
+        searchData();
     }, [recordDeleted]);
 
     const searchData = ()=>{
         if (localStorage.getItem("usertype") === "instructor") {
-            axios.get(CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseInsId"))
+            axios.get(CMS_URL + "/api/courses?filters[id][$eq]=" + sessionStorage.getItem("courseInsId"))
                 .then(res => {
                     setData(res.data.data);
                 }).catch(err => console.log(err))
-            axios.get(CMS_URL + "courseunits?filters[courseid][$eq]=" + sessionStorage.getItem("courseInsId"))
+            axios.get(CMS_URL + "/api/courseunits?filters[courseid][$eq]=" + sessionStorage.getItem("courseInsId"))
                 .then(result => {
 
                     setUnitData(result.data.data)
@@ -54,11 +48,11 @@ const InstructorCourseViewPage = () => {
                     })
                 }).catch(err => console.log(err))
         } else if (localStorage.getItem("usertype") === "customer") {
-            axios.get(CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseInsId"))
+            axios.get(CMS_URL + "/api/courses?filters[id][$eq]=" + sessionStorage.getItem("courseInsId"))
                 .then(res => {
                     setData(res.data.data);
                 }).catch(err => console.log(err))
-            axios.get(CMS_URL + "courseunits?filters[courseid][$eq]=" + sessionStorage.getItem("courseInsId"))
+            axios.get(CMS_URL + "/api/courseunits?filters[courseid][$eq]=" + sessionStorage.getItem("courseInsId"))
                 .then(result => {
                     setUnitData(result.data.data)
                     let endOffset = state.currentPage * state.recordsPerPage;
@@ -74,7 +68,7 @@ const InstructorCourseViewPage = () => {
 
     const handleDelete = (id) => {
         if (confirm("Are you sure you want to delete this course unit?")) {
-            axios.delete(CMS_URL + "courseunits/" + id, {
+            axios.delete(CMS_URL + "/api/courseunits/" + id, {
                 headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
             })
                 .then(res => {
@@ -121,7 +115,7 @@ const InstructorCourseViewPage = () => {
 
     return (
         <>
-            <Layout1 >
+            <InstructorLayout >
                <ToastContainer />
                 <div className="" style={{ margin: "30px 0" }}>
                     {
@@ -129,14 +123,14 @@ const InstructorCourseViewPage = () => {
                             return (
                                 <div key={index} className="d-flex justify-content-row">
                                     <div style={{ width: "3%", marginBottom: "10px" }}>
-                                        <button className="btn " onClick={() => { navigate.push("/user/my-courses/courseView/card") }} ><FaAngleDoubleLeft size={40} /></button>
+                                        <button className="btn " onClick={() => { navigate("/user/profile/course/cardpage") }} ><FaAngleDoubleLeft size={40} /></button>
                                     </div>
                                     <div style={{ width: "94%" }}  >
                                         <div className="d-flex justify-content-end">
                                             {localStorage.getItem("usertype") === "instructor" &&
                                                 <button className="btn btn-secondary" onClick={() => {
                                                     sessionStorage.setItem("courseEditId", item.id)
-                                                    navigate.push("/user/my-courses/edits") ;
+                                                    navigate("/course/edit")
                                                 }}>Edit</button>}
                                         </div>
                                         <div className="d-flex justify-content-left mt-5">
@@ -152,7 +146,7 @@ const InstructorCourseViewPage = () => {
                                         <div className="d-flex justify-content-end" style={{ marginTop: "5px" }} >
                                             {localStorage.getItem("usertype") === "instructor" &&
                                                 <button className="btn btn-primary" onClick={() => {
-                                                    navigate.push("/user/my-courses/unit/new");
+                                                    navigate("/course/unit/new");
                                                 }}>New Unit</button>
                                             }
                                         </div>
@@ -186,11 +180,10 @@ const InstructorCourseViewPage = () => {
                                                                         <button className="btn" onClick={() => {
                                                                             sessionStorage.setItem("unid", item.id);
                                                                             if (localStorage.getItem("usertype") === "instructor") {
-                                                                                navigate.push("/user/my-courses/unit/view");
-                                                                            } 
-                                                                            // else if (localStorage.getItem("usertype") === "customer") {
-                                                                            //     navigate.push("/user/profile/unit/view");
-                                                                            // }
+                                                                                navigate("/user/profile/unit/view");
+                                                                            } else if (localStorage.getItem("usertype") === "customer") {
+                                                                                navigate("/user/profile/unit/view");
+                                                                            }
 
                                                                         }} ><MdEdit size={25} /></button>
                                                                     </td>
@@ -198,7 +191,7 @@ const InstructorCourseViewPage = () => {
                                                                         <td>
                                                                             <button className="btn" onClick={() => {
                                                                                 sessionStorage.setItem("unitEditId", item.id);
-                                                                                navigate.push("/user/my-courses/unit/update");
+                                                                                navigate("/instructor/unit/edit");
                                                                             }} ><MdEdit size={25} /></button>
                                                                         </td>}
                                                                     {
@@ -226,10 +219,11 @@ const InstructorCourseViewPage = () => {
                         })
 
                             : <img
-                                src="/publicContent/images/progress-circle.gif"
+                                src="../../../../src/publicContent/images/progress-circle.gif"
                                 alt="progress"
                             />
                     }
+                    {/* <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">View Course Details</button> */}
                 </div>
 
 
@@ -267,7 +261,7 @@ const InstructorCourseViewPage = () => {
                         <button className="paginationBtn" onClick={handlerNext} >Next</button>
                     </div>
                 </div>
-            </Layout1>
+            </InstructorLayout>
 
 
 

@@ -20,6 +20,7 @@ const CourseViewPage = () => {
     chapterContent: "",
     chapterResourses: ""
   })
+  
   useEffect(() => {
     axios.get(CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("coursePlayerID"))
       .then(res => {

@@ -6,6 +6,7 @@ const CourseCard = (props) => {
   let data = props.data;
   const extraCss = props.extraCss;
   const router = useRouter();
+  const userType = typeof window !== 'undefined' ? localStorage.getItem("usertype") : "";
   // let totalRating = (
   //   (1 * stars?.a + 2 * stars?.b + 3 * stars?.c + 4 * stars?.d + 5 * stars?.e) /
   //     stars?.a +
@@ -27,14 +28,18 @@ const CourseCard = (props) => {
   
   let handleOnClick = () => {
 
-    if (localStorage.getItem("usertype") === "instructor") {
+    if (userType === "instructor") {
       sessionStorage.setItem("courseInsId", data.id);
       sessionStorage.setItem("courseTitle", data.attributes.course_title);
+      router.push("/user/my-courses/courseView/card");
+      return;
     } else {
       localStorage.setItem("courseId", data.id);
+      
     }
-
     router.push(`/coursedetails/${data.id}`)
+
+   
   }
   return (
     <>

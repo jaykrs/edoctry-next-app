@@ -1,0 +1,32 @@
+
+.inputField {
+    width: 100%;
+    margin-top: 5px;
+    padding: 15px;
+    border-radius: 2%;
+    box-sizing: border-box;
+    font-size: 20px;
+}
+
+
+.metainput{
+    width: 70%;
+    padding: 5px;
+    height: 53px;
+    font-size: 20px;
+    border: 1px solid #8c8080;
+}
+.btnStyle {
+    width: 70px;
+    height: 50px;
+    margin-top: -9px;
+}
+
+
+.p2Style {
+    text-align: end;
+    margin: -10px 9px 0 0;
+    color: darkgrey;
+    border: none;
+    background-color: #fff;
+}

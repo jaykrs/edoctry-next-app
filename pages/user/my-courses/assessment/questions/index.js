@@ -41,7 +41,6 @@ const CustomerQuestionPage = () => {
 
     useEffect(() => {
         setLoading(true);
-        console.log(" sessionStorage.getItem", sessionStorage.getItem("assid"))
         axios.get(CMS_URL + "assesments?filters[id][$eq]=" + sessionStorage.getItem("assid"), {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
@@ -49,9 +48,7 @@ const CustomerQuestionPage = () => {
         })
             .then(async res => {
                 setAssData(res.data.data)
-                console.log("Assessment", res.data.data);
                 let date = new Date(res.data.data[0].attributes.createdAt);
-                console.log('date', date);
                 sessionStorage.setItem("assesmentDetails", JSON.stringify(res.data.data[0]))
                 axios.get(CMS_URL + "instructors?filters[instructoremail][$eq]=" + res.data.data[0].attributes.instructor, {
                     headers: {
@@ -148,21 +145,22 @@ const CustomerQuestionPage = () => {
         })
     }
     const handleTest = (id) => {
-        sessionStorage.setItem("testId",id);
+        sessionStorage.setItem("testId", id);
         navigate.push("/user/my-courses/assessment/test")
     }
     const handleReviewPage = (id) => {
         sessionStorage.setItem("scoreId", id);
-        navigate.push("/user/my-courses/assesment/review")
+        navigate.push("/user/my-courses/assessment/reviews")
     }
     let graphList = {
         A: "A => Attempt",
         C: "C => Correct",
         W: "W => Wrong"
     }
+    console.log("scData", scData);
     return (
 
-        <Layout1 >
+        <Layout1 className="course view">
             <div style={{ display: loading ? 'block' : 'none' }}>
                 <div className={"overlay"}></div>
                 <div className={"spinner_wrapper"}>
@@ -203,21 +201,26 @@ const CustomerQuestionPage = () => {
                                 <div className={css.menuDiv3}>
                                     <button className={css.menuBtn1} onClick={() => { handleTest(item.id) }}>Start</button>
                                     {/* <button className="btn btn-primary" style={{margin:"20px" }} onClick={()=>{handleTest(item.id)}}>Review</button> */}
-                                    <div className={css.menuSubDiv3 + "dropdown"}>
+                                    <div className={`${css.menuSubDiv3} dropdown`}>
                                         <button type="button" className={css.subDivBtn} data-bs-toggle="dropdown">
-                                            Review<FaChevronDown size={15} />
+                                            Review <FaChevronDown size={15} />
                                         </button>
                                         <ul className="dropdown-menu">
-                                            {
-                                                scData.length > 0 ? scData.map((item, index) => {
-                                                    return (
-                                                        <li key={index}><button className="dropdown-item d-flex justify-content-between" href="#" onClick={() => {
-                                                            handleReviewPage(item.id)
-                                                        }}><p>Attempt{index + 1}</p>Score-{item.attributes.totalScored}</button></li>
-                                                    )
-                                                })
-                                                    : ""
-                                            }
+                                            {scData.length > 0 ? (
+                                                scData.map((item, index) => (
+                                                    <li key={index}>
+                                                        <button
+                                                            className="dropdown-item d-flex justify-content-between"
+                                                            onClick={() => handleReviewPage(item.id)}
+                                                        >
+                                                            <p>Attempt {index + 1}</p>
+                                                            Score - {item.attributes.totalScored}
+                                                        </button>
+                                                    </li>
+                                                ))
+                                            ) : (
+                                                <li>No items found</li>
+                                            )}
                                         </ul>
                                     </div>
                                 </div>

@@ -16,7 +16,6 @@ const CourseContentComponent = (props) => {
   const [chapterData, setChapterData] = useState({
     data: []
   })
-
   const dispatch = useDispatch();
   const chapterCart = useSelector(store => store.chapter.chapter);
   useEffect(() => {

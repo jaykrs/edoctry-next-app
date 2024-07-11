@@ -1,6 +1,5 @@
-import searchIcon from "../../publicContent/icons/search.png";
-import css from "./SearchBar2.module.css";
 
+import css from "./SearchBar2.module.css";
 const SearchBar2 = (props) => {
   const {
     searchBar = "",
@@ -20,7 +19,7 @@ const SearchBar2 = (props) => {
         placeholder={placeholder}
       />
       <div className={css.iconBox} onClick={searchHandler}>
-        <img src={searchIcon} alt="searchbar" className={css.imgIcon} />
+        <img src={"/publicContent/icons/search.png"} alt="searchbar" className={css.imgIcon} />
       </div>
     </div>
   );
