@@ -2,11 +2,12 @@ import InputUtil from "../../../../utils/FormUtils/InputUtil/InputUtil";
 import React, { useState } from "react";
 import Layout1 from "../../../../components/Layout1/Layout1";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../../urlConst"; 
+import { CMS_URL, textConst } from "../../../../urlConst";
 import { useRouter } from "next/navigation";
 // import MDEditor, { commands } from '@uiw/react-md-editor';
 import toastComponent from "../../../../toastComponent";
 import { ToastContainer } from "react-toastify";
+const [loading,setLoading] = useState(false);
 const InstructorUnitNew = () => {
   let langOption = [
     { key: "Select Language", value: "" },
@@ -15,13 +16,13 @@ const InstructorUnitNew = () => {
   ]
   const navigate = useRouter();
   const [message, setMessage] = useState("")
-  const [unit,setUnit] = useState("");
-  const [unitBrief,setUnitBrief] = useState("");
-  const [labProject,setLabProject] = useState("");
+  const [unit, setUnit] = useState("");
+  const [unitBrief, setUnitBrief] = useState("");
+  const [labProject, setLabProject] = useState("");
   const [state, setState] = useState({
     unit_duration: 0,
     courseid: "",
-    lapproject_attachment:"",
+    lapproject_attachment: "",
     unit_introductory_video: "",
   })
   let changeHandler = (e) => {
@@ -31,9 +32,10 @@ const InstructorUnitNew = () => {
   }
 
   const handleCreate = () => {
+    setLoading(true);
     if (unit === "" || state.unit_duration === "" || labProject === "" || unitBrief === "") {
-      return toastComponent("error",textConst.enterMandatoryField);
-    }else {
+      return toastComponent("error", textConst.enterMandatoryField);
+    } else {
       axios.post(CMS_URL + "courseunits", {
         "data": {
           "unit_title": unit,
@@ -41,21 +43,25 @@ const InstructorUnitNew = () => {
           "labproject": labProject,
           "unit_brief": unitBrief,
           "courseid": sessionStorage.getItem("courseInsId"),
-          "unit_introductory_video" : state.unit_introductory_video
+          "unit_introductory_video": state.unit_introductory_video
 
         }
-      },{
-        headers:{
+      }, {
+        headers: {
           Authorization: "Bearer " + localStorage.getItem("jwt")
         }
       })
         .then(res => {
-          toastComponent("success",textConst.tableCreatedSuccess);
-          setTimeout(()=>{
+          toastComponent("success", textConst.tableCreatedSuccess);
+          setTimeout(() => {
             navigate.push("/user/my-courses/view");
-          },3000);
+          }, 3000);
+          setLoading(false);
         }).catch(err => {
-          toastComponent("error",err.message);
+          toastComponent("error", err.message);
+          setTimeout(()=>{
+            setLoading(false);
+          },3000);
         })
 
     }
@@ -64,7 +70,15 @@ const InstructorUnitNew = () => {
   return (
 
     <Layout1 >
-       <ToastContainer />
+      <ToastContainer />
+      <div style={{ display: loading ? 'block' : 'none' }}>
+        <div className={"overlay"}></div>
+        <div className={"spinner_wrapper"}>
+          <div className="spinner-border text-danger" role="status" style={{ width: "3rem", height: "3rem" }}>
+            <span class="sr-only"></span>
+          </div>
+        </div>
+      </div>
       <div>
         <div style={{ margin: "40px  3% 0 3%", }} className="d-flex justify-content-between">
           <h1>New Unit</h1>
@@ -101,7 +115,7 @@ const InstructorUnitNew = () => {
                 }}
               /> */}
             </div>
-            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 20px"}}>
+            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 20px" }}>
               <label style={{ marginBottom: "5px" }}><strong>Brief<span className="mandatoryField">*</span></strong></label>
               {/* <MDEditor
                 value={unitBrief}
@@ -169,7 +183,7 @@ const InstructorUnitNew = () => {
             </div>
           </div>
           <div style={{ width: "3%" }} >
-            
+
           </div>
 
         </div>

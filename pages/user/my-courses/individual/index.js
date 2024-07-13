@@ -109,7 +109,7 @@ const CourseAssesmentCardPage = () => {
                       icon={"/publicContent/icons/tv.png"}
                       ttl={"Interview Preparation"}
                       desc={item.attributes.course_title}
-                      link={"/page?pageid=interview-prep"}
+                      link={"/blog/interview-prep"}
                     />
                   </div>
                   <div >
@@ -121,7 +121,7 @@ const CourseAssesmentCardPage = () => {
                       icon={"/publicContent/icons/tv.png"}
                       ttl={"Job Opportunity"}
                       desc={item.attributes.course_title}
-                      link={"/page?pageid=oppertunity-job"}
+                      link={"/blog/oppertunity-job"}
                     />
                   </div>
                 </div>

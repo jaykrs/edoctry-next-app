@@ -40,7 +40,7 @@ const InstructorAssesmentCardPage = () => {
       icon: "/publicContent/icons/tv.png",
       ttl: "Practice Test",
       desc:  "" , //location.title ,
-      link:"/user/profile/assesment/list",
+      link:"/user/my-courses/ins/assessment",
     },
     {
       box: 3,
@@ -48,7 +48,7 @@ const InstructorAssesmentCardPage = () => {
       icon: "/publicContent/icons/tv.png",
       ttl: "Interview Preparation",
       desc: "", //location.title ,
-      link:"/page?pageid=interview-prep",
+      link:"/blog/interview-prep",
     },
     {
       box: 4,
@@ -56,7 +56,7 @@ const InstructorAssesmentCardPage = () => {
       icon: "/publicContent/icons/tv.png",
       ttl: "Job Opportunity",
       desc: "", //location.title ,
-      link:"/page?pageid=oppertunity-job",
+      link:"/blog/opportunity-job",
     },
   ];
   return (

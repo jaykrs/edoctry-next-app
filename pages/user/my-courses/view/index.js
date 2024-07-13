@@ -1,4 +1,4 @@
- "use client"
+"use client"
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { CMS_URL } from "../../../urlConst";
@@ -10,12 +10,13 @@ import { ToastContainer } from "react-toastify";
 import Layout1 from "../../../components/Layout1/Layout1";
 
 const InstructorCourseViewPage = () => {
-    const userType = typeof window !== 'undefined' ? localStorage.getItem("usertype"): "";
+    const userType = typeof window !== 'undefined' ? localStorage.getItem("usertype") : "";
     const [data, setData] = useState("");
     const [unitData, setUnitData] = useState("");
     const navigate = useRouter();
     const [stateList, setStateList] = useState("");
-    const [recordDeleted,setRecordDeleted] = useState(false);
+    const [recordDeleted, setRecordDeleted] = useState(false);
+    const [loading,setLoading] = useState(false);
     const [state, setState] = useState({
         currentPage: 1,
         recordsPerPage: 2,
@@ -35,7 +36,8 @@ const InstructorCourseViewPage = () => {
         }
     }, [recordDeleted]);
 
-    const searchData = ()=>{
+    const searchData = () => {
+        setLoading(true);
         if (localStorage.getItem("usertype") === "instructor") {
             axios.get(CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseInsId"))
                 .then(res => {
@@ -52,6 +54,7 @@ const InstructorCourseViewPage = () => {
                     setState(prev => {
                         return { ...prev, ["noOfPage"]: pageCount }
                     })
+                    setLoading(false);
                 }).catch(err => console.log(err))
         } else if (localStorage.getItem("usertype") === "customer") {
             axios.get(CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseInsId"))
@@ -68,20 +71,23 @@ const InstructorCourseViewPage = () => {
                     setState(prev => {
                         return { ...prev, ["noOfPage"]: pageCount }
                     })
+                    setLoading(false);
                 }).catch(err => console.log(err))
         }
     }
 
     const handleDelete = (id) => {
         if (confirm("Are you sure you want to delete this course unit?")) {
+            setLoading(true);
             axios.delete(CMS_URL + "courseunits/" + id, {
                 headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
             })
                 .then(res => {
-                    setTimeout(()=>{
-                        toastComponent("success",textConst.tableDeletedSuccess);
-                    },3000);
+                    setTimeout(() => {
+                        toastComponent("success", textConst.tableDeletedSuccess);
+                    }, 3000);
                     setRecordDeleted(!recordDeleted);
+                    setLoading(false);
                 }).catch(err => { console.log(err) })
         }
     }
@@ -122,7 +128,15 @@ const InstructorCourseViewPage = () => {
     return (
         <>
             <Layout1 >
-               <ToastContainer />
+                <ToastContainer />
+                <div style={{ display: loading ? 'block' : 'none' }}>
+                    <div className={"overlay"}></div>
+                    <div className={"spinner_wrapper"}>
+                        <div className="spinner-border text-danger" role="status" style={{ width: "3rem", height: "3rem" }}>
+                            <span class="sr-only"></span>
+                        </div>
+                    </div>
+                </div>
                 <div className="" style={{ margin: "30px 0" }}>
                     {
                         data.length > 0 ? data.map((item, index) => {
@@ -136,7 +150,7 @@ const InstructorCourseViewPage = () => {
                                             {localStorage.getItem("usertype") === "instructor" &&
                                                 <button className="btn btn-secondary" onClick={() => {
                                                     sessionStorage.setItem("courseEditId", item.id)
-                                                    navigate.push("/user/my-courses/edits") ;
+                                                    navigate.push("/user/my-courses/edits");
                                                 }}>Edit</button>}
                                         </div>
                                         <div className="d-flex justify-content-left mt-5">
@@ -187,7 +201,7 @@ const InstructorCourseViewPage = () => {
                                                                             sessionStorage.setItem("unid", item.id);
                                                                             if (localStorage.getItem("usertype") === "instructor") {
                                                                                 navigate.push("/user/my-courses/unit/view");
-                                                                            } 
+                                                                            }
                                                                             // else if (localStorage.getItem("usertype") === "customer") {
                                                                             //     navigate.push("/user/profile/unit/view");
                                                                             // }

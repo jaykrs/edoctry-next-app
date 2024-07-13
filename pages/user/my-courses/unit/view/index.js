@@ -13,7 +13,8 @@ const InstructorUnitViewPage = () => {
     const [unitData, setUnitData] = useState("");
     const navigate = useRouter();
     const [chapterList, setChapterList] = useState("");
-    const [recordDeleted,setRecordDeleted] = useState(false);
+    const [recordDeleted, setRecordDeleted] = useState(false);
+    const [loading,setLoading] = useState(false);
     const [state, setState] = useState({
         currentPage: 1,
         recordsPerPage: 2,
@@ -30,7 +31,8 @@ const InstructorUnitViewPage = () => {
         SearchData();
     }, [recordDeleted])
 
-    const SearchData = ()=>{
+    const SearchData = () => {
+        setLoading(true)
         axios.get(CMS_URL + "courseunits?filters[id][$eq]=" + sessionStorage.getItem("unid"))
             .then(res => {
                 setData(res.data.data);
@@ -50,6 +52,7 @@ const InstructorUnitViewPage = () => {
                 setState(prev => {
                     return { ...prev, ["noOfPage"]: pageCount }
                 })
+                setLoading(false);
             }).catch(err => console.log(err))
     }
 
@@ -59,12 +62,12 @@ const InstructorUnitViewPage = () => {
             axios.delete(CMS_URL + "chapters/" + id, {
                 headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
             }).then(res => {
-                setTimeout(()=>{
-                    toastComponent("success",textConst.tableDeletedSuccess);
-                },3000);
+                setTimeout(() => {
+                    toastComponent("success", textConst.tableDeletedSuccess);
+                }, 3000);
                 setRecordDeleted(!recordDeleted);
             }).catch(err => {
-                toastComponent("error",err.message);
+                toastComponent("error", err.message);
             })
         }
     }
@@ -106,7 +109,15 @@ const InstructorUnitViewPage = () => {
     return (
         <>
             <Layout1 >
-               <ToastContainer />
+                <ToastContainer />
+                <div style={{ display: loading ? 'block' : 'none' }}>
+                    <div className={"overlay"}></div>
+                    <div className={"spinner_wrapper"}>
+                        <div className="spinner-border text-danger" role="status" style={{ width: "3rem", height: "3rem" }}>
+                            <span class="sr-only"></span>
+                        </div>
+                    </div>
+                </div>
                 <div className="" style={{ margin: "20px 0" }}>
                     {
                         data.length > 0 ? data.map((item, index) => {
@@ -121,7 +132,7 @@ const InstructorUnitViewPage = () => {
                                             <ReactMarkdown>{item.attributes.unit_title}</ReactMarkdown>
                                         </div>
                                         <div className="row">
-                                        <ReactMarkdown>{item.attributes.unit_brief}</ReactMarkdown>
+                                            <ReactMarkdown>{item.attributes.unit_brief}</ReactMarkdown>
                                         </div>
                                         <div className="row">
                                             <ReactMarkdown>{item.attributes.labproject}</ReactMarkdown>
@@ -161,8 +172,8 @@ const InstructorUnitViewPage = () => {
                                                                             sessionStorage.setItem("unitViewid", item.id);
                                                                             if (localStorage.getItem("usertype") === "instructor") {
                                                                                 navigate.push("/user/my-courses/chapter/view");
-                                                                             } 
-                                                                             //else if (localStorage.getItem("usertype") === "customer") {
+                                                                            }
+                                                                            //else if (localStorage.getItem("usertype") === "customer") {
                                                                             //     navigate.push("/user/profile/viewChapter");
                                                                             // }
 
@@ -192,10 +203,11 @@ const InstructorUnitViewPage = () => {
                             )
                         })
 
-                            : <img
-                                src="../../../../src/publicContent/images/progress-circle.gif"
-                                alt="progress"
-                            />
+                            : ""
+                            // <img
+                            //     src="/publicContent/images/progress-circle.gif"
+                            //     alt="progress"
+                            // />
                     }
                     {/* <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">View Course Details</button> */}
                 </div>

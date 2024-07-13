@@ -62,7 +62,7 @@ const InstructorCoursePage = () => {
           ttl="Create an Engaging Course"
           cnt="Whether you've been teaching for years or are teaching for the first time, you can make an engaging course. We've compiled resources and best practices to help you get to the next level, no matter where you're starting."
           btnTxt="Get Started"
-          btnLink="/page?pageid=getstarted"
+          btnLink="/blog/getstarted"
         />
       </div>
 
@@ -72,14 +72,14 @@ const InstructorCoursePage = () => {
           ttl="Get Started with Video"
           cnt="Quality video lectures can set your course apart. Use our resources to learn the basics."
           btnTxt="Get Started"
-          btnLink="/page?pageid=getstarted"
+          btnLink="/blog/getstarted"
         />
         <ParaCard
           imgSrc={"/publicContent/images/showcase5.jpg"}
           ttl="Build Your Audience"
           cnt="Set your course up for success by building your audience."
           btnTxt="Get Started"
-          btnLink="/page?pageid=getstarted"
+          btnLink="/blog/getstarted"
         />
       </div>
       <div className={css.plainTxt}>
@@ -90,38 +90,38 @@ const InstructorCoursePage = () => {
           icon={"/publicContent/icons/tv.png"}
           ttl="Test Video"
           desc="Send us a sample video and get expert feedback."
-          link="/page?pageid=testvideo"
+          link="/blog/testvideo"
         />
         <SmallNaviCard
           icon={"/publicContent/icons/chat.png"}
           ttl="Instructor Community"
           desc="Connect with experienced instructors. Ask questions, browse discussions, and more."
-          link="/page?pageid=insCommunity"
+          link="/blog/insCommunity"
         />
         <SmallNaviCard
           icon={"/publicContent/icons/teach.png"}
           ttl="Testing Center"
           desc="Learn about best practices for teaching on Edoctry."
-          link="/page?pageid=testingCenter"
+          link="/blog/testingCenter"
         />
         <SmallNaviCard
           icon={"/publicContent/icons/analytics.png"}
           ttl="Marketplace Insights"
           desc="Validate your course topic by exploring our marketplace supply and demand."
-          link="/page?pageid=insMarketPlace"
+          link="/blog/insMarketPlace"
         />
         <SmallNaviCard
           icon={"/publicContent/icons/help-web-button.png"}
           ttl="Help and Support"
           desc="Browse our Help Center or contact our support team."
-          link="/page?pageid=support"
+          link="/blog/support"
         />
       </div>
       <div className={css.box3}>
         <p className={css.txt}>Are You Ready to Begin?</p>
         <Button1
           txt="Create your Course"
-          link="/course/create"
+          link="/user/my-courses/create"
           color="var(--white)"
           bck="var(--purple)"
           hovBck="var(--purple-dark)"

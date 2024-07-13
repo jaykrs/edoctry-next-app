@@ -1,0 +1,145 @@
+
+import React, { useEffect, useState } from "react";
+import InstructorLayout from "../InstructorLayout/InstructorLayout";
+import axios from "axios";
+import { CMS_URL, textConst } from "../../components/const/urlConst";
+import { useNavigate } from "react-router-dom";
+import { FaAngleDoubleLeft } from "react-icons/fa";
+import toastComponent from "../../toastComponent";
+import { ToastContainer } from "react-toastify";
+const AssesmentList = () => {
+    const navigate = useNavigate();
+    const [state, setState] = useState("");
+    const [recordDeleted,setRecordDeleted] = useState(false);
+
+    useEffect(() => {
+        SearchData()
+    },[]);
+
+    useEffect(() => {
+        SearchData()
+    },[recordDeleted]);
+    
+const SearchData = ()=>{
+    let courseId = sessionStorage.getItem("courseInsId")
+        axios.get(CMS_URL + "/api/assesments?filters[course][$eq]=" + courseId, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("jwt")
+            }
+        })
+            .then(res => {
+                setState(res.data.data);
+            }).catch(err => {
+                console.log(err)
+            })
+}
+    const handleCreate = () => {
+        navigate("/user/profile/assesment/create");
+    }
+    const handleAddQuestion = (id) => {
+        console.log(id)
+        sessionStorage.setItem("assid", id)
+        navigate("/user/profile/assesment/question")
+    }
+
+    const handleDelete = (id) => {
+        if (confirm("Are you sure you want to delete this assessment?")) {
+            axios.delete(CMS_URL + "/api/assesments/" + id, {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("jwt")
+                }
+            })
+                .then(res => {
+                    toastComponent("success",textConst.tableDeletedSuccess);
+                    setRecordDeleted(!recordDeleted);
+                }).catch(err => {
+                    toastComponent("error",err.message);
+                })
+        }
+    }
+
+    return (
+
+        <InstructorLayout >
+            <ToastContainer />
+            <div>
+                <button className="btn mt-3" onClick={() => { navigate("/user/profile/course/cardpage") }}><FaAngleDoubleLeft size={40} /></button>
+                <div style={{ margin: "50px 3% 10px  3%" }} className={localStorage.getItem("usertype") === "instructor" ? "d-flex justify-content-between" : "d-flex justify-content-start"}>
+                    <h1>Assesment</h1>
+                    {
+                        localStorage.getItem("usertype") === "instructor" &&
+                        <button className="btn btn-primary btnStyle1" onClick={handleCreate}>New</button>
+                    }
+
+                </div>
+                <div className="d-flex justify-content-row">
+                    <div style={{ width: "3%" }} className="d-flex justify-content-center">
+
+                    </div>
+                    <div className="row" style={{ width: "94%" }}>
+
+                        <table className="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col"> Assesment Title</th>
+                                    <th scope="col">Course Title</th>
+                                    <th scope="col">Full Marks</th>
+                                    <th scope="col">Pass Marks</th>
+                                    <th scope="col">View</th>
+                                    <th scope="col">publish</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {
+                                    localStorage.getItem("usertype") === "instructor" && state.length > 0 ? state.reverse().map((item, index) => {
+                                        let stateLength = state.length;
+                                        return (
+                                            <tr key={index}>
+                                                <th scope="row">{stateLength - index}</th>
+                                                <td>{item.attributes.assesment_title}</td>
+                                                <td dangerouslySetInnerHTML={{ __html: item.attributes.course_title }}></td>
+                                                <td>{item.attributes.assesment_marks}</td>
+                                                <td>{item.attributes.passmarks}</td>
+                                                <td>
+                                                    <button className="btn btn-primary" onClick={() => {
+                                                        sessionStorage.setItem("assid", item.id);
+                                                        navigate("/user/profile/assesment/question");
+                                                    }} >view</button>
+                                                </td>
+                                                <td>
+                                                    <button className="btn btn-warning" onClick={() => {
+                                                        handleDelete(item.id)
+                                                    }} >delete</button>
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                        : <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>No Data Found</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                }
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+                    <div style={{ width: "3%" }} >
+
+                    </div>
+
+                </div>
+            </div>
+        </InstructorLayout>
+    )
+
+};
+
+export default AssesmentList;
