@@ -6,7 +6,6 @@ import { CMS_URL, textConst } from "../../../urlConst";
 import { useRouter } from "next/router";
 import SelectDropdownUtil from "../../../utils/FormUtils/SelectDropdownUtil/SelectDropdownUtil";
 import css from "./CourseEditPage.module.css"
-// import MDEditor, { commands } from '@uiw/react-md-editor';
 import { IoIosCloseCircle } from "react-icons/io";
 import toastComponent from "../../../toastComponent";
 import { ToastContainer } from "react-toastify";

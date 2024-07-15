@@ -72,7 +72,7 @@ const CustomerQuestionReviewPage = () => {
         currentState()
     },[currentIndex])
     const handleNext = () => {
-        if (currentIndex < scoreData.length - 1) {
+        if (currentIndex < scoreData.length - 1 && currentIndex < quesData.length - 1) {
             //  dispatch(setQuestionReview({index:currentIndex + 1,Answer:state}))
             setState(prev => {
                 return {

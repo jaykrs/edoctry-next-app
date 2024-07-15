@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import SearchBar from "../../utils/SearchBar/SearchBar"; // Adjust path as per your setup
 import css from "./LoggedInNavbar.module.css";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 const LoggedInNavbar = () => {
   const [menuState, setMenuState] = useState(false);
   const [showLanguageSettingsModal, setShowLanguageSettingsModal] = useState(false);
@@ -26,8 +26,10 @@ const LoggedInNavbar = () => {
     localStorage.clear();
     sessionStorage.clear()
     router.push("/");
+    if(router.asPath === "/"){
+       window.location.reload(true);
+    }
     setLoading(false);
-   // window.location.reload(true);
 
   };
 

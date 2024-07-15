@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import LoggedInNavbar from "../LoggedInNavbar/LoggedInNavbar";
 import Footer from "../Footer/Footer"; 
 import Head from "next/head";
-const Layout1 = ({ modal = false, setModal = () => {},title, children }) => {
+const Layout1 = ({ modal = false, setModal = () => {},title, metadata, children }) => {
   const [auth, setAuth] = useState(false);
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("loginStatus") === "true";
@@ -28,6 +28,7 @@ const Layout1 = ({ modal = false, setModal = () => {},title, children }) => {
       <Head>
         <title>{title ? title : "Edoctry"} </title>
         <meta name="description" content="web app content" />
+        <meta name="keywords" content={metadata} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/publicContent/favicon.ico" />
       </Head>

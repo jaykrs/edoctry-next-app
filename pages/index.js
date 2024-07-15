@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 export default function Page(props) {
   return (
     <>
-      <Layout1 title="Home Page">
+      <Layout1 title="Home Page" metadata={"home,courses,web,server"}>
         <VerticalCategoryMenuBar />
         <div className={css.ma}>
           <div className={css.banner}>

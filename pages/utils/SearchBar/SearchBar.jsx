@@ -3,6 +3,7 @@ import css from "./SearchBar.module.css";
 import axios from "axios";
 import { CMS_URL } from "../../urlConst";
 import { useRouter } from "next/navigation";
+
 export default function SearchBar(props) {
   let [resultData, setResultData] = useState([]);
   let [searchStr, setSearchStr] = useState([]);
@@ -57,7 +58,6 @@ export default function SearchBar(props) {
           name="searchbar"
           id="searchbar"
           className={css.searchInpt}
-          
          data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo"
         />
       </div>
