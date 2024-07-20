@@ -1,7 +1,6 @@
 // pages/_app.js
 /* styles/globals.css */
  import 'bootstrap/dist/css/bootstrap.min.css'; 
-
 import "./index.css";
 import { Provider } from 'react-redux';
 import store from './store';

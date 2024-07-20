@@ -244,6 +244,36 @@
 .labelMargin {
   margin-left: 1rem;
 }
+.markdownTextareaTlt{
+  position: relative;
+    background: #fff;
+    padding: 2px;
+    /* border: 1px solid #000; */
+    /* border-radius: 0%; */
+    font-size: 20px;
+}
+.markdownTextarea{
+  width: 100%;
+  padding: 17px 10px 10px 10px;
+  height: 200px;
+  margin-top: -25px;
+}
+.markdownBtn{
+  background: #fff;
+    border: 1px solid #b7b0b7;
+    border-radius: 10%;
+    margin: 0 -1px 1px 0;
+    color: olivedrab;
+    padding: 4px 4px 1px 4px;
+}
+.markdownBtn :hover{
+  background: LightGray;
+    border: 1px solid #b7b0b7;
+    border-radius: 10%;
+    margin: 0 -1px 1px 0;
+    color: olivedrab;
+    padding: 4px 4px 1px 4px;
+}
 @media screen and (max-width : 600px) {
 .Optiondiv {
   width: 100%;

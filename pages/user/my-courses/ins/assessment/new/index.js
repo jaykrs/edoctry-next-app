@@ -1,6 +1,6 @@
 import InputUtil from "../../../../../utils/FormUtils/InputUtil/InputUtil";
 import { FaEnvelopeOpenText } from "react-icons/fa";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { CMS_URL, textConst } from "../../../../../urlConst";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,8 @@ import { FaAngleDoubleLeft } from "react-icons/fa";
 import toastComponent from "../../../../../toastComponent";
 import { ToastContainer } from "react-toastify";
 import Layout1 from "../../../../../components/Layout1/Layout1";
+import dynamic from 'next/dynamic';
+const MDEditor = dynamic(() => import('react-markdown-editor'), { ssr: false });
 const CreateNewAssesment = () => {
   const navigate = useRouter();
   const [assTlt, setAssTlt] = useState("");
@@ -21,6 +23,10 @@ const CreateNewAssesment = () => {
     course: "",
     course_title: ""
   })
+
+  useEffect(() => {
+
+  }, [])
 
   const handleCreate = () => {
     setLoading(true);
@@ -47,7 +53,7 @@ const CreateNewAssesment = () => {
         setTimeout(() => {
           navigate.push("/user/my-courses/ins/assesment")
         }, 3000)
-       
+
       }).catch(err => {
         toastComponent("error", err.message);
       })
@@ -82,6 +88,7 @@ const CreateNewAssesment = () => {
             </div>
             <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12" style={{ padding: "30px" }}>
               <label><strong>Title<span className="mandatoryField">*</span></strong></label>
+              
               {/* <MDEditor
                 value={assTlt}
                 onChange={setAssTlt}

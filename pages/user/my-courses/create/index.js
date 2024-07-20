@@ -1,16 +1,17 @@
+'use client'
 import InputUtil from "../../../utils/FormUtils/InputUtil/InputUtil";
 import css from "./CreateCourse.module.css";
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import InstructorLayout from "../../../components/InstructorLayout/InstructorLayout";
 import axios from "axios";
 import { CMS_URL, textConst } from "../../../urlConst";
 import { useRouter } from "next/navigation";
 import SelectDropdownUtil from "../../../utils/FormUtils/SelectDropdownUtil/SelectDropdownUtil";
-// import MDEditor from '@uiw/react-md-editor';
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import { ToastContainer } from "react-toastify";
 import toastComponent from "../../../toastComponent";
 import Layout1 from "../../../components/Layout1/Layout1";
+import MarkdownTextareaUtils from "../../../utils/MarkdownTextareaUtils/MarkdownTextareaUtils";
 const CreateCourse = () => {
   let langOption = [
     { key: "Select Language", value: "" },
@@ -40,7 +41,12 @@ const CreateCourse = () => {
     videoPath: ""
   })
   const [value, setValue] = useState("");
-  const [courseRequirement, setCourseRequirementsetValue] = useState("");
+  const [courseRequirement, setCourseRequirement] = useState("");
+
+  useEffect(() => {
+    import('froala-editor/js/plugins/markdown.min.js');
+  });
+
   let changeHandler = (e) => {
     setState((prev) => {
       return { ...prev, [e.target.name]: e.target.value }
@@ -49,15 +55,16 @@ const CreateCourse = () => {
 
   const handleCreate = () => {
     if (courseTlt === "" || state.course_fee === 0 || state.course_fee_premium === 0 || state.duration === 0 || state.language.value === undefined || courseBrief === "" || courseOutline === "" || state.course_logo === "") {
-      toastComponent("error",textConst.enterMandatoryField);
+      toastComponent("error", textConst.enterMandatoryField);
       return;
     } else {
+
       axios.post(CMS_URL + "courses", {
         "data": {
           "course_title": courseTlt,
-          "course_fee": state.course_fee,
-          "course_fee_premium": state.course_fee_premium,
-          "duration": state.duration,
+          "course_fee": Number(state.course_fee),
+          "course_fee_premium": Number(state.course_fee_premium),
+          "duration": Number(state.duration),
           "language": state.language.value,
           "course_outline": courseOutline,
           "course_brief": courseBrief,
@@ -74,10 +81,11 @@ const CreateCourse = () => {
         }
       })
         .then(res => {
-          toastComponent("success","Successfully created!");
+          toastComponent("success", "Successfully created!");
           navigate.push("/user/my-courses/courseView");
         }).catch(err => {
-          toastComponent("error",err.message);
+          toastComponent("error", err.message);
+          console.log("error",err);
         })
 
     }
@@ -112,9 +120,9 @@ const CreateCourse = () => {
       .then((response) => response.json())
       .then((result) => {
         stateHandler("course_logo", result.thumbnailUrl);
-        toastComponent("success",textConst.logoUploadSuccess);
+        toastComponent("success", textConst.logoUploadSuccess);
       })
-      .catch((error) => toastComponent("error","Logo" + textConst.uploadFailed));
+      .catch((error) => toastComponent("error", "Logo" + textConst.uploadFailed));
   }
 
   const videoHandler = (e) => {
@@ -137,14 +145,13 @@ const CreateCourse = () => {
         stateHandler("introductory_video", result.url);
         toastComponent("success", textConst.videoUploadSuccess)
       })
-      .catch((error) => toastComponent("error","Video" + textConst.uploadFailed));
+      .catch((error) => toastComponent("error", "Video" + textConst.uploadFailed));
   }
   const stateHandler = (name, value) => {
     setState(prev => {
       return { ...prev, [`${name}`]: value }
     })
   }
-
   return (
 
     <Layout1 >
@@ -212,7 +219,6 @@ const CreateCourse = () => {
               />
             </div>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Course Title</strong></label>
               {/* <MDEditor
                 value={courseTlt}
                 onChange={setCourseTlt}
@@ -236,6 +242,36 @@ const CreateCourse = () => {
                   }
                 }}
               /> */}
+
+              <MarkdownTextareaUtils
+               title="Course Title"
+               model={courseTlt}
+               setModel={setCourseTlt}
+              />
+            </div>
+            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
+              <MarkdownTextareaUtils
+               title="Course Brief"
+               model={courseBrief}
+               setModel={setCourseBrief}
+              />
+            </div>
+
+
+            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
+              <MarkdownTextareaUtils
+               title="Course Outline"
+               model={courseOutline}
+               setModel={setCourseOutline}
+              />
+            </div>
+
+            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
+              <MarkdownTextareaUtils
+               title="Course Requirement"
+               model={courseRequirement}
+               setModel={setCourseRequirement}
+              />
             </div>
             <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12" style={{ padding: "20px" }}>
               <p style={{ color: "#000", fontSize: "1rem", fontWeight: "700" }}>Search keywords</p>
@@ -254,87 +290,6 @@ const CreateCourse = () => {
                 })
                   : ""}
               </div>
-            </div>
-            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Course Brief</strong></label>
-              {/* <MDEditor
-                value={courseBrief}
-                onChange={setCourseBrief}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
-            </div>
-
-
-            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Course Outline</strong></label>
-              {/* <MDEditor
-                value={courseOutline}
-                onChange={setCourseOutline}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
-            </div>
-
-            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Course Requirement</strong></label>
-              {/* <MDEditor
-                value={courseRequirement}
-                onChange={setCourseRequirementsetValue}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
             </div>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
               <label style={{ marginBottom: "5px" }}><strong>course Logo</strong></label> <br />
