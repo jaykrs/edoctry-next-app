@@ -7,14 +7,16 @@ import { useRouter } from "next/navigation";
 // import MDEditor, { commands } from '@uiw/react-md-editor';
 import toastComponent from "../../../../toastComponent";
 import { ToastContainer } from "react-toastify";
-const [loading,setLoading] = useState(false);
+import MarkdownTextareaUtils from "../../../../utils/MarkdownTextareaUtils/MarkdownTextareaUtils";
 const InstructorUnitNew = () => {
+  
   let langOption = [
     { key: "Select Language", value: "" },
     { key: "English", value: "english" },
     { key: "Hindi", value: "hindi" }
   ]
   const navigate = useRouter();
+  const [loading,setLoading] = useState(false);
   const [message, setMessage] = useState("")
   const [unit, setUnit] = useState("");
   const [unitBrief, setUnitBrief] = useState("");
@@ -90,82 +92,26 @@ const InstructorUnitNew = () => {
           <div style={{ width: "3%" }}></div>
           <div className="row" style={{ width: "94%" }}>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 20px" }}>
-              <label style={{ marginBottom: "5px" }}><strong><span className="mandatoryField">*</span>Title<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={unit}
-                onChange={setUnit}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
+              <MarkdownTextareaUtils
+               title="Title"
+               model={unit}
+               setModel={setUnit}
+              />
             </div>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 20px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Brief<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={unitBrief}
-                onChange={setUnitBrief}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
+              <MarkdownTextareaUtils
+               title="Brief"
+               model={unitBrief}
+               setModel={setUnitBrief}
+              />
             </div>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 20px" }}>
               <label style={{ marginBottom: "5px" }}><strong>Project<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={labProject}
-                onChange={setLabProject}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
+              <MarkdownTextareaUtils
+               title="Project"
+               model={labProject}
+               setModel={setLabProject}
+              />
             </div>
 
             <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-6" style={{ padding: "5px 20px" }}>
