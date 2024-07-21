@@ -9,6 +9,8 @@ import css from "./CourseEditPage.module.css"
 import { IoIosCloseCircle } from "react-icons/io";
 import toastComponent from "../../../toastComponent";
 import { ToastContainer } from "react-toastify";
+import MarkdownTextareaUtils from "../../../utils/MarkdownTextareaUtils/MarkdownTextareaUtils";
+import PageLoadingComponents from "../../../utils/PageLoadingComponent/PageLoadingComponents";
 const CourseEditPage = () => {
   let langOption = [
     { key: "Select Language", value: "" },
@@ -16,6 +18,7 @@ const CourseEditPage = () => {
     { key: "Hindi", value: "hindi" }
   ]
   const navigate = useRouter();
+  const [loading,setLoading] = useState("");
   const [message, setMessage] = useState("");
   const [courseTlt,setCourseTlt] = useState("");
   const [courseBrief,setCourseBrief] = useState("");
@@ -39,6 +42,7 @@ const CourseEditPage = () => {
   })
 
   useEffect(() => {
+    setLoading(true);
     axios.get(CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseEditId"))
       .then(res => {
         let data = res.data.data[0];
@@ -55,6 +59,7 @@ const CourseEditPage = () => {
           }
           
         })
+        setLoading(false);
       }).catch(err => {
         console.log(err)
       })
@@ -78,6 +83,7 @@ const CourseEditPage = () => {
   }
 
   const handleCreate = () => {
+    setLoading(true);
     if (courseTlt === "" || state.course_fee === 0 || state.course_fee_premium === 0 || state.language.value === "" || courseBrief === "" || courseOuline === "") {
       return toastComponent("warn",textConst.enterMandatoryField);
     } else {
@@ -102,12 +108,16 @@ const CourseEditPage = () => {
         }
       })
         .then(res => {
+          setLoading(false);
           toastComponent("success",textConst.tableUpdatedSuccess);
           setTimeout(()=>{
             navigate.push("/user/my-courses/view")
           },3000)
         }).catch(err => {
           toastComponent("error",err.message);
+          setTimeout(()=>{
+            setLoading(false);
+          },3000)
         })
 
     }
@@ -118,6 +128,7 @@ const CourseEditPage = () => {
 
   }
   const handleUpload = () => {
+    setLoading(true);
     const formdata = new FormData();
     formdata.append("file", state.fileData);
 
@@ -130,10 +141,17 @@ const CourseEditPage = () => {
     fetch(CMS_URL + "onboard/fileupload", requestOptions)
       .then((response) => response.json())
       .then((result) => {
+        setLoading(false);
         stateHandler("course_logo",result.thumbnailUrl);
         toastComponent("success",textConst.videoUploadSuccess);
       })
-      .catch((error) => toastComponent("error",error.message));
+      .catch((error) => {
+        toastComponent("error",error.message)
+        setTimeout(()=>{
+          setLoading(false);
+        },3000)
+      }
+      );
   }
 
   const videoHandler = (e) => {
@@ -141,6 +159,7 @@ const CourseEditPage = () => {
 
   }
   const videoUpload = () => {
+    setLoading(true);
     const formdata = new FormData();
     formdata.append("file", state.videoPath);
 
@@ -154,9 +173,15 @@ const CourseEditPage = () => {
       .then((response) => response.json())
       .then((result) => {
         stateHandler("introductory_video",result.url);
+        setLoading(false);
         toastComponent("success",textConst.videoUploadSuccess);
       })
-      .catch((error) => ctoastComponent("error",error.message));
+      .catch((error) => {
+        ctoastComponent("error",error.message)
+        setTimeout(()=>{
+          setLoading(false);
+        },3000)
+      });
   }
 
 
@@ -164,6 +189,7 @@ const CourseEditPage = () => {
 
     <Layout1 >
       <ToastContainer />
+      <PageLoadingComponents loading={loading} />
       <div>
         <div style={{ margin: "50px 5% 0 5%" }} className="d-flex justify-content-between">
           <h1>Courses</h1>
@@ -205,31 +231,38 @@ const CourseEditPage = () => {
             </div>
 
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 30px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Title<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={courseTlt}
-                onChange={setCourseTlt}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-                
-              /> */}
+              <MarkdownTextareaUtils
+               title="Title"
+               model={courseTlt}
+               setModel={setCourseTlt}
+               required={true}
+              />
+            </div>
+            
+            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 30px" }}>
+              <MarkdownTextareaUtils
+               title="Brief"
+               model={courseBrief}
+               setModel={setCourseBrief}
+               required={true}
+              />
+            </div>
+
+            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 30px" }}>
+              <MarkdownTextareaUtils
+               title="Outline"
+               model={courseOuline}
+               setModel={setCourseOutline}
+               required={true}
+              />
+            </div>
+            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
+              <MarkdownTextareaUtils
+               title="Requirement"
+               model={courseRequirement}
+               setModel={setCourseRequirements}
+               required={true}
+              />
             </div>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
               <p style={{ color: "#000", fontSize: "1rem", fontWeight: "700" }}>Search keywords<span className="mandatoryField">*</span></p>
@@ -252,86 +285,6 @@ const CourseEditPage = () => {
                 })
                   : ""}
               </div>
-            </div>
-
-            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 30px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Brief<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={courseBrief}
-                onChange={setCourseBrief}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
-            </div>
-
-            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 30px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Outline<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={courseOuline}
-                onChange={setCourseOutline}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
-            </div>
-            <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Requirement<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={courseRequirement}
-                onChange={setCourseRequirements}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
             </div>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
               <label style={{ marginBottom: "5px" }}><strong>Logo<span className="mandatoryField">*</span></strong></label> <br />

@@ -9,6 +9,7 @@ import { AddCusAns, UpdateCusAns, RemoveAllCusAns } from "../../../../reducers/c
 import InstructorMenuBar from "../../../../components/InstructorMenuBar/InstructorMenuBar";
 import toastComponent from "../../../../toastComponent";
 import { ToastContainer } from "react-toastify";
+import PageLoadingComponents from "../../../../utils/PageLoadingComponent/PageLoadingComponents";
 const CustomerAssesmentTestPage = () => {
     const navigate = useRouter();
     const dispatch = useDispatch();
@@ -28,6 +29,7 @@ const CustomerAssesmentTestPage = () => {
 
     useEffect(() => {
         setLoading(true);
+        console.log("sessionStorage.getItem",localStorage.getItem("jwt"))
         axios.get(CMS_URL + "questions?filters[assesment_id][$eq]=" + sessionStorage.getItem("testId"), {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
@@ -41,12 +43,14 @@ const CustomerAssesmentTestPage = () => {
                             ...prev, ["cus_a_answer"]: cusAnsData[currentIndex].Answer.cus_a_answer, ["cus_b_answer"]: cusAnsData[currentIndex].Answer.cus_b_answer, ["cus_c_answer"]: cusAnsData[currentIndex].Answer.cus_c_answer, ["cus_d_answer"]: cusAnsData[currentIndex].Answer.cus_d_answer, ["cus_e_answer"]: cusAnsData[currentIndex].Answer.cus_e_answer
                         }
                     })
-                    setLoading(false);
+                
                 }
+                setLoading(false);
             }).catch(err => console.log(err))
     }, []);
 
     const handleSubmit = async () => {
+        setLoading(true);
         const assesDetails = JSON.parse(sessionStorage.getItem("assesmentDetails"));
         if (cusAnsData.length > 0) {
             let scoreMark = 0
@@ -74,6 +78,7 @@ const CustomerAssesmentTestPage = () => {
                             Authorization: "Bearer " + localStorage.getItem("jwt")
                         }
                     }).then(res => {
+                        setLoading(false);
                         dispatch(RemoveAllCusAns())
                         toastComponent("success", textConst.testSubmit);
                         setTimeout(()=>{
@@ -81,7 +86,11 @@ const CustomerAssesmentTestPage = () => {
                         },1500)
                         
                     }).catch(err => {
-                        console.log(err);
+                        toastComponent("error","Something went wrong, please try again")
+                        setTimeout(()=>{
+                            setLoading(false);
+                            navigate.push("/user/my-courses/assessment/questions");
+                          },3000)
                     })
                 }
             }
@@ -134,14 +143,7 @@ const CustomerAssesmentTestPage = () => {
         <Layout1>
         <>
             <ToastContainer />
-            <div style={{ display: loading ? 'block' : 'none' }}>
-                <div className={"overlay"}></div>
-                <div className={"spinner_wrapper"}>
-                    <div className="spinner-border text-danger" role="status" style={{ width: "3rem", height: "3rem" }}>
-                        <span class="sr-only"></span>
-                    </div>
-                </div>
-            </div>
+            <PageLoadingComponents loading={loading} />
             <InstructorMenuBar cusAnsData={cusAnsData} setNextIndex={setNextIndex} setState={setState} quesData={quesData} />
             <div className="d-flex justify-content-row" style={{ margin: "50px 0" }}>
                 <div style={{ width: "3%" }}></div>

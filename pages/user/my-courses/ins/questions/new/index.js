@@ -12,6 +12,8 @@ import { FaRegWindowClose } from "react-icons/fa";
 import toastComponent from "../../../../../toastComponent";
 import { ToastContainer } from "react-toastify";
 import Layout1 from "../../../../../components/Layout1/Layout1";
+import MarkdownEditor from "../../../../../utils/MarkdownTextareaUtils/MarkdownTextareaUtils";
+import PageLoadingComponents from "../../../../../utils/PageLoadingComponent/PageLoadingComponents";
 const QuestionNew = () => {
     let questionOption = [
         { key: "Select Question Type", value: "" },
@@ -27,6 +29,7 @@ const QuestionNew = () => {
     ]
 
     const navigate = useRouter();
+    const [loading,setLoading] = useState(false);
     const [quesTlt, setQuesTlt] = useState("");
     const [remarks, setRemarks] = useState("");
     const [state, setState] = useState({
@@ -60,6 +63,7 @@ const QuestionNew = () => {
             } else if (state.option_a_is_answer === false && state.option_b_is_answer === false && state.option_c_is_answer === false && state.option_d_is_answer === false && state.option_e_is_answer === false) {
                 toastComponent("warn","Please select respective question answer");
             } else {
+                setLoading(true);
                 axios.post(CMS_URL + "questions", {
                     "data": {
                         "questiontype": state.questiontype.value,
@@ -90,6 +94,7 @@ const QuestionNew = () => {
                         Authorization: "Bearer " + localStorage.getItem("jwt")
                     }
                 }).then(res => {
+                    setLoading(false);
                     toastComponent("success",textConst.tableCreatedSuccess);
                     setTimeout(()=>{
                       navigate.push("/user/profile/assesment/question");
@@ -97,6 +102,9 @@ const QuestionNew = () => {
                     
                 }).catch(err => {
                     toastComponent("error",err.message);
+                    setTimeout(()=>{
+                        setLoading(false);
+                      },3000)
                 })
             }
         } else if (state.questiontype.value === "multiselect") {
@@ -105,6 +113,7 @@ const QuestionNew = () => {
             } else if (state.option_a_is_answer === false && state.option_b_is_answer === false && state.option_c_is_answer === false && state.option_d_is_answer === false && state.option_e_is_answer === false) {
                 toastComponent("warn","Please select respective question answer")
             } else {
+                setLoading(true);
                 axios.post(CMS_URL + "questions", {
                     "data": {
                         "questiontype": state.questiontype.value,
@@ -136,6 +145,7 @@ const QuestionNew = () => {
                         Authorization: "Bearer " + localStorage.getItem("jwt")
                     }
                 }).then(res => {
+                    setLoading(false);
                     toastComponent("success",textConst.tableCreatedSuccess);
                     setTimeout(()=>{
                         navigate.push("/user/profile/assesment/question");
@@ -143,6 +153,9 @@ const QuestionNew = () => {
                     
                 }).catch(err => {
                     toastComponent("error",err.message);
+                    setTimeout(()=>{
+                        setLoading(false);
+                      },3000)
                 })
             }
         } else if (state.questiontype.value === "truefalse") {
@@ -151,6 +164,7 @@ const QuestionNew = () => {
             } else if (state.option_a_is_answer === false && state.option_b_is_answer === false && state.option_c_is_answer === false && state.option_d_is_answer === false && state.option_e_is_answer === false) {
                 toastComponent("warn","Please select respective question answer");
             } else {
+                setLoading(true);
                 axios.post(CMS_URL + "questions", {
                     "data": {
                         "questiontype": state.questiontype.value,
@@ -172,6 +186,7 @@ const QuestionNew = () => {
                         Authorization: "Bearer " + localStorage.getItem("jwt")
                     }
                 }).then(res => {
+                    setLoading(false);
                     toastComponent("success",textConst.tableCreatedSuccess);
                     setTimeout(()=>{
                         navigate.push("/user/profile/assesment/question")
@@ -179,6 +194,9 @@ const QuestionNew = () => {
                     
                 }).catch(err => {
                     toastComponent("error",err.message);
+                    setTimeout(()=>{
+                        setLoading(false);
+                      },3000)
                 })
             }
         } else if (state.questiontype.value === "fillinblank") {
@@ -187,6 +205,7 @@ const QuestionNew = () => {
             } else if (state.option_a_is_answer === false && state.option_b_is_answer === false && state.option_c_is_answer === false && state.option_d_is_answer === false && state.option_e_is_answer === false) {
                 toastComponent("warn","Please select respective question answer")
             } else {
+                setLoading(true);
                 axios.post(CMS_URL + "questions", {
                     "data": {
                         "questiontype": state.questiontype.value,
@@ -212,6 +231,7 @@ const QuestionNew = () => {
                         Authorization: "Bearer " + localStorage.getItem("jwt")
                     }
                 }).then(res => {
+                    setLoading(false);
                     toastComponent("success",textConst.tableCreatedSuccess);
                     setTimeout(()=>{
                         navigate.push("/user/profile/assesment/question");
@@ -219,6 +239,9 @@ const QuestionNew = () => {
                     
                 }).catch(err => {
                     toastComponent("error",err.message);
+                    setTimeout(()=>{
+                        setLoading(false);
+                      },3000)
                 })
             }
         }
@@ -243,6 +266,7 @@ const QuestionNew = () => {
     const fileUpload = (option) => {
         let filePath = option === "optionA" ? state.imgPath_A : option === "optionB" ? state.imgPath_B : option === "optionC" ? state.imgPath_C
             : option === "optionD" ? state.imgPath_D : state.imgPath_E;
+            setLoading(true);
         const formdata = new FormData();
         formdata.append("file", filePath);
 
@@ -266,10 +290,14 @@ const QuestionNew = () => {
                 } {
                     stateHandler("optionE_img", result.url);
                 }
+                setLoading(false);
                 toastComponent("success",textConst.videoUploadSuccess);
             })
             .catch((error) => {
                 toastComponent("error",error.message);
+                setTimeout(()=>{
+                    setLoading(false);
+                  },3000)
             });
     }
 
@@ -297,6 +325,7 @@ const QuestionNew = () => {
 
         <Layout1 >
             <ToastContainer />
+            <PageLoadingComponents loading={loading} />
             <div>
                 <div style={{ width: "10%" }} className="d-flex justify-content-center mt-5 mb-5">
                     <button className="btn" onClick={() => { navigate.push("/user/my-courses/ins/questions") }}><FaAngleDoubleLeft size={40} /></button>
@@ -335,56 +364,20 @@ const QuestionNew = () => {
                         <div style={{ width: "5%" }}></div>
                         <div className="row" style={{ width: "90%" }}>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" >
-                                <label style={{ marginBottom: "5px" }}><strong>Description<span className="mandatoryField">*</span></strong></label>
-                                {/* <MDEditor
-                                    value={quesTlt}
-                                    onChange={setQuesTlt}
-                                    preview="edit"
-                                    components={{
-                                        toolbar: (command, disabled, executeCommand) => {
-                                            if (command.keyCommand === 'code') {
-                                                return (
-                                                    <button
-                                                        aria-label="Insert code"
-                                                        disabled={disabled}
-                                                        onClick={(evn) => {
-                                                            evn.stopPropagation();
-                                                            executeCommand(command, command.groupName)
-                                                        }}
-                                                    >
-                                                        Code
-                                                    </button>
-                                                )
-                                            }
-                                        }
-                                    }}
-                                /> */}
+                                <MarkdownEditor
+                                    title="Description"
+                                    model={quesTlt}
+                                    setModel={setQuesTlt}
+                                    required={true}
+                                />
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <label style={{ marginBottom: "5px" }}><strong>Remarks<span className="mandatoryField">*</span></strong></label>
-                                {/* <MDEditor
-                                    value={remarks}
-                                    onChange={setRemarks}
-                                    preview="edit"
-                                    components={{
-                                        toolbar: (command, disabled, executeCommand) => {
-                                            if (command.keyCommand === 'code') {
-                                                return (
-                                                    <button
-                                                        aria-label="Insert code"
-                                                        disabled={disabled}
-                                                        onClick={(evn) => {
-                                                            evn.stopPropagation();
-                                                            executeCommand(command, command.groupName)
-                                                        }}
-                                                    >
-                                                        Code
-                                                    </button>
-                                                )
-                                            }
-                                        }
-                                    }}
-                                /> */}
+                                <MarkdownEditor
+                                    title="Remarks"
+                                    model={remarks}
+                                    setModel={setRemarks}
+                                    required={true}
+                                />
                             </div>
                             <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 mt-5" >
 
@@ -600,57 +593,21 @@ const QuestionNew = () => {
                     <div className="d-flex justify-content-row">
                         <div style={{ width: "5%" }}></div>
                         <div className="row" style={{ width: "90%" }}>
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" >
-                                <label style={{ marginBottom: "5px" }}><strong>Description<span className="mandatoryField">*</span></strong></label>
-                                {/* <MDEditor
-                                    value={quesTlt}
-                                    onChange={setQuesTlt}
-                                    preview="edit"
-                                    components={{
-                                        toolbar: (command, disabled, executeCommand) => {
-                                            if (command.keyCommand === 'code') {
-                                                return (
-                                                    <button
-                                                        aria-label="Insert code"
-                                                        disabled={disabled}
-                                                        onClick={(evn) => {
-                                                            evn.stopPropagation();
-                                                            executeCommand(command, command.groupName)
-                                                        }}
-                                                    >
-                                                        Code
-                                                    </button>
-                                                )
-                                            }
-                                        }
-                                    }}
-                                /> */}
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+                                <MarkdownEditor
+                                    title="Description"
+                                    model={quesTlt}
+                                    setModel={setQuesTlt}
+                                    required={true}
+                                />
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <label style={{ marginBottom: "5px" }}><strong>Remarks<span className="mandatoryField">*</span></strong></label>
-                                {/* <MDEditor
-                                    value={remarks}
-                                    onChange={setRemarks}
-                                    preview="edit"
-                                    components={{
-                                        toolbar: (command, disabled, executeCommand) => {
-                                            if (command.keyCommand === 'code') {
-                                                return (
-                                                    <button
-                                                        aria-label="Insert code"
-                                                        disabled={disabled}
-                                                        onClick={(evn) => {
-                                                            evn.stopPropagation();
-                                                            executeCommand(command, command.groupName)
-                                                        }}
-                                                    >
-                                                        Code
-                                                    </button>
-                                                )
-                                            }
-                                        }
-                                    }}
-                                /> */}
+                                <MarkdownEditor
+                                    title="Remarks"
+                                    model={remarks}
+                                    setModel={setRemarks}
+                                    required={true}
+                                />
                             </div>
                             <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 mt-5" >
 
@@ -846,57 +803,21 @@ const QuestionNew = () => {
                     <div className="d-flex justify-content-row">
                         <div style={{ width: "10%" }}></div>
                         <div className="row" style={{ width: "80%" }}>
-                            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" >
-                                <label style={{ marginBottom: "5px" }}><strong>Description<span className="mandatoryField">*</span></strong></label>
-                                {/* <MDEditor
-                                    value={quesTlt}
-                                    onChange={setQuesTlt}
-                                    preview="edit"
-                                    components={{
-                                        toolbar: (command, disabled, executeCommand) => {
-                                            if (command.keyCommand === 'code') {
-                                                return (
-                                                    <button
-                                                        aria-label="Insert code"
-                                                        disabled={disabled}
-                                                        onClick={(evn) => {
-                                                            evn.stopPropagation();
-                                                            executeCommand(command, command.groupName)
-                                                        }}
-                                                    >
-                                                        Code
-                                                    </button>
-                                                )
-                                            }
-                                        }
-                                    }}
-                                /> */}
+                        <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" >
+                                <MarkdownEditor
+                                    title="Description"
+                                    model={quesTlt}
+                                    setModel={setQuesTlt}
+                                    required={true}
+                                />
                             </div>
                             <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <label style={{ marginBottom: "5px" }}><strong>Remarks<span className="mandatoryField">*</span></strong></label>
-                                {/* <MDEditor
-                                    value={remarks}
-                                    onChange={setRemarks}
-                                    preview="edit"
-                                    components={{
-                                        toolbar: (command, disabled, executeCommand) => {
-                                            if (command.keyCommand === 'code') {
-                                                return (
-                                                    <button
-                                                        aria-label="Insert code"
-                                                        disabled={disabled}
-                                                        onClick={(evn) => {
-                                                            evn.stopPropagation();
-                                                            executeCommand(command, command.groupName)
-                                                        }}
-                                                    >
-                                                        Code
-                                                    </button>
-                                                )
-                                            }
-                                        }
-                                    }}
-                                /> */}
+                                <MarkdownEditor
+                                    title="Remarks"
+                                    model={remarks}
+                                    setModel={setRemarks}
+                                    required={true}
+                                />
                             </div>
                             <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 col-xs-6 mt-5" >
 

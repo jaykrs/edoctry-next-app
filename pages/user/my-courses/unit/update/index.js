@@ -6,8 +6,10 @@ import { CMS_URL, textConst } from "../../../../urlConst";
 import { useRouter } from "next/navigation";
 import Layout1 from "../../../../components/Layout1/Layout1";
 import css from "./InstructorUnitEditPage.module.css";
-// import MDEditor, { commands } from '@uiw/react-md-editor';
 import toastComponent from "../../../../toastComponent";
+import MarkdownTextareaUtils from "../../../../utils/MarkdownTextareaUtils/MarkdownTextareaUtils";
+import PageLoadingComponents from "../../../../utils/PageLoadingComponent/PageLoadingComponents";
+import { ToastContainer } from "react-toastify";
 const InstructorUnitEditPage = () => {
   let langOption = [
     { key: "Select Language", value: "" },
@@ -15,6 +17,7 @@ const InstructorUnitEditPage = () => {
     { key: "Hindi", value: "hindi" }
   ]
   const navigate = useRouter();
+  const [loading,setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [unitTlt,setUnitTlt] = useState("");
   const [unitBrief,setUnitBrief] = useState("");
@@ -28,6 +31,7 @@ const InstructorUnitEditPage = () => {
   })
 
   useEffect(()=>{
+    setLoading(true);
     axios.get(CMS_URL + "courseunits?filters[id][$eq]=" + sessionStorage.getItem("unitEditId"))
     .then(res=>{
         let data= res.data.data[0].attributes;
@@ -38,6 +42,7 @@ const InstructorUnitEditPage = () => {
             return {...prev, ["unit_duration"]:data.unit_duration,["id"]:res.data.data[0].id
         }
         })
+        setLoading(false);
     })
   }, [])
   let changeHandler = (e) => {
@@ -50,6 +55,7 @@ const InstructorUnitEditPage = () => {
     if (unitTlt === "" || unitBrief === "" || labProject === "") {
       return toastComponent("error", textConst.enterMandatoryField);
     } else {
+      setLoading(true);
       axios.put(CMS_URL + "courseunits/" + state.id, {
         "data": {
           "unit_title": unitTlt,
@@ -63,6 +69,7 @@ const InstructorUnitEditPage = () => {
         headers : { Authorization : "Bearer " + localStorage.getItem("jwt")}
       })
         .then(res => {
+          setLoading(false);
           toastComponent("success",textConst.tableUpdatedSuccess);
           setTimeout(()=>{
             navigate.push("/user/my-courses/view");
@@ -70,6 +77,9 @@ const InstructorUnitEditPage = () => {
           
         }).catch(err => {
            toastComponent("error",err.message);
+           setTimeout(()=>{
+            setLoading(false);
+          },3000)
         })
 
     }
@@ -78,6 +88,8 @@ const InstructorUnitEditPage = () => {
   return (
 
     <Layout1 >
+      <ToastContainer />
+      <PageLoadingComponents loading={loading} />
       <div>
         <div style={{ margin: "40px  4% 0 4%"}} className="d-flex justify-content-between">
           <h1>Unit</h1>
@@ -89,98 +101,31 @@ const InstructorUnitEditPage = () => {
           <div style={{ width: "3%" }}></div>
           <div className="row" style={{ width: "94%" }}>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 30px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Title<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={unitTlt}
-                onChange={setUnitTlt}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-                
-              /> */}
+              <MarkdownTextareaUtils
+               title="Title"
+               model={unitTlt}
+               setModel={setUnitTlt}
+               required={true}
+              />
             </div>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 30px"}}>
-              <label style={{ marginBottom: "5px" }}><strong>Brief<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={unitBrief}
-                onChange={setUnitBrief}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-                
-              /> */}
+              <MarkdownTextareaUtils
+               title="Brief"
+               model={unitBrief}
+               setModel={setUnitBrief}
+               required={true}
+              />
             </div>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "5px 30px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Lab Project<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={labProject}
-                onChange={setLabProject}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-                
-              /> */}
+              <MarkdownTextareaUtils
+               title="Lab project"
+               model={labProject}
+               setModel={setLabProject}
+               required={true}
+              />
             </div>
 
             <div className="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-6" style={{ padding: "5px 30px" }}>
-              {/* <InputUtil
-                label="Unit Duration(hour)"
-                type="number"
-                name="unit_duration"
-                icon={user}
-                state={state.unit_duration}
-                placeholderTxt="Enter unit duration"
-                onChange={changeHandler}
-
-              /> */}
               <label>Duration(hour)<span className="mandatoryField">*</span></label>
               <input type="number" name="unit_duration" value={state.unit_duration} onChange={changeHandler} className={css.inputField} />
             </div>

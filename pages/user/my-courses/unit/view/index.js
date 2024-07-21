@@ -8,6 +8,7 @@ import { FaAngleDoubleLeft } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
 import { ToastContainer } from "react-toastify";
 import toastComponent from "../../../../toastComponent";
+import PageLoadingComponents from "../../../../utils/PageLoadingComponent/PageLoadingComponents";
 const InstructorUnitViewPage = () => {
     const [data, setData] = useState("");
     const [unitData, setUnitData] = useState("");
@@ -59,15 +60,20 @@ const InstructorUnitViewPage = () => {
 
     const handleDelete = (id) => {
         if (confirm("Are you sure , you want to delete Chapter")) {
+            setLoading(true);
             axios.delete(CMS_URL + "chapters/" + id, {
                 headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
             }).then(res => {
+                setLoading(false);
                 setTimeout(() => {
                     toastComponent("success", textConst.tableDeletedSuccess);
                 }, 3000);
                 setRecordDeleted(!recordDeleted);
             }).catch(err => {
                 toastComponent("error", err.message);
+                setTimeout(()=>{
+                    setLoading(false);
+                  },3000)
             })
         }
     }
@@ -110,14 +116,7 @@ const InstructorUnitViewPage = () => {
         <>
             <Layout1 >
                 <ToastContainer />
-                <div style={{ display: loading ? 'block' : 'none' }}>
-                    <div className={"overlay"}></div>
-                    <div className={"spinner_wrapper"}>
-                        <div className="spinner-border text-danger" role="status" style={{ width: "3rem", height: "3rem" }}>
-                            <span class="sr-only"></span>
-                        </div>
-                    </div>
-                </div>
+                <PageLoadingComponents loading={loading} />
                 <div className="" style={{ margin: "20px 0" }}>
                     {
                         data.length > 0 ? data.map((item, index) => {

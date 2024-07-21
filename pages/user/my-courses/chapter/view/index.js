@@ -4,13 +4,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { CMS_URL, textConst } from "../../../../urlConst";
 import { useRouter } from "next/navigation";
-// import MDEditor, { commands } from '@uiw/react-md-editor';
 import css from "./InstructorChapterViewPage.module.css";
 import { MdOutlineCancelPresentation } from "react-icons/md";
 import toastComponent from "../../../../toastComponent";
 import { ToastContainer } from "react-toastify";
 import { IoIosCloseCircle } from "react-icons/io";
 import Layout1 from "../../../../components/Layout1/Layout1";
+import MarkdownTextareaUtils from "../../../../utils/MarkdownTextareaUtils/MarkdownTextareaUtils";
+import PageLoadingComponents from "../../../../utils/PageLoadingComponent/PageLoadingComponents";
 const InstructorChapterViewPage = () => {
   let langOption = [
     { key: "Select Language", value: "" },
@@ -18,6 +19,7 @@ const InstructorChapterViewPage = () => {
     { key: "Hindi", value: "hindi" }
   ]
   const navigate = useRouter();
+  const [loading,setLoading] = useState(false);
   const [enable, setEnable] = useState(true);
   const [chapterTlt, setChapterTlt] = useState("");
   const [chapterBrief, setChapterBrief] = useState("");
@@ -25,8 +27,8 @@ const InstructorChapterViewPage = () => {
   const [state, setState] = useState({
     chapter_duration: 0,
     chapter_brief: "",
-    courseunitid: sessionStorage.getItem("unid"),
-    chapter_author: localStorage.getItem("email"),
+    courseunitid: "",
+    chapter_author: "",
     chapter_content: "",
     id: 0,
     introductory_video: [],
@@ -41,6 +43,7 @@ const InstructorChapterViewPage = () => {
   }
 
   useEffect(() => {
+    setLoading(true);
     axios.get(CMS_URL + "chapters?filters[id][$eq]=" + sessionStorage.getItem("unitViewid"), {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt")
@@ -58,6 +61,7 @@ const InstructorChapterViewPage = () => {
             ["chapter_content"]: data.chapter_content, ["id"]: res.data.data[0].id, ["introductory_video"]: data.chapter_video.split(","),
           }
         })
+        setLoading(false);
       }).catch(err => { console.log(err) })
   }, [])
 
@@ -65,6 +69,7 @@ const InstructorChapterViewPage = () => {
     if (state.unit_title === "" || chapterTlt === "" || chapterBrief === "" || chapterContent === "" || state.chapter_duration === 0) {
        toastComponent("error",textConst.enterMandatoryField);
     } else {
+      setLoading(true);
       axios.put(CMS_URL + "chapters/" + state.id, {
         "data": {
           "chapter_title": chapterTlt,
@@ -80,12 +85,16 @@ const InstructorChapterViewPage = () => {
         }
       })
         .then(res => {
+          setLoading(false);
           toastComponent("success",textConst.tableUpdatedSuccess);
           setTimeout(()=>{
             navigate.push("/user/my-courses/unit/view");
           },3000);
         }).catch(err => {
           toastComponent("error",err.message);
+          setTimeout(()=>{
+            setLoading(false);
+          },3000)
         })
 
     }
@@ -96,6 +105,7 @@ const InstructorChapterViewPage = () => {
 
   }
   const videoUpload = () => {
+    setLoading(true);
     const formdata = new FormData();
     formdata.append("file", state.videoPath);
 
@@ -111,10 +121,14 @@ const InstructorChapterViewPage = () => {
         let arr = state.introductory_video;
         arr.push(result.url);
         stateHandler("introductory_video", arr);
+        setLoading(false);
         toastComponent("success",textConst.videoUploadSuccess);
       })
       .catch((error) => {
         toastComponent("error",error.message);
+        setTimeout(()=>{
+          setLoading(false);
+        },3000)
       });
   }
   const stateHandler = (name, value) => {
@@ -137,6 +151,7 @@ const InstructorChapterViewPage = () => {
 
     <Layout1 >
       <ToastContainer />
+      <PageLoadingComponents loading={loading} />
       <div>
         <div style={{ marginTop: "60px", width: "100%", padding: "0 3%" }} className="d-flex justify-content-between">
           <h1>Chapter</h1>
@@ -154,30 +169,12 @@ const InstructorChapterViewPage = () => {
           <div style={{ width: "3%" }}></div>
           <div className="row" style={{ width: "94%" }}>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: " 5px 20px" }} >
-              <label style={{ marginBottom: "5px" }}><strong>Title<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={chapterTlt}
-                onChange={setChapterTlt}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
+              <MarkdownTextareaUtils
+               title="Title"
+               model={chapterTlt}
+               setModel={setChapterTlt}
+               required={true}
+              />
             </div>
             <div className="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-xs-6" style={{ padding: " 5px 20px" }}>
 
@@ -208,56 +205,20 @@ const InstructorChapterViewPage = () => {
 
             </div>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: " 5px 20px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Brief<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={chapterBrief}
-                onChange={setChapterBrief}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
+              <MarkdownTextareaUtils
+               title="Brief"
+               model={chapterBrief}
+               setModel={setChapterBrief}
+               required={true}
+              />
             </div>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: " 5px 20px" }}>
-              <label style={{ marginBottom: "5px" }}><strong>Content<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={chapterContent}
-                onChange={setChapterContent}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
+              <MarkdownTextareaUtils
+               title="Content"
+               model={chapterContent}
+               setModel={setChapterContent}
+               required={true}
+              />
             </div>
 
 

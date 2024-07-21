@@ -274,6 +274,47 @@
     color: olivedrab;
     padding: 4px 4px 1px 4px;
 }
+
+.inputField {
+  width: 100%;
+  margin-top: 5px;
+  padding: 15px;
+  border-radius: 2%;
+  box-sizing: border-box;
+  font-size: 20px;
+}
+
+.outModelDiv{
+  width: 100%;
+  top: 100px;
+  position: absolute;
+  display: flex;
+  justify-content: left;
+}
+.innerModelDiv{
+  width: 35%;
+  height: 266px;
+  background-color: #fff;
+  margin-left: 15%;
+  border: 1px solid #aeaddf;
+  border-radius: 5px;
+  padding: 10px;
+  position: relative;
+}
+.innerModelDiv button{
+  position: absolute;
+  right: -31px;
+  top: -12px;
+  color: #000;
+  font-size: 20px;
+  width: 50px;
+  border: none;
+  border-radius: 5px;
+  background-color: #fff;
+}
+.innerModelDiv div{
+  position: static;
+}
 @media screen and (max-width : 600px) {
 .Optiondiv {
   width: 100%;

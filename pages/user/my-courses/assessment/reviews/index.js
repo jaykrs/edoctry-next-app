@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AddCusAns, UpdateCusAns, RemoveAllCusAns } from "../../../../reducers/cusAnsSlicer";
 import { setQuestionReview } from "../../../../reducers/questionTestReviewSlicer";
 import ReviewMenuBar from "../../../../components/ReviewMenuBar/ReviewMenuBar";
-
+import PageLoadingComponents from "../../../../utils/PageLoadingComponent/PageLoadingComponents";
 const CustomerQuestionReviewPage = () => {
     const dispatch = useDispatch();
     const cusAnsData = useSelector(store => store.cusAns.cusAns);
@@ -15,6 +15,7 @@ const CustomerQuestionReviewPage = () => {
     const [currentIndex, setNextIndex] = useState(0);  
     const [scoreData, setScoreData] = useState("");
     const [totalScore,setTotalScore] = useState(0);
+    const [loading,setLoading] = useState(false);
     const [state, setState] = useState({
         cus_a_answer: false,
         cus_b_answer: false,
@@ -31,6 +32,7 @@ const CustomerQuestionReviewPage = () => {
     const [enableBtn, setEnableBtn] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         axios.get(CMS_URL + "scores?filters[id][$eq]=" + sessionStorage.getItem("scoreId"), {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
@@ -63,6 +65,7 @@ const CustomerQuestionReviewPage = () => {
                                 ["questiontype"]: quesAnsData[currentIndex].attributes.questiontype
                             }
                         })
+                        setLoading(false);
                     }).catch(err => console.log(err))
             }).catch(err => console.log(err))
 
@@ -145,6 +148,7 @@ const CustomerQuestionReviewPage = () => {
     let style3 = {color:"#000",marginBottom:"10px",padding:"10px 30px"};
     return (
         <Layout1>
+            <PageLoadingComponents loading={loading} />
            <ReviewMenuBar  setNextIndex={setNextIndex} setState={setState} quesData={quesData} scoreData={scoreData} />
             <div className="d-flex justify-content-row" style={{ margin: "50px 0" }}>
                 <div style={{ width: "3%" }}></div>

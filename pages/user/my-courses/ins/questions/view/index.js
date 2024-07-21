@@ -3,7 +3,7 @@ import Layout1 from "../../../../../components/Layout1/Layout1";
 import axios from "axios";
 import { CMS_URL } from "../../../../../urlConst";
 import ReactMarkdown from "react-markdown";
-// import "./QuestionView.css"
+import PageLoadingComponents from "../../../../../utils/PageLoadingComponent/PageLoadingComponents";
 const QuestionViewPage = () => {
 
     const [quesData, setQuesData] = useState("");
@@ -48,14 +48,7 @@ const QuestionViewPage = () => {
     }
     return (
         <Layout1>
-            <div style={{ display: loading ? 'block' : 'none' }}>
-                <div className={"overlay"}></div>
-                <div className={"spinner_wrapper"}>
-                    <div className="spinner-border text-danger" role="status" style={{ width: "3rem", height: "3rem" }}>
-                        <span class="sr-only"></span>
-                    </div>
-                </div>
-            </div>
+            <PageLoadingComponents loading={loading} />
             <div className="d-flex justify-content-row" style={{ margin: "50px 0" }}>
                 <div style={{ width: "3%" }}></div>
                 <div style={{ width: "94%" }}>

@@ -4,14 +4,14 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
 const MarkdownEditor = (props) => {
-    const {model="",setModel=(()=>{}),title=""} = props;
+    const {model="",setModel=(()=>{}),title="",required=false} = props;
     const handleTextareaChange = (event) => {
         setModel(event.target.value);
     };
     return (
         <div>
             <div class="d-flex justify-content-between">
-                <h3 className='markdownTextareaTlt'>{title}</h3>
+                <h3 className='markdownTextareaTlt'><strong>{title}</strong><span className="mandatoryField" style={{display : required === true ? "" : "none"}}>*</span></h3>
                 <button type="button" class="position-relative markdownBtn" data-bs-toggle="modal" data-bs-target="#markdownModel">
                     Preview
                 </button>

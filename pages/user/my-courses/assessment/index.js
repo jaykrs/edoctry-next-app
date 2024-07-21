@@ -9,6 +9,7 @@ import { FaAngleDoubleLeft } from "react-icons/fa";
 import toastComponent from "../../../toastComponent";
 import { ToastContainer } from "react-toastify";
 import css from "./customerAssesmentPage.module.css";
+import PageLoadingComponents from "../../../utils/PageLoadingComponent/PageLoadingComponents";
 const CustomerAssesmentPage = () => {
     const navigate = useRouter();
     const [state, setState] = useState("");
@@ -50,15 +51,7 @@ const CustomerAssesmentPage = () => {
 
         <Layout1 >
             <ToastContainer />
-
-            <div style={{ display: loading ? 'block' : 'none' }}>
-                <div className={"overlay"}></div>
-                <div className={"spinner_wrapper"}>
-                    <div className="spinner-border text-danger" role="status" style={{width:"3rem",height:"3rem"}}>
-                        <span class="sr-only"></span>
-                    </div>
-                </div>
-            </div>
+            <PageLoadingComponents loading={loading} />
             <div>
                 <div style={{ marginTop: "30px" }} className="d-flex justify-content-start">
                     <button style={{ marginLeft: "3%" }} className="btn " onClick={() => { navigate.push("/user/my-courses/individual") }}><FaAngleDoubleLeft size={40} /></button>

@@ -19,6 +19,7 @@ import {
     ResponsiveContainer,
     Label
 } from "recharts";
+import PageLoadingComponents from "../../../../utils/PageLoadingComponent/PageLoadingComponents";
 
 const CustomerQuestionPage = () => {
     const userType = typeof window !== 'undefined' ? localStorage.getItem("usertype") : "";
@@ -161,14 +162,7 @@ const CustomerQuestionPage = () => {
     return (
 
         <Layout1 className="course view">
-            <div style={{ display: loading ? 'block' : 'none' }}>
-                <div className={"overlay"}></div>
-                <div className={"spinner_wrapper"}>
-                    <div className="spinner-border text-danger" role="status" style={{ width: "3rem", height: "3rem" }}>
-                        <span class="sr-only"></span>
-                    </div>
-                </div>
-            </div>
+            <PageLoadingComponents loading={loading} />
             <div style={{ backgroundColor: "#f3e7e70f;", marginTop: "50px" }} >
 
                 {

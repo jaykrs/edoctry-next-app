@@ -1,16 +1,13 @@
 import InputUtil from "../../../../../utils/FormUtils/InputUtil/InputUtil";
-import { FaEnvelopeOpenText } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { CMS_URL, textConst } from "../../../../../urlConst";
 import { useRouter } from "next/navigation";
 import { FaAngleDoubleLeft } from "react-icons/fa";
-// import MDEditor, { commands } from '@uiw/react-md-editor';
 import toastComponent from "../../../../../toastComponent";
 import { ToastContainer } from "react-toastify";
 import Layout1 from "../../../../../components/Layout1/Layout1";
-import dynamic from 'next/dynamic';
-const MDEditor = dynamic(() => import('react-markdown-editor'), { ssr: false });
+import MarkdownEditor from "../../../../../utils/MarkdownTextareaUtils/MarkdownTextareaUtils";
 const CreateNewAssesment = () => {
   const navigate = useRouter();
   const [assTlt, setAssTlt] = useState("");
@@ -84,37 +81,26 @@ const CreateNewAssesment = () => {
           </div>
           <div className="row" style={{ width: "80%", marginTop: "80px" }}>
             <div className=" row d-flex justify-content-start">
-              <h1 className="col-xl-6 collg-6 col-md-6 col-sm-12 col-xs-12">New Assesment</h1>
+              <h1 className="col-xl-6 collg-6 col-md-6 col-sm-12 col-xs-12">New Assessment</h1>
             </div>
-            <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12" style={{ padding: "30px" }}>
-              <label><strong>Title<span className="mandatoryField">*</span></strong></label>
-              
-              {/* <MDEditor
-                value={assTlt}
-                onChange={setAssTlt}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" style={{ padding: "30px" }}>
+              <MarkdownEditor
+               title="Title"
+               model={assTlt}
+               setModel={setAssTlt}
+               required={true}
+              />
+            </div>
+            <div className="col-xl-6 col-lg-6 col-md-12 col-sm-12" style={{ padding: "30px" }}>
+              <MarkdownEditor
+               title="Description"
+               model={assDes}
+               setModel={setAssDes}
+               required={true}
+              />
             </div>
 
-            <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12" style={{ padding: "30px" }}>
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" style={{ padding: "30px" }}>
               <InputUtil
                 label="Full Marks"
                 type="number"
@@ -127,7 +113,7 @@ const CreateNewAssesment = () => {
 
               />
             </div>
-            <div className="col-xl-4 col-lg-4 col-md-6 col-sm-12 col-xs-12" style={{ padding: "30px" }}>
+            <div className="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-xs-12" style={{ padding: "30px" }}>
               <InputUtil
                 label="Pass Marks"
                 type="number"
@@ -140,36 +126,6 @@ const CreateNewAssesment = () => {
 
               />
             </div>
-            <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12" style={{ padding: "30px" }}>
-              <label><strong>Description<span className="mandatoryField">*</span></strong></label>
-              {/* <MDEditor
-                value={assDes}
-                onChange={setAssDes}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
-            </div>
-
-
-
-
           </div>
           <div style={{ width: "10%", marginTop: "80px" }} >
             <button className="btn btn-primary" onClick={handleCreate}>Create</button>

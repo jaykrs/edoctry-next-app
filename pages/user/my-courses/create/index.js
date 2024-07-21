@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import toastComponent from "../../../toastComponent";
 import Layout1 from "../../../components/Layout1/Layout1";
 import MarkdownTextareaUtils from "../../../utils/MarkdownTextareaUtils/MarkdownTextareaUtils";
+import PageLoadingComponents from "../../../utils/PageLoadingComponent/PageLoadingComponents";
 const CreateCourse = () => {
   let langOption = [
     { key: "Select Language", value: "" },
@@ -19,6 +20,7 @@ const CreateCourse = () => {
     { key: "Hindi", value: "hindi" }
   ]
   const navigate = useRouter();
+  const [loading,setLoading] = useState(false);
   const [message, setMessage] = useState("");
   const [courseTlt, setCourseTlt] = useState("");
   const [courseBrief, setCourseBrief] = useState("");
@@ -54,11 +56,12 @@ const CreateCourse = () => {
   }
 
   const handleCreate = () => {
+    
     if (courseTlt === "" || state.course_fee === 0 || state.course_fee_premium === 0 || state.duration === 0 || state.language.value === undefined || courseBrief === "" || courseOutline === "" || state.course_logo === "") {
       toastComponent("error", textConst.enterMandatoryField);
       return;
     } else {
-
+      setLoading(true);
       axios.post(CMS_URL + "courses", {
         "data": {
           "course_title": courseTlt,
@@ -81,11 +84,14 @@ const CreateCourse = () => {
         }
       })
         .then(res => {
+          setLoading(false);
           toastComponent("success", "Successfully created!");
           navigate.push("/user/my-courses/courseView");
         }).catch(err => {
           toastComponent("error", err.message);
-          console.log("error",err);
+          setTimeout(()=>{
+            setLoading(false);
+          },3000)
         })
 
     }
@@ -107,6 +113,7 @@ const CreateCourse = () => {
 
   }
   const handleUpload = () => {
+    setLoading(true);
     const formdata = new FormData();
     formdata.append("file", state.fileData);
 
@@ -119,10 +126,16 @@ const CreateCourse = () => {
     fetch(CMS_URL + "onboard/fileupload", requestOptions)
       .then((response) => response.json())
       .then((result) => {
+        setLoading(false);
         stateHandler("course_logo", result.thumbnailUrl);
         toastComponent("success", textConst.logoUploadSuccess);
       })
-      .catch((error) => toastComponent("error", "Logo" + textConst.uploadFailed));
+      .catch((error) => {
+        toastComponent("error", "Logo" + textConst.uploadFailed)
+        setTimeout(()=>{
+          setLoading(false);
+        },3000)
+  });
   }
 
   const videoHandler = (e) => {
@@ -130,6 +143,7 @@ const CreateCourse = () => {
 
   }
   const videoUpload = () => {
+    setLoading(true);
     const formdata = new FormData();
     formdata.append("file", state.videoPath);
 
@@ -142,10 +156,16 @@ const CreateCourse = () => {
     fetch(CMS_URL + "onboard/fileupload", requestOptions)
       .then((response) => response.json())
       .then((result) => {
+        setLoading(false);
         stateHandler("introductory_video", result.url);
         toastComponent("success", textConst.videoUploadSuccess)
       })
-      .catch((error) => toastComponent("error", "Video" + textConst.uploadFailed));
+      .catch((error) => {
+        toastComponent("error", "Video" + textConst.uploadFailed)
+        setTimeout(()=>{
+          setLoading(false);
+        },3000)
+  });
   }
   const stateHandler = (name, value) => {
     setState(prev => {
@@ -156,6 +176,7 @@ const CreateCourse = () => {
 
     <Layout1 >
       <ToastContainer />
+      <PageLoadingComponents loading={loading} />
       <div>
         <button className="btn mt-3" style={{ marginLeft: "40px" }} onClick={() => { navigate.push("/user/my-courses/courseView") }} ><FaAngleDoubleLeft size={40} /></button>
         <div style={{ margin: "10px  3% 0 3%", }} className="d-flex justify-content-between">
@@ -219,29 +240,6 @@ const CreateCourse = () => {
               />
             </div>
             <div className="col-xl-6 col-lg-6 col-md-8 col-sm-12 col-xs-12" style={{ padding: "20px" }}>
-              {/* <MDEditor
-                value={courseTlt}
-                onChange={setCourseTlt}
-                preview="edit"
-                components={{
-                  toolbar: (command, disabled, executeCommand) => {
-                    if (command.keyCommand === 'code') {
-                      return (
-                        <button
-                          aria-label="Insert code"
-                          disabled={disabled}
-                          onClick={(evn) => {
-                            evn.stopPropagation();
-                            executeCommand(command, command.groupName)
-                          }}
-                        >
-                          Code
-                        </button>
-                      )
-                    }
-                  }
-                }}
-              /> */}
 
               <MarkdownTextareaUtils
                title="Course Title"
