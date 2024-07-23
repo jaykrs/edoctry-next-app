@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CMS_URL } from "../../components/const/urlConst";
+import { CMS_URL } from "../../urlConst";
 
 export const httpList = async function(url , token){
     if(token ===  true){

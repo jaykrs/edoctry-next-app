@@ -30,7 +30,7 @@ const Layout1 = ({ modal = false, setModal = () => {},title, metadata, children 
         <meta name="description" content="web app content" />
         <meta name="keywords" content={metadata} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/publicContent/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       {comp}
       <div>{children}</div>

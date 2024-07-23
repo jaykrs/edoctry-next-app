@@ -106,7 +106,7 @@ const LoggedInNavbar = () => {
                 <div className={css.prflDiv}>
                   {
                     userType === "customer" &&
-                    <Link href="/user/my-courses/learning" className={css.menuItem}>
+                    <Link href="/user/my-courses" className={css.menuItem}>
                       My Learning
                     </Link>
                   }
@@ -120,7 +120,7 @@ const LoggedInNavbar = () => {
                     </Link>}
                   {
                     // localStorage.getItem("usertype") === "instructor" &&
-                    <Link href="/user/profile/dashboard/courses" className={css.menuItem}>
+                    <Link href="/user/dashboard" className={css.menuItem}>
                       Dashboard
                     </Link>}
                 </div>

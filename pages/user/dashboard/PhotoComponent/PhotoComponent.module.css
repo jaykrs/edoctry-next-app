@@ -1,0 +1,9 @@
+
+.outerDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.innerDiv {
+    width: 80%;
+}

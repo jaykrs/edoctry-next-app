@@ -1,0 +1,9 @@
+.outerDiv {
+  padding: 0.3rem 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.innerDiv{
+  width: 80%;
+}
