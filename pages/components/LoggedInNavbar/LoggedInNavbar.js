@@ -4,6 +4,7 @@ import Link from "next/link";
 import SearchBar from "../../utils/SearchBar/SearchBar"; // Adjust path as per your setup
 import css from "./LoggedInNavbar.module.css";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 const LoggedInNavbar = () => {
   const [menuState, setMenuState] = useState(false);
   const [showLanguageSettingsModal, setShowLanguageSettingsModal] = useState(false);
@@ -14,6 +15,8 @@ const LoggedInNavbar = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  // const cartData = useSelector(cart=> cart);
+  // console.log("cartData",cartData);
   useEffect(() => {
     const jwtToken = localStorage.getItem("jwt");
     if (jwtToken) {

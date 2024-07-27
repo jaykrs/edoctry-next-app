@@ -9,31 +9,40 @@ import { CiPlay1 } from "react-icons/ci";
 import toastComponent from "../../toastComponent";
 import { ToastContainer } from "react-toastify";
 import { useRouter } from 'next/navigation';
-
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../reducers/cartSlicer";
+import Cookie from "js-cookie";
 const CourseFloatingBuyCard = (props) => {
   const navigate = useRouter();
+  const dispatch = useDispatch();
   const [state, setState] = useState('https://ik.imagekit.io/jaykrs/file_example_MP4_640_3MG_men2_9EcU.mp4');
   const [btnStyle, setBtnStyle] = useState(false);
   let data = props.data.attributes;
   let discount = ((data.course_fee_premium - data.course_fee) / data.course_fee_premium) * 100;
-
-  const { scrolled, setCoupon, applyCoupon, setApplyCoupon, setShareModal } =
-    props;
+  const { scrolled, setCoupon, applyCoupon, setApplyCoupon, setShareModal } = props;
 
   const styleGuide = {
     display: "none",
   };
-
   const outStyleGuide = {
     position: "fixed",
     top: 0,
     right: "12%",
   };
-
   const handleAddToCart = () => {
     // console.log('jwt' + localStorage.getItem("jwt"), "loginStatus" + localStorage.getItem("loginStatus"))
 
     //alert("Added to cart");
+    // let cartData = [];
+    // let cookieData = JSON.parse(Cookie.get("cart")
+    // if (cookieData) {
+    //   cartData = cookieData;
+    // }
+    // cartData.push({
+    //   id: props.data.id,
+    //   attributes: data
+    // })
+    // Cookie.set("cart", JSON.stringify(cartData));
     toastComponent("warn", textConst.addToCart);
     setTimeout(() => {
       dispatch(addToCart({
@@ -41,14 +50,14 @@ const CourseFloatingBuyCard = (props) => {
         attributes: data
       }))
       navigate.push("/cart");
-    },2000);
+    }, 2000);
   }
 
 
   const handleBuy = () => {
     if (null != localStorage.getItem("jwt") && localStorage.getItem("loginStatus")) {
       sessionStorage.setItem("courseData", JSON.stringify(props.data))
-      navigate.push("/checkout/page")
+      navigate.push("/user/checkout")
     } else {
       localStorage.setItem("buyItem", "backToCourseDetails")
       navigate.push("/user/login");
@@ -58,9 +67,10 @@ const CourseFloatingBuyCard = (props) => {
     setBtnStyle(true);
     setState(props.data.attributes.introductory_video);
   }
+ // console.log("cartData ",JSON.parse(Cookie.get("cart")));
   return (
     <>
-     <ToastContainer />
+      <ToastContainer />
       <div className={css.outModelDiv} style={{ display: btnStyle ? "flex" : "none" }}>
         {/* <div className="innerModelDiv"><ReactPlayer url='https://ik.imagekit.io/jaykrs/file_example_MP4_640_3MG_men2_9EcU.mp4' /></div> */}
         <div className={css.innerModelDiv}>
