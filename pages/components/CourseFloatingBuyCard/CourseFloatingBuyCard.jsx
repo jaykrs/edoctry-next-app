@@ -33,22 +33,16 @@ const CourseFloatingBuyCard = (props) => {
     // console.log('jwt' + localStorage.getItem("jwt"), "loginStatus" + localStorage.getItem("loginStatus"))
 
     //alert("Added to cart");
-    // let cartData = [];
-    // let cookieData = JSON.parse(Cookie.get("cart")
-    // if (cookieData) {
-    //   cartData = cookieData;
-    // }
-    // cartData.push({
-    //   id: props.data.id,
-    //   attributes: data
-    // })
-    // Cookie.set("cart", JSON.stringify(cartData));
+    let cartData = Cookie.get("cart");
+    cartData = cartData ? JSON.parse(cartData) : [];
+    cartData.push(props.data.id);
+    Cookie.set("cart", JSON.stringify(cartData), { expires: 30 });
     toastComponent("warn", textConst.addToCart);
     setTimeout(() => {
-      dispatch(addToCart({
-        id: props.data.id,
-        attributes: data
-      }))
+      // dispatch(addToCart({
+      //   id: props.data.id,
+      //   attributes: data
+      // }))
       navigate.push("/cart");
     }, 2000);
   }
@@ -67,7 +61,7 @@ const CourseFloatingBuyCard = (props) => {
     setBtnStyle(true);
     setState(props.data.attributes.introductory_video);
   }
- // console.log("cartData ",JSON.parse(Cookie.get("cart")));
+ 
   return (
     <>
       <ToastContainer />

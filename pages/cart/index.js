@@ -7,45 +7,69 @@ import CheckoutCourseCard from "../components/CheckoutCourseCard/CheckoutCourseC
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import store from "../store";
-
+import Cookie from "js-cookie";
+import axios from "axios";
+import { CMS_URL } from "../urlConst";
+import PageLoadingComponents from "../utils/PageLoadingComponent/PageLoadingComponents";
+import toastComponent from "../toastComponent";
+import { ToastContainer } from "react-toastify";
 const Cart = () => {
   const navigate = useRouter();
   const [coupon, setCoupon] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState("");
-  //const cart = useSelector((state) => state.cart.cart);
   let dispatch = useDispatch();
   let [cart, setCart] = useState("");
   let [price, setPrice] = useState(0);
   let [discount, setDiscount] = useState(0);
   let [pricePremium, setPricePremium] = useState(0);
-  
-  console.log("cart",cart);
+  let CookieData = Cookie.get("cart");
+  CookieData = CookieData ? JSON.parse(CookieData) : [];
+  const [loading,setLoading] = useState(false);
+  const [refresh,setRefresh] = useState(false);
   useEffect(() => {
-    loadCardtData()
-
+    setLoading(true);
+   axios.get(CMS_URL + "courses")
+   .then(res=>{
+     let filteredCourses = res.data.data.filter(course => CookieData.includes(course.id));
+     setCart(filteredCourses);
+     loadCardtData()
+     setLoading(false);
+   }).catch(err=>{
+    toastComponent("error",err.message);
+    setTimeout(()=>{
+      setLoading(false);
+    },5000)
+  })
   }, [])
-  // let price = cart.reducer((a,b)=> a + b.attributes.course_fee,0)
-  // console.log('price', price)
+  useEffect(() => {
+    setLoading(true);
+   axios.get(CMS_URL + "courses")
+   .then(res=>{
+     let filteredCourses = res.data.data.filter(course => CookieData.includes(course.id));
+     setCart(filteredCourses);
+     loadCardtData()
+     setLoading(false);
+   }).catch(err=>{
+    toastComponent("error",err.message);
+    setTimeout(()=>{
+      setLoading(false);
+    },5000)
+  })
+  }, [refresh])
+  useEffect(()=>{
+      loadCardtData()
+  },[cart])
   let loadCardtData = async () => {
-    // let carts = await useSelector((state) => state.cart.cart);
-    //   setCart(carts);
     if (cart.length > 0) {
-
-      price = 0;
       for (let i = 0; i < cart.length; i++) {
         price += cart[i].attributes.course_fee;
-      }
-      pricePremium = 0;
-      for (let i = 0; i < cart.length; i++) {
         pricePremium += cart[i].attributes.course_fee_premium;
       }
-      discount = (((pricePremium - price) / pricePremium) * 100).toFixed(2);
-      // console.log('cart Price', price, pricePremium, discount)
-    } else {
-      price = 0;
-      pricePremium = 0;
-      discount = 0;
-    }
+      setPrice(price);
+      setPricePremium(pricePremium);
+      let discounts = (((pricePremium - price) / pricePremium) * 100).toFixed(2);
+      setDiscount(discounts);
+    } 
   }
   const cartData = [
     // {
@@ -119,11 +143,11 @@ const Cart = () => {
       navigate.push("/user/login")
     }
   }
-
-
   return (
     <>
       <Layout1>
+        <ToastContainer />
+        <PageLoadingComponents  loading={loading} setLoading={setLoading} />
         <div className={css.outerDiv}>
           <div className={css.innerDiv}>
             <div className={css.ttl}>Shopping Cart</div>
@@ -133,7 +157,7 @@ const Cart = () => {
                   <div className={css.cnt}>{cart.length} Course in Cart</div>
                   <div className={css.courses}>
                     {cart?.map((item, index) => {
-                      return <CheckoutCourseCard data={item} key={index} index={index} />;
+                      return <CheckoutCourseCard data={item} key={index} index={index} setRefresh={setRefresh} />;
                     })}
                   </div>
                   {/* <div>keep shopping div</div> */}

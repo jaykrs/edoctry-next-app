@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import Button1 from "../../../utils/Buttons/Button1/Button1";
 import CustomCheckboxUtil from "../../../utils/FormUtils/CustomCheckboxUtil/CustomCheckboxUtil";
 import css from "./PrivacyComponent.module.css";

@@ -5,6 +5,7 @@ import SearchBar from "../../utils/SearchBar/SearchBar"; // Adjust path as per y
 import css from "./LoggedInNavbar.module.css";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
+import Cookie from "js-cookie";
 const LoggedInNavbar = () => {
   const [menuState, setMenuState] = useState(false);
   const [showLanguageSettingsModal, setShowLanguageSettingsModal] = useState(false);
@@ -15,13 +16,14 @@ const LoggedInNavbar = () => {
   const [data, setData] = useState([]);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  // const cartData = useSelector(cart=> cart);
-  // console.log("cartData",cartData);
   useEffect(() => {
     const jwtToken = localStorage.getItem("jwt");
     if (jwtToken) {
       setLogin(true);
     }
+  let cartData = Cookie.get("cart");
+  cartData = cartData ? JSON.parse(cartData) : [];
+    setData(cartData.length);
   }, []);
 
   const handleLogout = () => {
@@ -78,7 +80,7 @@ const LoggedInNavbar = () => {
           </p>
         </Link>
         <p style={{ margin: "-23px -23px 0 0" }} className={css.cartValue}>
-          {data.length}
+          {data}
         </p>
         <Link href="/cart" passHref className={css.linkOver}>
           <p className={css.cartBox}>
@@ -115,7 +117,7 @@ const LoggedInNavbar = () => {
                   }
                   {userType === "customer" &&
                     <Link href="/cart" className={css.menuItem} style={{ display: 'flex', justifyContent: "space-between" }}>
-                      <p>My Cart</p> <h6>{data.length}</h6>
+                      <p>My Cart</p> <h6>{data}</h6>
                     </Link>}
                   {userType === "customer" &&
                     <Link href="/user/my-courses/wishlist" className={css.menuItem}>

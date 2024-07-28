@@ -3,24 +3,32 @@ import TagUtil from "../../utils/Tags/TAG1/TAG1";
 import Button2 from "../../utils/Buttons/Button2/Button2";
 import css from "./CheckoutCourseCard.module.css";
 import { useDispatch } from "react-redux";
-import { removeItemFromCart } from "../../reducers/cartSlicer"; 
+import { removeItemFromCart } from "../../reducers/cartSlicer";
+import Cookie from "js-cookie";
 const CheckoutCourseCard = (props) => {
-  const { data, extraCss, index } = props;
-  
+  const { data, extraCss, index,setRefresh=(()=>{}) } = props;
+
   let dispatch = useDispatch();
- const  handleRemoveFromCart = ()=>{
-   if(confirm("Are you sure you want to remove?")){
-    //alert('are you sure , you want to remove ')
-        dispatch(removeItemFromCart(index))
-   }
- }
-let bestSeller = false;
-let level = "All";
+  const handleRemoveFromCart = (id) => {
+    if (confirm("Are you sure you want to remove?")) {
+      console.log("remove item from cart",id);
+      let CookieData = Cookie.get("cart");
+      CookieData = CookieData ? JSON.parse(CookieData) : [];
+      let index = CookieData.indexOf(id);
+      if (index !== -1) {
+        CookieData.splice(index, 1);
+      }
+      Cookie.set("cart", JSON.stringify(CookieData), { expires: 30 });
+      setRefresh(true);
+    }
+  }
+  let bestSeller = false;
+  let level = "All";
   return (
-    <div className={css.outerDiv}  style={extraCss}>
+    <div className={css.outerDiv} style={extraCss}>
       {/* {  data.length > 0 ?
         <> */}
-          <div className={css.box1}>
+      <div className={css.box1}>
         <div className={css.imgBox}>
           <img src={data.attributes.course_logo} alt="course thumbnail" className={css.img} />
         </div>
@@ -52,7 +60,7 @@ let level = "All";
             e.preventDefault();
           }}
         >
-          
+
           {/* <Button2
             txt="Save for Later"
             hovBck=""
@@ -81,27 +89,27 @@ let level = "All";
               currency: "INR",
             }).format(data.attributes.course_fee_premium)}
           </div>
-          
+
         </div>
-        
+
       </div>
       <Button2
-            txt="Remove"
-            hovBck=""
-            onClick= {handleRemoveFromCart}
-            extraCss={{
-              fontWeight: "400",
-              fontSize: "0.9rem",
-              color: "var(--purple)",
-              margin: "0.2rem",
-              padding: "0",
-            }}
-          />
-        {/* </>
+        txt="Remove"
+        hovBck=""
+        onClick={() => handleRemoveFromCart(data.id)}
+        extraCss={{
+          fontWeight: "400",
+          fontSize: "0.9rem",
+          color: "var(--purple)",
+          margin: "0.2rem",
+          padding: "0",
+        }}
+      />
+      {/* </>
         : <div> keep shoping </div>
       } */}
     </div>
-    
+
   );
 };
 
