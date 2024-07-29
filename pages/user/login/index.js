@@ -56,11 +56,12 @@ const Page = () => {
         }
       })
       .catch(error => {
-        toastComponent("error",error.message);
-        if (error.response.status === 400 && error.response.statusText === "Your account has been blocked by an administrator") {
+        if (error.response.status === 400 && error.response.data.error.message === "Your account has been blocked by an administrator") {
           setBtnStatus(true);
+          toastComponent("error",error.response.data.error.message);
+        }else{
+          toastComponent("error",error.message);
         }
-        console.log("err",error.response);
       });
   };
 

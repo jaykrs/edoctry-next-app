@@ -22,7 +22,7 @@ export default function CouresView(props) {
     }
     return (
         <>
-        {/* // <Layout1 title="courses"> */}
+         <Layout1 title="courses">
             {
                 props.posts !== undefined ?
                     <div className={css.outerDiv}>
@@ -65,7 +65,7 @@ export default function CouresView(props) {
                         alt="progress"
                     />
             }
-        {/* // </Layout1> */}
+         </Layout1>
         </>
     )
 }

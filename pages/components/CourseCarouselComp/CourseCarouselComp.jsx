@@ -45,8 +45,6 @@ const CourseCarouselComp = (props) => {
       },
     ],
   };
-
-  //console.log('courses data',coursesData)
   return (
     <div className={css.scrollBox}>
       {ttl ? (

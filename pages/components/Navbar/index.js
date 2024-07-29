@@ -1,18 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link"; // Import Link from next/link
 import css from "./Navbar.module.css";
 import SearchBar from "../../utils/SearchBar/SearchBar";
 import Button1 from "../../utils/Buttons/Button1/Button1";
 import { useRouter } from "next/router";
+import Cookie from "js-cookie";
 const Navbar = () => {
   let [menuState, setMenuState] = useState(false);
   const [modal, setModal] = useState(false);
   const router = useRouter(); // Use useRouter hook
-
+  const [data, setData] = useState([]);
   const navigateHandler = () => {
     sessionStorage.setItem("backtoHomePage", true);
     router.push("/"); // Use router.push for navigation
   };
+  useEffect(() => {
+    let cartData = Cookie.get("cart");
+    cartData = cartData ? JSON.parse(cartData) : [];
+    setData(cartData.length);
+  })
 
   return (
     <>
@@ -24,10 +30,10 @@ const Navbar = () => {
           <Link href="/">
             <p className={css.logoBox}>
               <img
-              src="/publicContent/images/logo/svg/logo-no-background.svg" // Adjust path relative to public folder
-              alt="Logo"
-              className={css.logo}
-            />
+                src="/publicContent/images/logo/svg/logo-no-background.svg" // Adjust path relative to public folder
+                alt="Logo"
+                className={css.logo}
+              />
             </p>
           </Link>
         </div>
@@ -35,7 +41,7 @@ const Navbar = () => {
           <div className={css.searchBox}>
             <SearchBar />
           </div>
-          <Link href="/business" style={{textDecoration:"none"}}>
+          <Link href="/business" style={{ textDecoration: "none" }}>
             <p className={css.hovBox}>Teach on Edoctry</p>
           </Link>
           <Link href="/cart" className={css.cartBox}>
@@ -43,13 +49,17 @@ const Navbar = () => {
               <img className={css.cartIcon} src={"/publicContent/icons/shopping-cart.png"} alt="cart icon" />
             </p>
           </Link>
+          <p style={{ margin: "-34px -3px 0 -15px" }} >
+            {data}
+          </p>
+
           <div className={css.btns}>
-            <Link href="/user/login" style={{textDecoration:"none"}}>
+            <Link href="/user/login" style={{ textDecoration: "none" }}>
               <p>
                 <Button1 txt="Login" />
               </p>
             </Link>
-            <Link href="/user/signup" style={{textDecoration:"none"}}>
+            <Link href="/user/signup" style={{ textDecoration: "none" }}>
               <p>
                 <Button1
                   txt="Sign up"

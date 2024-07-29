@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
- import axios from "axios";
+import axios from "axios";
 
 import { FaUserPlus } from "react-icons/fa6";
 import toastComponent from "../../toastComponent";
@@ -12,7 +12,10 @@ import Button1 from "../../utils/Buttons/Button2/Button2";
 import Layout1 from "../../components/Layout1/Layout1";
 import CheckboxUtil from "../../utils/FormUtils/CheckboxUtil/CheckboxUtil";
 import Link from "next/link";
+import { CMS_URL } from "../../urlConst";
+import PageLoadingComponents from "../../utils/PageLoadingComponent/PageLoadingComponents";
 const Signup = () => {
+  const [loading, setLoading] = useState(false);
   const [state, setState] = useState({
     username: "",
     email: "",
@@ -27,11 +30,11 @@ const Signup = () => {
   const router = useRouter();
 
   const changeHandler = (e) => {
-     setState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    setState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const checkboxChangeHandler = () => {
-     setState((prev) => ({ ...prev, check: !prev.check }));
+    setState((prev) => ({ ...prev, check: !prev.check }));
   };
 
   const submitHandler = () => {
@@ -52,9 +55,9 @@ const Signup = () => {
       toastComponent("error", "Invalid password format.");
       return;
     }
-
+    setLoading(true);
     axios
-      .post("https://edoctry.adaptable.app/api/auth/local/register", state)
+      .post(CMS_URL + "auth/local/register", state)
       .then((response) => {
         if (response.status === 200 && response.data.jwt) {
           const { usertype } = response.data.user;
@@ -67,50 +70,58 @@ const Signup = () => {
 
           axios
             .post(
-              `https://edoctry.adaptable.app/api/${usertype}s`,
+              `${CMS_URL}${usertype}s`,
               postData
             )
             .then(() => {
+              setLoading(false);
               setTimeout(() => {
                 toastComponent("success", "Successfully registered!");
               }, 2000);
               router.push("/user/login");
             })
+
             .catch((err) => {
-              toastComponent("error", err.message);
+              toastComponent("error", err.response.data.error.message);
+              setTimeout(() => {
+                setLoading(false);
+              }, 5000)
             });
         } else {
           router.push('/join/signup');
         }
       })
       .catch((err) => {
-        console.log("error",err);
-        toastComponent("error", err.message);
+        
+        setTimeout(() => {
+          setLoading(false);
+          toastComponent("error", err.response.data.error.message);
+        }, 4000)
+        
       });
   };
-  console.log("state",state);
-
   return (
     <>
-    <Layout1 title="signup">
-      <ToastContainer />
-      <div className={css.outerDiv}>
-        <div className={css.loginBox}>
-          <div className={css.ttl}>Sign Up and Start Learning | Edoctry</div>
-          <hr />
-          {message}
-          <div className={css.boxBdy}>
-            {/* InputUtil, CheckboxUtil, Button1 components */}
-            {/* Replace with your existing components */}
-            <InputUtil
-              type="text"
-              name="username"
-              state={state.username}
-              icon={"/publicContent/icons/user.png"}
-              placeholderTxt="Name"
-              onChange={changeHandler}
-            />
-            <InputUtil
+      <Layout1 title="signup">
+        <ToastContainer />
+        <PageLoadingComponents loading={loading} setLoading={setLoading} />
+        <div className={css.outerDiv}>
+          <div className={css.loginBox}>
+            <div className={css.ttl}>Sign Up and Start Learning | Edoctry</div>
+            <hr />
+            {message}
+            <div className={css.boxBdy}>
+              {/* InputUtil, CheckboxUtil, Button1 components */}
+              {/* Replace with your existing components */}
+              <InputUtil
+                type="text"
+                name="username"
+                state={state.username}
+                icon={"/publicContent/icons/user.png"}
+                placeholderTxt="Name"
+                onChange={changeHandler}
+              />
+              <InputUtil
                 type="email"
                 name="email"
                 state={state.email}
@@ -118,27 +129,27 @@ const Signup = () => {
                 placeholderTxt="Email"
                 onChange={changeHandler}
               />
-            {/* Other InputUtil components */}
-            <div className="pb-2">
-              <FaUserPlus size={27} className={css.iconStyle} />
-              <div>
-                <select
-                  className="form-control mb-1 selectStyle" 
-                  style={{padding: "12px 0 12px 52px",fontSize: "1rem",fontWeight:" 500",border: "solid 1px #000",borderRadius: "0",color: "#6a6f73",width:"100%",marginBottom:"20px"}}
-                  value={state.usertype}
-                  name="usertype"
-                  onChange={changeHandler}
-                >
-                  <option disabled selected>
-                    User type
-                  </option>
-                  <option value="customer">Customer</option>
-                  <option value="instructor">Instructor</option>
-                </select>
+              {/* Other InputUtil components */}
+              <div className="pb-2">
+                <FaUserPlus size={27} className={css.iconStyle} />
+                <div>
+                  <select
+                    className="form-control mb-1 selectStyle"
+                    style={{ padding: "12px 0 12px 52px", fontSize: "1rem", fontWeight: " 500", border: "solid 1px #000", borderRadius: "0", color: "#6a6f73", width: "100%", marginBottom: "20px" }}
+                    value={state.usertype}
+                    name="usertype"
+                    onChange={changeHandler}
+                  >
+                    <option disabled selected>
+                      User type
+                    </option>
+                    <option value="customer">Customer</option>
+                    <option value="instructor">Instructor</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            {/* Password InputUtil, CheckboxUtil components */}
-            <InputUtil
+              {/* Password InputUtil, CheckboxUtil components */}
+              <InputUtil
                 type="password"
                 name="password"
                 state={state.password}
@@ -154,41 +165,41 @@ const Signup = () => {
                 state={state.check}
                 onChange={checkboxChangeHandler}
               />
-            <Button1
-              txt="Signup"
-              color="#fff"
-              bck="#a435f0"
-              hovBck="#8710d8"
-              extraCss={{
-                width: "100%",
-                margin: "0",
-                border: "none",
-                padding: "1rem",
-              }}
-              onClick={submitHandler}
-            />
-            <div className={css.blck}>
-              <span className={css.blckTxt}>
-                By signing up, you agree to our
-                <a href="/page?pageid=termsOfUseAndPrivacy" className={css.anchor}>
-                  Terms of Use
-                </a>
-                and
-                <a href="/page?pageid=termsOfUseAndPrivacy" className={css.anchor}>
-                  Privacy Policy
-                </a>
-                .
-              </span>
-            </div>
-            <div className={css.blck}>
-              <span className={css.blckTxt2}>Already have an account?</span>
-              <Link href="/user/login" className={css.anchor}>
-                <b>Log in</b>
-              </Link>
+              <Button1
+                txt="Signup"
+                color="#fff"
+                bck="#a435f0"
+                hovBck="#8710d8"
+                extraCss={{
+                  width: "100%",
+                  margin: "0",
+                  border: "none",
+                  padding: "1rem",
+                }}
+                onClick={submitHandler}
+              />
+              <div className={css.blck}>
+                <span className={css.blckTxt}>
+                  By signing up, you agree to our
+                  <a href="/page?pageid=termsOfUseAndPrivacy" className={css.anchor}>
+                    Terms of Use
+                  </a>
+                  and
+                  <a href="/page?pageid=termsOfUseAndPrivacy" className={css.anchor}>
+                    Privacy Policy
+                  </a>
+                  .
+                </span>
+              </div>
+              <div className={css.blck}>
+                <span className={css.blckTxt2}>Already have an account?</span>
+                <Link href="/user/login" className={css.anchor}>
+                  <b>Log in</b>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-      </div>
       </Layout1>
     </>
   );

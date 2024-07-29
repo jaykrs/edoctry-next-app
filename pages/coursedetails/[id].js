@@ -65,10 +65,7 @@ export default function Page(props) {
                             </div>
                         </div>
                     </Layout1>
-                    : <img
-                        src="/publicContent/images/progress-circle.gif"
-                        alt="progress"
-                    />
+                    : ""
             }
         </>
     )

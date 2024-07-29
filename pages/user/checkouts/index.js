@@ -68,7 +68,7 @@ const Checkout = () => {
     setInputData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
-  };
+  }; 
   const createEnrollment = async (orderDetails, amount) => {
     let courseIdList = [];
     for (let i = 0; i < cartdata.length; i++) {
