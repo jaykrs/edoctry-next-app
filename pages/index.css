@@ -315,6 +315,36 @@
 .innerModelDiv div{
   position: static;
 }
+.tabs {
+  display: flex;
+  gap: 1rem;
+  overflow: scroll;
+  border-bottom: 1px solid var(--gray86);
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  padding: 1rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--light-gray);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.tabActive {
+  color: var(--gray);
+  border-bottom: 2px solid var(--gray);
+}
+
+.bdy {
+  margin: 1rem 0;
+}
+
 @media screen and (max-width : 600px) {
 .Optiondiv {
   width: 100%;
@@ -323,6 +353,13 @@
   align-items: start;
   flex-wrap: wrap;
   margin: 0 60px 0 0;
+}
+.tabs {
+  display: flex;
+  gap: 1rem;
+  overflow: scroll;
+  border-bottom: 1px solid var(--gray86);
+  margin-left: 0;
 }
 }
   

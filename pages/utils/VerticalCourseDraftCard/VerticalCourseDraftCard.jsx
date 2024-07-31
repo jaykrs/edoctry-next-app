@@ -27,10 +27,7 @@ const VerticalCourseDraftCard = (props) => {
       //   return  <CourseCardTemp key={index} data={item} />
       // })
 
-      : <img
-      src="/publicContent/images/progress-circle.gif"
-      alt="progress"
-  />
+      : ""
 
         }
 

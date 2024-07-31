@@ -25,3 +25,10 @@
   width: 100%;
   margin-bottom: 15px;
 }
+.courseListView{
+  display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 15px;
+}
