@@ -44,7 +44,7 @@ const CreateCourse = () => {
   })
   const [value, setValue] = useState("");
   const [courseRequirement, setCourseRequirement] = useState("");
-
+console.log("state",state)
   useEffect(() => {
     import('froala-editor/js/plugins/markdown.min.js');
   });

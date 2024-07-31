@@ -3,6 +3,7 @@ import Link from "next/link";
 import css from "./BannerComp.module.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { CMS_URL } from "../../urlConst";
 const BannerComp = (props) => {
   const [cState, setCState] = useState(1);
   const [bannData, setBannData] = useState("");
@@ -12,7 +13,7 @@ const BannerComp = (props) => {
 
   const handleBanner = async () => {
     //  if (bannerStoreData.length === 0) {
-    await axios.get("https://edoctry.adaptable.app/api/templates?filters[name][$eq]=heroBanner")
+    await axios.get(CMS_URL + "templates?filters[name][$eq]=heroBanner")
       .then(res => {
 
         setBannData(res.data.data[0].attributes.json);

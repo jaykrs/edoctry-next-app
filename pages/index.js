@@ -18,7 +18,6 @@ export default function Page(props) {
               <div className="columntitle">
                 Choose Our Top Web <span className="shapebg">Courses</span>
               </div>
-
                 <VerticalCourseDraftCard
                   ttl=""
                   link="/coursesDetails"

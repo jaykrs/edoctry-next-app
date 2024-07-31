@@ -60,7 +60,9 @@
     newPasswordUpdate:"Your password does't match!",
     passwordSuccess:"Password updated successfully",
     addToCart:"Course Added to cart",
-    edoctryBusiness: "Your request submitted successfully"
+    edoctryBusiness: "Your request submitted successfully",
+    userUnBlockSuccess: "An email has been successfully sent to your address. Please activate your user ID by following the instructions in the email.",
+    
  }
 
  export const countryJson = [
