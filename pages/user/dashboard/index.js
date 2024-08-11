@@ -1,11 +1,11 @@
 import css from "./Dashboard.module.css";
 import React, { useEffect, useState } from "react";
 import Layout1 from "../../components/Layout1/Layout1";
-import { httpList } from "../../utils/httpRequest/HttpRequest";
-import { DateFormat } from "../../utils/httpRequest/DateFormat";
 import ProfileSettingsComponent from "./ProfileSettingsComponent/ProfileSettingsComponent";
 import PageLoadingComponents from "../../utils/PageLoadingComponent/PageLoadingComponents";
 import ToastComponents from "../../toastComponent";
+import axios from "axios";
+import ConstData from "../../../urlConst";
 const Dashboard = () => {
     const [state, setState] = useState("");
     const [insdata, setInsData] = useState("");
@@ -14,7 +14,7 @@ const Dashboard = () => {
     useEffect(() => {
         setLoading(true);
         if (localStorage.getItem("usertype") === "instructor") {
-            httpList("courses?filters[instructor][$eq]=" + localStorage.getItem("email"), false)
+            axios.get(ConstData.CMS_URL + "courses?filters[instructor][$eq]=" + localStorage.getItem("email"))
                 .then(res => {
                     setState(res.data.data)
                     let CourseEnrollment = 0;
@@ -28,7 +28,11 @@ const Dashboard = () => {
                         setLoading(false);
                     }, 5000);
                 })
-            httpList("instructors?filters[instructoremail][$eq]=" + localStorage.getItem("email"), true)
+            axios.get(ConstData.CMS_URL + "instructors?filters[instructoremail][$eq]=" + localStorage.getItem("email"), {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("jwt")
+                }
+            })
                 .then(result => {
                     setInsData(result.data.data);
                     setLoading(false);
@@ -39,7 +43,11 @@ const Dashboard = () => {
                     }, 5000);
                 })
         } else if (localStorage.getItem("usertype") === "customer") {
-            httpList("orders?filters[customeremail][$eq]=" + localStorage.getItem("email"), true)
+            axios.get(ConstData.CMS_URL + "orders?filters[customeremail][$eq]=" + localStorage.getItem("email"),{
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("jwt")
+                }
+            })
                 .then(res => {
                     setState(res.data.data)
                 }).catch(err => {
@@ -48,7 +56,11 @@ const Dashboard = () => {
                         setLoading(false);
                     }, 5000);
                 })
-            httpList("customers?filters[customeremail][$eq]=" + localStorage.getItem("email"), true)
+            axios.get(ConstData.CMS_URL + "customers?filters[customeremail][$eq]=" + localStorage.getItem("email"), {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("jwt")
+                }
+            })
                 .then(result => {
                     setInsData(result.data.data);
                     setLoading(false);

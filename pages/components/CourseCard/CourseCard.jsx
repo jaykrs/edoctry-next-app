@@ -2,9 +2,9 @@ import React from "react";
 import css from "./CourseCard.module.css";
 import { MdArrowOutward } from "react-icons/md";
 import { useRouter } from "next/navigation";
-const CourseCard = (props) => {
-  let data = props.data;
-  const extraCss = props.extraCss;
+const CourseCard = ({data={},extraCss={}}) => {
+  //let data = props.data;
+  //const extraCss = props.extraCss;
   const router = useRouter();
   const userType = typeof window !== 'undefined' ? localStorage.getItem("usertype") : "";
   // let totalRating = (
@@ -43,8 +43,9 @@ const CourseCard = (props) => {
   }
   return (
     <>
-      <div className={css.outerDiv} id={data.id} style={extraCss}>
-        {/* <Link className={css.innerDiv} to={link}> */}
+      {
+        Object.keys(data).length > 0 ? 
+        <div className={css.outerDiv} id={data.id} style={extraCss}>
         <div className={css.imgBox}>
           <img src={data.attributes.course_logo !== null ? data.attributes.course_logo : ""} alt="course thumbnail" className={css.courseImg} />
         </div>
@@ -109,7 +110,8 @@ const CourseCard = (props) => {
             </div> */}
           {/* </div>
         </div> */}
-      </div>
+      </div> : ""
+      }
     </>
   );
 };

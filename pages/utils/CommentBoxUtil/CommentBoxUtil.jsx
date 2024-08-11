@@ -7,7 +7,7 @@ import upArrowCircleBoldIcon from "../../publicContent/icons/up-arrow-circle-bol
 import upArrowCircleIcon from "../../publicContent/icons/up-arrow-circle.png";
 import chatIcon from "../../publicContent/icons/chat.png";
 
-const CommentBoxUtil = (props) => {
+const CommentBoxUtil = ({data={}}) => {
   const {
     cmmntId = 0,
     nameDirection = "bottom",
@@ -24,7 +24,7 @@ const CommentBoxUtil = (props) => {
       m: 12,
       d: 12,
     },
-  } = props.data;
+  } = data;
   const [state, setState] = useState({
     upvote: false,
     comment: false,
@@ -73,7 +73,7 @@ const CommentBoxUtil = (props) => {
               />
             </span>
           </div>
-          <Link to={commentsLink} className={css.p2In}>
+          <Link href={commentsLink} className={css.p2In}>
             <span className={css.p2Box}>
               <span className={css.p2Txt}>{upvotes}</span>
               <img className={css.p2Icon} src={chatIcon} alt="upvotes" />

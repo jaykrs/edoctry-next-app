@@ -2,7 +2,7 @@
 import { FaEnvelopeOpenText } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../../urlConst";
+import ConstData from "../../../../../urlConst";
 import { useRouter } from "next/navigation";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import ReactMarkdown from "react-markdown";
@@ -53,7 +53,7 @@ const CreateNewAssesmentQuestion = () => {
         })
         setUserType(localStorage.getItem("usertype"));
         setLoading(true);
-        axios.get(CMS_URL + "assesments?filters[id][$eq]=" + sessionStorage.getItem("assid"), {
+        axios.get(ConstData.CMS_URL + "assesments?filters[id][$eq]=" + sessionStorage.getItem("assid"), {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
             }
@@ -62,7 +62,7 @@ const CreateNewAssesmentQuestion = () => {
                 setAssData(res.data.data)
                 let date = new Date(res.data.data[0].attributes.createdAt);
                 console.log('date', date);
-                axios.get(CMS_URL + "instructors?filters[instructoremail][$eq]=" + res.data.data[0].attributes.instructor, {
+                axios.get(ConstData.CMS_URL + "instructors?filters[instructoremail][$eq]=" + res.data.data[0].attributes.instructor, {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("jwt")
                     }
@@ -73,7 +73,7 @@ const CreateNewAssesmentQuestion = () => {
                     }).catch(err => {
                         console.log(err);
                     })
-                axios.get(CMS_URL + "questions?filters[assesment_id][$eq]=" + sessionStorage.getItem("assid"), {
+                axios.get(ConstData.CMS_URL + "questions?filters[assesment_id][$eq]=" + sessionStorage.getItem("assid"), {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("jwt")
                     }
@@ -108,13 +108,13 @@ const CreateNewAssesmentQuestion = () => {
     const handleDelete = (id) => {
         if (confirm("Are you sure, you want to delete Question")) {
             setLoading(true);
-            axios.delete(CMS_URL + "questions/" + id, { headers: { Authorization: "Bearer " + localStorage.getItem("jwt") } })
+            axios.delete(ConstData.CMS_URL + "questions/" + id, { headers: { Authorization: "Bearer " + localStorage.getItem("jwt") } })
                 .then(res => {
                     setTimeout(() => {
                         setRecordDeleted(true);
                     }, 3000);
                     setLoading(false);
-                    toastComponent("success", textConst.tableDeletedSuccess);
+                    toastComponent("success", ConstData.textConst.tableDeletedSuccess);
                     
                 }).catch(err => {
                     toastComponent("error", err.message);

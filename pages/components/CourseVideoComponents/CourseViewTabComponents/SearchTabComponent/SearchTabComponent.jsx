@@ -1,11 +1,6 @@
 import { useState } from "react";
-
 import InputUtil from "../../../../utils/FormUtils/InputUtil/InputUtil";
-
-import searchIcon from "../../../../../src/publicContent/icons/search.png";
-
 import css from "./SearchTabComponent.module.css";
-
 const SearchTabComponent = () => {
   const [state, setState] = useState("sdd");
   const data = "";
@@ -16,7 +11,7 @@ const SearchTabComponent = () => {
         type="text"
         state={state}
         onChange={(e) => setState(e.target?.value ?? "")}
-        icon={searchIcon}
+        icon={"/publicContent/icons/search.png"}
         iconPosition="right"
         placeholderTxt="Search course content"
       />

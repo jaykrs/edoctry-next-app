@@ -1,7 +1,7 @@
 import InputUtil from "../../../../../utils/FormUtils/InputUtil/InputUtil";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../../../urlConst";
+import ConstData from "../../../../../../urlConst";
 import { useRouter } from "next/navigation";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import toastComponent from "../../../../../toastComponent";
@@ -28,9 +28,9 @@ const CreateNewAssesment = () => {
   const handleCreate = () => {
     setLoading(true);
     if (assTlt === "" || state.assesment_marks === 0 || state.passmarks === 0 || assDes === "") {
-      toastComponent("error", textConst.enterMandatoryField);
+      toastComponent("error", ConstData.textConst.enterMandatoryField);
     } else {
-      axios.post(CMS_URL + "assesments", {
+      axios.post(ConstData.CMS_URL + "assesments", {
         "data": {
           assesment_title: assTlt,
           assesment_marks: state.assesment_marks,

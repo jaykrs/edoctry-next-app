@@ -2,12 +2,7 @@ import { useState } from "react";
 import InputUtil from "../../../../utils/FormUtils/InputUtil/InputUtil";
 import SelectDropdownUtil from "../../../../utils/FormUtils/SelectDropdownUtil/SelectDropdownUtil";
 import CommentBoxUtil from "../../../../utils/CommentBoxUtil/CommentBoxUtil";
-
 import css from "./QuestionsTabComponent.module.css";
-
-import searchIcon from "../../../../../src/publicContent/icons/search.png";
-import showcaseImg from "../../../../../src/publicContent/images/showcase.jpg";
-
 const QuestionsTabComponent = () => {
   const [state, setState] = useState("");
   const [filters, setFilers] = useState({
@@ -59,21 +54,21 @@ const QuestionsTabComponent = () => {
     },
   ];
 
-  const cmtData = {
-    cmmntId: 0,
-    name: "koushil",
-    img: showcaseImg,
-    ttl: "This is awesome lecture",
-    cnt: "This is awesome lecture This is awesome lecture This is awesome lecture This is awesome lecture This is awesome lecture This is awesome lecture This is awesome lecture This is awesome lectureThis is awesome lecture",
-    upvotes: 3,
-    comments: 2,
-    lecture: 3,
-    date: {
-      y: 2000,
-      m: 3,
-      d: 29,
-    },
-  };
+  // const cmtData = {
+  //   cmmntId: 0,
+  //   name: "koushil",
+  //   img: "/publicContent/images/showcase.jpg",
+  //   ttl: "This is awesome lecture",
+  //   cnt: "This is awesome lecture This is awesome lecture This is awesome lecture This is awesome lecture This is awesome lecture This is awesome lecture This is awesome lecture This is awesome lectureThis is awesome lecture",
+  //   upvotes: 3,
+  //   comments: 2,
+  //   lecture: 3,
+  //   date: {
+  //     y: 2000,
+  //     m: 3,
+  //     d: 29,
+  //   },
+  // };
 
   return (
     <div className={css.outerDiv}>
@@ -82,8 +77,8 @@ const QuestionsTabComponent = () => {
           <InputUtil
             type="text"
             state={state}
-            onChange={(e) => setState(e.target?.value ?? "")}
-            icon={searchIcon}
+            onChange={(e) => setState(e.target.value)}
+            icon={"/publicContent/icons/search.png"}
             iconPosition="right"
             placeholderTxt="Search course content"
           />
@@ -125,7 +120,7 @@ const QuestionsTabComponent = () => {
             All questions in this course ({data.length})
           </div>
           <div className={css.comments}>
-            <CommentBoxUtil data={cmtData} />
+            {/* <CommentBoxUtil data={cmtData} /> */}
           </div>
         </div>
       </div>

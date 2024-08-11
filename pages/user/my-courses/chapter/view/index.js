@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../../urlConst";
+import ConstData from "../../../../../urlConst";
 import { useRouter } from "next/navigation";
 import css from "./InstructorChapterViewPage.module.css";
 import { MdOutlineCancelPresentation } from "react-icons/md";
@@ -44,7 +44,7 @@ const InstructorChapterViewPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(CMS_URL + "chapters?filters[id][$eq]=" + sessionStorage.getItem("unitViewid"), {
+    axios.get(ConstData.CMS_URL + "chapters?filters[id][$eq]=" + sessionStorage.getItem("unitViewid"), {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt")
       }
@@ -67,10 +67,10 @@ const InstructorChapterViewPage = () => {
 
   const handleCreate = () => {
     if (state.unit_title === "" || chapterTlt === "" || chapterBrief === "" || chapterContent === "" || state.chapter_duration === 0) {
-       toastComponent("error",textConst.enterMandatoryField);
+       toastComponent("error",ConstData.textConst.enterMandatoryField);
     } else {
       setLoading(true);
-      axios.put(CMS_URL + "chapters/" + state.id, {
+      axios.put(ConstData.CMS_URL + "chapters/" + state.id, {
         "data": {
           "chapter_title": chapterTlt,
           "chapter_duration": state.chapter_duration,
@@ -86,7 +86,7 @@ const InstructorChapterViewPage = () => {
       })
         .then(res => {
           setLoading(false);
-          toastComponent("success",textConst.tableUpdatedSuccess);
+          toastComponent("success",ConstData.textConst.tableUpdatedSuccess);
           setTimeout(()=>{
             navigate.push("/user/my-courses/unit/view");
           },3000);
@@ -115,14 +115,14 @@ const InstructorChapterViewPage = () => {
       redirect: "follow"
     };
 
-    fetch(CMS_URL + "onboard/fileupload", requestOptions)
+    fetch(ConstData.CMS_URL + "onboard/fileupload", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         let arr = state.introductory_video;
         arr.push(result.url);
         stateHandler("introductory_video", arr);
         setLoading(false);
-        toastComponent("success",textConst.videoUploadSuccess);
+        toastComponent("success",ConstData.textConst.videoUploadSuccess);
       })
       .catch((error) => {
         toastComponent("error",error.message);

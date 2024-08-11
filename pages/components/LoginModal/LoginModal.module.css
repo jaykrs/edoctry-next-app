@@ -40,11 +40,11 @@
   padding: 0.5rem;
 }
 
-hr {
+/* hr {
   border: none;
   border-bottom: 1px solid var(--gray86);
   margin: 1rem 0;
-}
+} */
 
 .oauth {
   display: flex;

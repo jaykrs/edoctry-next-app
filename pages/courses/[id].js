@@ -1,14 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import css from "./couresview.module.css";
 import { MdModeEditOutline, MdArrowOutward } from "react-icons/md";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import Layout1 from "../components/Layout1/Layout1";
 import ReactMarkdown from "react-markdown";
 
-export default function CouresView(props) {
-    const [state, setState] = useState("");
-    const [insdata, setInsData] = useState("");
-    const [CourseEnrollmentCount, setCourseEnrollmentCount] = useState(0);
+const Courses = ({posts={}}) =>{
     const router = useRouter();
     const handleView = (id, title) => {
         // if (localStorage.getItem("usertype") === "instructor") {
@@ -24,13 +21,13 @@ export default function CouresView(props) {
         <>
          <Layout1 title="courses">
             {
-                props.posts !== undefined ?
+                Object.keys(posts).length > 0 ?
                     <div className={css.outerDiv}>
                         <div className={css.div1}></div>
                         <div className="row" style={{ width: "90%" }}>
 
                             {
-                                props.posts.data.length > 0 ? props.posts.data.map((item, index) => {
+                                posts.data.map((item, index) => {
                                     // let createdOn = DateFormat(item.attributes.createdAt);
                                     return (
                                         <div key={index} className="col-lg-6 p-2" >
@@ -52,10 +49,6 @@ export default function CouresView(props) {
                                         </div>
                                     )
                                 })
-                                    : <img
-                                        src="../../../../src/publicContent/images/progress-circle.gif"
-                                        alt="progress"
-                                    />
                             }
                         </div>
                         <div className={css.div1}></div>
@@ -74,19 +67,18 @@ export default function CouresView(props) {
 
 export async function getStaticProps({ params }) {
     const templateId = params.id;
-    let posts = "Error";
+    let posts = {};
     posts = await getCachedTemplate(templateId);
     return {
         props: {
-            posts,
-            templateId
+            posts
         },
     }
 }
 
-export async function getCachedTemplate(templateId) {
+export async function getCachedTemplate(templateId) { 
     const endpointUrl = process.env.API_HOST + 'courses?filters[metadata][$contains]=' + templateId;
-    let templateData = "No Data Available";
+    let templateData = [];
     await fetch(endpointUrl, { next: { revalidate: 3600 } }).then(async (response) => { if (response.status === 200) templateData = await response.json(); }).catch((error) => console.error("Error " + error));
     return templateData;
 };
@@ -99,3 +91,5 @@ export async function getStaticPaths() {
         fallback: true
     }
 }
+
+export default Courses;

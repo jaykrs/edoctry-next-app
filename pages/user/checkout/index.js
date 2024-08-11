@@ -1,17 +1,23 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import Navbar2 from "../../components/Navbar2/Navbar2";
 import Button1 from "../../utils/Buttons/Button1/Button1";
 import SelectUtil from "../../utils/FormUtils/SelectUtil/SelectUtil";
 import ImportUtil from "../../utils/FormUtils/InputUtil/InputUtil";
 import css from "./Checkout.module.css";
 import axios from "axios";
-import { CMS_URL, countryJson, textConst } from "../../urlConst";
-import { config } from "../../utils/config";
 import toastComponent from "../../toastComponent";
 import { ToastContainer } from "react-toastify";
 import { useRouter } from "next/router";
 import Markdown from "react-markdown";
+import ConstData from "../../../urlConst";
+const config = {
+    key_secret : "rzp_test_j01bme0LQCu7jS",
+    name: "Edoctry Inc",
+    currency : "INR",
+    description:"Test Transaction",
+    logo : "/publicContent/images/logo/png/logo-color.ico",
+    CorporateAddress:"Razorpay Corporate Office"
+  }
 const CheckoutPage = () => {
     const navigate = useRouter();
     useEffect(() => {
@@ -72,13 +78,13 @@ const CheckoutPage = () => {
             "address": inputData.address,
             "instructor": inputData.courseData.instructor
         }
-        await axios.post(CMS_URL + "orders", {
+        await axios.post(ConstData.CMS_URL + "orders", {
             "data": body
         }).then(od => {
 
         }).catch(err => console.log("order err", i, err))
 
-        await axios.post(CMS_URL + "enrollments", {
+        await axios.post(ConstData.CMS_URL + "enrollments", {
             "data": {
                 "customeremail": localStorage.getItem("email"),
                 "course": `${inputData.id}`,
@@ -94,7 +100,7 @@ const CheckoutPage = () => {
         }).catch(err => {
             console.log(err)
         })
-        await axios.put(CMS_URL + "courses/" + inputData.id, {
+        await axios.put(ConstData.CMS_URL + "courses/" + inputData.id, {
             "data": {
                 enrollment_count: inputData.courseData.enrollment_count + 1
             }
@@ -109,12 +115,12 @@ const CheckoutPage = () => {
     const handleCompleteOrder = () => {
 
         if (inputData.country === "" || inputData.state === "" || inputData.address === "") {
-            toastComponent("warn", textConst.enterMandatoryField);
+            toastComponent("warn", ConstData.textConst.enterMandatoryField);
         }
         else {
 
             if (confirm("Are you sure you want to proceed?")) {
-                axios.post(CMS_URL + "onboard/payment", {
+                axios.post(ConstData.CMS_URL + "onboard/payment", {
                     amount: inputData.courseData.course_fee,
                     currency: "INR"
                 })
@@ -135,7 +141,7 @@ const CheckoutPage = () => {
                             // },
                             handler: async (response) => {
                                 try {
-                                    axios.post(CMS_URL + "onboard/payment/verify", response)
+                                    axios.post(ConstData.CMS_URL + "onboard/payment/verify", response)
                                         .then(result => {
                                             createEnrollment(response, paymentResData.amount / 100);
 
@@ -164,7 +170,6 @@ const CheckoutPage = () => {
 
 
     }
-    console.log("courseData1",inputData.courseData);
     return (
         <>
             {/* <Navbar2 /> */}
@@ -184,7 +189,7 @@ const CheckoutPage = () => {
                                                     name="country"
                                                     label="Country"
                                                     txt="Required"
-                                                    options={countryJson}
+                                                    options={ConstData.countryJson}
                                                     value={inputData.country}
                                                     setValue={(value) => {
                                                         setInputData((prev) => {

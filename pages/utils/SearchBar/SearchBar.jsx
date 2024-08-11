@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import css from "./SearchBar.module.css";
 import axios from "axios";
-import { CMS_URL } from "../../urlConst";
+import ConstData from "../../../urlConst";
 import { useRouter } from "next/navigation";
 
 export default function SearchBar(props) {
@@ -12,7 +12,7 @@ export default function SearchBar(props) {
   const router = useRouter();
 
   useEffect(() => {
-    axios.get(CMS_URL + "templates?filters[name][$eq]=metadata")
+    axios.get(ConstData.CMS_URL + "templates?filters[name][$eq]=metadata")
       .then(res => {
         // console.log("res.data.data[0].attributes.template.split(",")",res.data.data[0].attributes.template.split(","))
         setResultData(res.data.data[0].attributes.template.split(","));

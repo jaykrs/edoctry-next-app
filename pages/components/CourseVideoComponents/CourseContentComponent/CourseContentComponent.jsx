@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import CustomCheckboxUtil from "../../../utils/FormUtils/CustomCheckboxUtil/CustomCheckboxUtil";
 import axios from "axios";
-import { CMS_URL } from "../../../urlConst";
+import ConstData from "../../../../urlConst";
 import css from "./CourseContentComponent.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { AddChapterToCart, RemoveChapterFromCart } from "../../../reducers/chapterSlicer";
+import { useDispatch, useSelector } from "react-redux"; // reducers/chapterSlicer
+import { AddChapterToCart, RemoveChapterFromCart } from "../../../../reducers/chapterSlicer";
 import { RiVideoFill } from "react-icons/ri";
 import ReactMarkdown from "react-markdown";
 const CourseContentComponent = (props) => {
@@ -20,14 +20,14 @@ const CourseContentComponent = (props) => {
   const chapterCart = useSelector(store => store.chapter.chapter);
   useEffect(() => {
     (async () => {
-      await axios.get(CMS_URL + "courseunits?filters[courseid][$eq]=" + id)
+      await axios.get(ConstData.CMS_URL + "courseunits?filters[courseid][$eq]=" + id)
         .then(res => {
           let data = res.data.data;
           setCourseUnitData(res.data.data);
 
           if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
-              axios.get(CMS_URL + "chapters?filters[courseunitid][$eq]=" + data[i].id, {
+              axios.get(ConstData.CMS_URL + "chapters?filters[courseunitid][$eq]=" + data[i].id, {
                 headers: {
                   Authorization: "Bearer " + localStorage.getItem("jwt")
                 }

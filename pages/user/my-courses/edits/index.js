@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Layout1 from "../../../components/Layout1/Layout1";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../urlConst";
+import ConstData from "../../../../urlConst";
 import { useRouter } from "next/router";
 import SelectDropdownUtil from "../../../utils/FormUtils/SelectDropdownUtil/SelectDropdownUtil";
 import css from "./CourseEditPage.module.css"
@@ -43,7 +43,7 @@ const CourseEditPage = () => {
 
   useEffect(() => {
     setLoading(true);
-    axios.get(CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseEditId"))
+    axios.get(ConstData.CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseEditId"))
       .then(res => {
         let data = res.data.data[0];
         setCourseTlt(data.attributes.course_title);
@@ -85,9 +85,9 @@ const CourseEditPage = () => {
   const handleCreate = () => {
     setLoading(true);
     if (courseTlt === "" || state.course_fee === 0 || state.course_fee_premium === 0 || state.language.value === "" || courseBrief === "" || courseOuline === "") {
-      return toastComponent("warn",textConst.enterMandatoryField);
+      return toastComponent("warn",ConstData.textConst.enterMandatoryField);
     } else {
-      axios.put(CMS_URL + "courses/" + sessionStorage.getItem("courseEditId"), {
+      axios.put(ConstData.CMS_URL + "courses/" + sessionStorage.getItem("courseEditId"), {
         "data": {
           "course_title": courseTlt,
           "course_fee": state.course_fee,
@@ -109,7 +109,7 @@ const CourseEditPage = () => {
       })
         .then(res => {
           setLoading(false);
-          toastComponent("success",textConst.tableUpdatedSuccess);
+          toastComponent("success",ConstData.textConst.tableUpdatedSuccess);
           setTimeout(()=>{
             navigate.push("/user/my-courses/view")
           },3000)
@@ -138,12 +138,12 @@ const CourseEditPage = () => {
       redirect: "follow"
     };
 
-    fetch(CMS_URL + "onboard/fileupload", requestOptions)
+    fetch(ConstData.CMS_URL + "onboard/fileupload", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         setLoading(false);
         stateHandler("course_logo",result.thumbnailUrl);
-        toastComponent("success",textConst.videoUploadSuccess);
+        toastComponent("success",ConstData.textConst.videoUploadSuccess);
       })
       .catch((error) => {
         toastComponent("error",error.message)
@@ -169,12 +169,12 @@ const CourseEditPage = () => {
       redirect: "follow"
     };
 
-    fetch(CMS_URL + "onboard/fileupload", requestOptions)
+    fetch(ConstData.CMS_URL + "onboard/fileupload", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         stateHandler("introductory_video",result.url);
         setLoading(false);
-        toastComponent("success",textConst.videoUploadSuccess);
+        toastComponent("success",ConstData.textConst.videoUploadSuccess);
       })
       .catch((error) => {
         ctoastComponent("error",error.message)

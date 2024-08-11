@@ -1,8 +1,6 @@
 import DetailDPComponent from "../../DetailDPComponent/DetailDPComponent";
 import CourseContentComponent from "../../CourseContentComponent/CourseContentComponent";
-
-import { courseData } from "../../../../fakedata/fakedata";
-
+// import { courseData } from "../../../../fakedata/fakedata";
 import css from "./CourseContentTabComponent.module.css";
 
 const CourseContentTabComponent = () => {
@@ -18,7 +16,7 @@ const CourseContentTabComponent = () => {
         }}
       />
       <div className={css.contentBdy}>
-        <CourseContentComponent data={courseData} />
+        {/* <CourseContentComponent data={courseData} /> */}
       </div>
     </div>
   );

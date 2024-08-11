@@ -1,12 +1,6 @@
 import { useEffect, useState } from "react";
-
-import { categorySubCategoriesData } from "../../../fakedata/fakedata";
-
-import largeNextIcon from "../../../../src/publicContent/icons/large-next.svg";
-import dotsIcon from "../../../../src/publicContent/icons/dots.png";
-
+//import { categorySubCategoriesData } from "../../../fakedata/fakedata";
 import css from "./BreadcrumbVerticalCategoryMenuBar.module.css";
-
 const BreadcrumbVerticalCategoryMenuBar = () => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [lastVisiableEle, setLastVisiableEle] = useState(null);
@@ -66,10 +60,10 @@ const BreadcrumbVerticalCategoryMenuBar = () => {
     <div className={css.outerDiv} id="vouterDiv">
       <div className={css.innerDiv}>
         <div className={css.cats} id="cats">
-          <div className={css.cat}>{categorySubCategoriesData.ttl}</div>
-          <img src={largeNextIcon} alt="right arrow" className={css.nextIcon} />
+          {/* <div className={css.cat}>{categorySubCategoriesData.ttl}</div> */}
+          <img src={"/publicContent/icons/large-next.svg"} alt="right arrow" className={css.nextIcon} />
 
-          {categorySubCategoriesData.sub?.map((cat) => (
+          {/* {categorySubCategoriesData.sub?.map((cat) => (
             <div
               key={cat.id}
               className={[css.category, "categoryDiv"].join(" ")}
@@ -77,19 +71,19 @@ const BreadcrumbVerticalCategoryMenuBar = () => {
             >
               {cat.ttl}
             </div>
-          ))}
+          ))} */}
         </div>
         <div
           className={css.iconBox}
           onClick={() => setShowDropDown((prev) => !prev)}
         >
           <img
-            src={dotsIcon}
+            src={"/publicContent/icons/dots.png"}
             alt="right arrow"
             className={css.icon}
             data-id="iconBox"
           />
-          {showDropDown ? (
+          {/* {showDropDown ? (
             <div className={css.dropDown} data-id="iconBox">
               {categorySubCategoriesData.sub?.map((cat) => {
                 if (+lastVisiableEle > cat.id || lastVisiableEle === null) {
@@ -107,7 +101,7 @@ const BreadcrumbVerticalCategoryMenuBar = () => {
                 );
               })}
             </div>
-          ) : null}
+          ) : null} */}
         </div>
       </div>
     </div>

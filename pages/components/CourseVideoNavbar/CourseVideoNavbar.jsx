@@ -1,23 +1,14 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
-import Button1 from "../../../utils/Buttons/Button1/Button1";
-import ShareCourseCard from "../../Cards/ShareCourseCard/ShareCourseCard";
-import CourseRatingsCard from "../../Cards/CourseRatingsCard/CourseRatingsCard";
-
-import logoIcon from "../../../../src/publicContent/images/logo/svg/logo-no-background.svg";
-import trophyIcon from "../../../../src/publicContent/icons/trophy.png";
-import starIcon from "../../../../src/publicContent/icons/star.png";
-import shareIcon from "../../../../src/publicContent/icons/share.png";
-import downArrowIcon from "../../../../src/publicContent/icons/down-arrow.svg";
-
+import Link from "next/link";
+import Button1 from "../../utils/Buttons/Button1/Button1";
+import ShareCourseCard from "../../components/CourseVideoComponents/ShareCourseCard/ShareCourseCard";
+import CourseRatingsCard from "../../components/CourseVideoComponents/CourseRatingsCard/CourseRatingsCard";
 import css from "./CourseVideoNavbar.module.css";
-
-const CourseVideoNavbar = (props) => {
+const CourseVideoNavbar = ({ data = {},cTitle = "" }) => {
   const [leaveRatingModal, setLeaveRatingModal] = useState(false);
   const [showShareCourseDialog, setShowShareCourseDialog] = useState(false);
-  const { data = {},cTitle = "" } = props;
-  const { title = "" } = data;
+  // const { data = {},cTitle = "" } = props;
+  //const { title = "" } = data;
 
   const shareCourseDialogHandler = () => {
     setShowShareCourseDialog((p) => !p);
@@ -26,8 +17,8 @@ const CourseVideoNavbar = (props) => {
   return (
     <div className={css.outerDiv}>
       <div className={css.left}>
-        <Link to="/" className={css.logoBox}>
-          <img src={logoIcon} alt="logo" className={css.logo} />
+        <Link href="/" className={css.logoBox}>
+          <img src={"/publicContent/images/logo/svg/logo-no-background.svg"} alt="logo" className={css.logo} />
         </Link>
         <hr className={css.vhr} />
         {/* <div className={css.ttl}>{title}</div> */}
@@ -37,16 +28,16 @@ const CourseVideoNavbar = (props) => {
       </div>
       <div className={css.right}>
         <div className={css.item}>
-          <img src={starIcon} alt="star" className={css.icon} />
+          <img src={"/publicContent/icons/star.png"} alt="star" className={css.icon} />
           <span className={css.txt} onClick={() => setLeaveRatingModal(true)}>
             Leave a rating
           </span>
         </div>
         <div className={css.item}>
-          <img src={trophyIcon} alt="progress" className={css.icon} />
+          <img src={"/publicContent/icons/trophy.png"} alt="progress" className={css.icon} />
           <span className={css.txt}>Your Progress</span>
           <img
-            src={downArrowIcon}
+            src={"/publicContent/icons/down-arrow.svg"}
             alt="down arrow"
             className={[css.icon, css.arrowIcon].join(" ")}
           />
@@ -54,7 +45,7 @@ const CourseVideoNavbar = (props) => {
         <Button1
           txt="Share"
           color="var(--white)"
-          img={shareIcon}
+          img={"/publicContent/icons/share.png"}
           imgDir="right"
           onClick={shareCourseDialogHandler}
           bck="var(--gray)"

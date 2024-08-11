@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout1 from "../../../../components/Layout1/Layout1";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../../urlConst";
+import ConstData from "../../../../../urlConst";
 import { useRouter } from "next/router";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { FaAngleDoubleLeft } from "react-icons/fa";
@@ -34,12 +34,12 @@ const InstructorUnitViewPage = () => {
 
     const SearchData = () => {
         setLoading(true)
-        axios.get(CMS_URL + "courseunits?filters[id][$eq]=" + sessionStorage.getItem("unid"))
+        axios.get(ConstData.CMS_URL + "courseunits?filters[id][$eq]=" + sessionStorage.getItem("unid"))
             .then(res => {
                 setData(res.data.data);
             }).catch(err => console.log(err))
 
-        axios.get(CMS_URL + "chapters?filters[courseunitid][$eq]=" + sessionStorage.getItem("unid"), {
+        axios.get(ConstData.CMS_URL + "chapters?filters[courseunitid][$eq]=" + sessionStorage.getItem("unid"), {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
             }
@@ -61,12 +61,12 @@ const InstructorUnitViewPage = () => {
     const handleDelete = (id) => {
         if (confirm("Are you sure , you want to delete Chapter")) {
             setLoading(true);
-            axios.delete(CMS_URL + "chapters/" + id, {
+            axios.delete(ConstData.CMS_URL + "chapters/" + id, {
                 headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
             }).then(res => {
                 setLoading(false);
                 setTimeout(() => {
-                    toastComponent("success", textConst.tableDeletedSuccess);
+                    toastComponent("success", ConstData.textConst.tableDeletedSuccess);
                 }, 3000);
                 setRecordDeleted(!recordDeleted);
             }).catch(err => {

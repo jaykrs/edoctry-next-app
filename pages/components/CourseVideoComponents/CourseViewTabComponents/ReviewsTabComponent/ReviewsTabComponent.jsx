@@ -1,10 +1,5 @@
 import { useState } from "react";
-
 import css from "./ReviewsTabComponent.module.css";
-
-import imgC from "../../../../../src/publicContent/images/showcase.jpg";
-import searchIcon from "../../../../../src/publicContent/icons/search.png";
-
 import CommentViewUtil from "../../../../utils/CommentViewUtil/CommentViewUtil";
 import InputUtil from "../../../../utils/FormUtils/InputUtil/InputUtil";
 import SelectDropdownUtil from "../../../../utils/FormUtils/SelectDropdownUtil/SelectDropdownUtil";
@@ -21,7 +16,7 @@ const ReviewsTabComponent = () => {
   const comments = [
     {
       id: "c1",
-      img: imgC,
+      img: "/publicContent/images/showcase.jpg",
       name: "koushil",
       rating: 3,
       date: "12-12-2022",
@@ -30,7 +25,7 @@ const ReviewsTabComponent = () => {
     },
     {
       id: "c2",
-      img: imgC,
+      img: "/publicContent/images/showcase.jpg",
       name: "nani",
       rating: 5,
       date: "02-02-2022",
@@ -39,7 +34,7 @@ const ReviewsTabComponent = () => {
     },
     {
       id: "c3",
-      img: imgC,
+      img: "/publicContent/images/showcase.jpg",
       name: "Koushil Mankali",
       rating: 2,
       date: "02-02-2022",
@@ -90,7 +85,7 @@ const ReviewsTabComponent = () => {
               state={filter.searchFilter}
               onChange={filterHandler}
               placeholderTxt="Search reviews"
-              icon={searchIcon}
+              icon={"/publicContent/icons/search.png"}
               iconPosition="right"
             />
           </span>
@@ -106,13 +101,13 @@ const ReviewsTabComponent = () => {
             />
           </span>
         </div>
-        {comments?.map((comment) => {
+        {/* {comments?.map((comment) => {
           return (
             <div className={css.comment} key={comment.id}>
               <CommentViewUtil data={comment} />
             </div>
           );
-        })}
+        })} */}
       </div>
     </div>
   );

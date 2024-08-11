@@ -9,8 +9,8 @@ import SearchBar2 from "../../../utils/SearchBar2/SearchBar2";
 import SelectDropdownUtil from "../../../utils/FormUtils/SelectDropdownUtil/SelectDropdownUtil";
 import VerticalCourseDraftCard from "../../../utils/VerticalCourseDraftCard/VerticalCourseDraftCard";
 import axios from "axios";
-import { CMS_URL } from "../../../urlConst";
 import Layout1 from "../../../components/Layout1/Layout1";
+import ConstData from "../../../../urlConst";
 const InstructorCoursePage = () => {
   
   const [courses, setCourses] = useState([{}]);
@@ -24,7 +24,7 @@ const InstructorCoursePage = () => {
   useEffect(() => {
     const userTypes = typeof window !== 'undefined' ? localStorage.getItem("usertype") : "";
     setUserType(userTypes);
-    axios.get(CMS_URL + "courses?filters[instructor][$eq]=" + localStorage.getItem("email"))
+    axios.get(ConstData.CMS_URL + "courses?filters[instructor][$eq]=" + localStorage.getItem("email"))
       .then(res => {
         setCourseData(res.data.data)
       }).then(err => {

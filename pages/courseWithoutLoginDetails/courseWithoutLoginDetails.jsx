@@ -8,16 +8,17 @@ import ReactMarkdown from "react-markdown";
 import moment from 'moment';
 import { ToastContainer } from "react-toastify";
 import { useRouter } from "next/navigation";
+import ConstData from "../../urlConst";
 function CourseWithoutLoginDetails(props) {
     const [data, setData] = useState(null);
     const [unitData, setUnitData] = useState(null);
     const router = useRouter();
     useEffect(() => {
-        axios({ method: "GET", url: CMS_URL + "/api/courses/" + localStorage.getItem("courseId") })
+        axios({ method: "GET", url: ConstData.CMS_URL + "/api/courses/" + localStorage.getItem("courseId") })
             .then(res => {
                 setData(res.data.data);
 
-                axios({ method: "GET", url: CMS_URL + "/api/courseunits?filters[courseid][$eq]=" + res.data.data.id })
+                axios({ method: "GET", url: ConstData.CMS_URL + "/api/courseunits?filters[courseid][$eq]=" + res.data.data.id })
                     .then(response => {
                         setUnitData(response.data.data);
                     })

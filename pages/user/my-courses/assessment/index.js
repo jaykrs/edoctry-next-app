@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Layout1 from "../../../components/Layout1/Layout1";
 import axios from "axios";
-import { CMS_URL } from "../../../urlConst";
+import ConstData from "../../../../urlConst";
 import { useRouter } from "next/router";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import toastComponent from "../../../toastComponent";
@@ -25,7 +25,7 @@ const CustomerAssesmentPage = () => {
             }, 1500)
         } else {
             let courseId = sessionStorage.getItem("courseInsId")
-            axios.get(CMS_URL + "assesments?filters[course][$eq]=" + sessionStorage.getItem("courseAid"), {
+            axios.get(ConstData.CMS_URL + "assesments?filters[course][$eq]=" + sessionStorage.getItem("courseAid"), {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("jwt")
                 }

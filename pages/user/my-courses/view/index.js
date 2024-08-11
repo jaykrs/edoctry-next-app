@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { CMS_URL } from "../../../urlConst";
+import ConstData from "../../../../urlConst";
 import { useRouter } from "next/router";
 import ReactMarkdown from "react-markdown";
 import { FaAngleDoubleLeft } from "react-icons/fa";
@@ -39,11 +39,11 @@ const InstructorCourseViewPage = () => {
     const searchData = () => {
         setLoading(true);
         if (localStorage.getItem("usertype") === "instructor") {
-            axios.get(CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseInsId"))
+            axios.get(ConstData.CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseInsId"))
                 .then(res => {
                     setData(res.data.data);
                 }).catch(err => console.log(err))
-            axios.get(CMS_URL + "courseunits?filters[courseid][$eq]=" + sessionStorage.getItem("courseInsId"))
+            axios.get(ConstData.CMS_URL + "courseunits?filters[courseid][$eq]=" + sessionStorage.getItem("courseInsId"))
                 .then(result => {
 
                     setUnitData(result.data.data)
@@ -57,11 +57,11 @@ const InstructorCourseViewPage = () => {
                     setLoading(false);
                 }).catch(err => console.log(err))
         } else if (localStorage.getItem("usertype") === "customer") {
-            axios.get(CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseInsId"))
+            axios.get(ConstData.CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseInsId"))
                 .then(res => {
                     setData(res.data.data);
                 }).catch(err => console.log(err))
-            axios.get(CMS_URL + "courseunits?filters[courseid][$eq]=" + sessionStorage.getItem("courseInsId"))
+            axios.get(ConstData.CMS_URL + "courseunits?filters[courseid][$eq]=" + sessionStorage.getItem("courseInsId"))
                 .then(result => {
                     setUnitData(result.data.data)
                     let endOffset = state.currentPage * state.recordsPerPage;
@@ -79,7 +79,7 @@ const InstructorCourseViewPage = () => {
     const handleDelete = (id) => {
         if (confirm("Are you sure you want to delete this course unit?")) {
             setLoading(true);
-            axios.delete(CMS_URL + "courseunits/" + id, {
+            axios.delete(ConstData.CMS_URL + "courseunits/" + id, {
                 headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
             })
                 .then(res => {

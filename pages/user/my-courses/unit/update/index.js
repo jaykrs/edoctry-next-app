@@ -2,7 +2,7 @@ import InputUtil from "../../../../utils/FormUtils/InputUtil/InputUtil";
 import { FaEnvelopeOpenText } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../../urlConst"; 
+import ConstData from "../../../../../urlConst"; 
 import { useRouter } from "next/navigation";
 import Layout1 from "../../../../components/Layout1/Layout1";
 import css from "./InstructorUnitEditPage.module.css";
@@ -24,15 +24,19 @@ const InstructorUnitEditPage = () => {
   const [labProject,setLabProject] = useState("");
   const [state, setState] = useState({
     unit_duration: 0,
-    courseid: localStorage.getItem("courseId"),
+    courseid: 0,
     labproject_attachment:"",
     unit_introductory_video: "",
     id:0
   })
 
   useEffect(()=>{
+    let courseId = localStorage.getItem("courseId");
+    setState((prev) => {
+      return { ...prev, ["courseid"]: courseId };
+    });
     setLoading(true);
-    axios.get(CMS_URL + "courseunits?filters[id][$eq]=" + sessionStorage.getItem("unitEditId"))
+    axios.get(ConstData.CMS_URL + "courseunits?filters[id][$eq]=" + sessionStorage.getItem("unitEditId"))
     .then(res=>{
         let data= res.data.data[0].attributes;
         setUnitTlt(data.unit_title);
@@ -53,10 +57,10 @@ const InstructorUnitEditPage = () => {
 
   const handleCreate = () => {
     if (unitTlt === "" || unitBrief === "" || labProject === "") {
-      return toastComponent("error", textConst.enterMandatoryField);
+      return toastComponent("error", ConstData.textConst.enterMandatoryField);
     } else {
       setLoading(true);
-      axios.put(CMS_URL + "courseunits/" + state.id, {
+      axios.put(ConstData.CMS_URL + "courseunits/" + state.id, {
         "data": {
           "unit_title": unitTlt,
           "unit_duration": state.unit_duration,
@@ -70,7 +74,7 @@ const InstructorUnitEditPage = () => {
       })
         .then(res => {
           setLoading(false);
-          toastComponent("success",textConst.tableUpdatedSuccess);
+          toastComponent("success",ConstData.textConst.tableUpdatedSuccess);
           setTimeout(()=>{
             navigate.push("/user/my-courses/view");
           },3000);

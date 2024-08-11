@@ -1,10 +1,6 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import Button1 from "../../../../utils/Buttons/Button1/Button1";
-
-import showcaseImg from "../../../../../src/publicContent/images/showcase.jpg";
-
 import css from "./OverViewTabComponent.module.css";
-
 const OverViewTabComponent = () => {
   const data = {
     ttl: "About this course",
@@ -51,7 +47,7 @@ const OverViewTabComponent = () => {
     Programmers looking to learn GraphQL`,
     instructor: {
       name: "Stephen Grider",
-      img: showcaseImg,
+      img: "/publicContent/images/showcase.jpg",
       ttl: "Engineering Architect",
       desc: "Stephen Grider has been building complex Javascript front ends for top corporations in the San Francisco Bay Area.  With an innate ability to simplify complex topics, Stephen has been mentoring engineers beginning their careers in software development for years, and has now expanded that experience onto Edoctry, authoring the highest rated React course. He teaches on Edoctry to share the knowledge he has gained with other software engineers.  Invest in yourself by learning from Stephen's published courses.",
     },
@@ -111,11 +107,11 @@ const OverViewTabComponent = () => {
         <div className={css.sinBox}>
           <div className={css.ttlTxt}>
             Available on
-            <Link to="/" className={css.link}>
+            <Link href="/" className={css.link}>
               iOS
             </Link>
             and
-            <Link className={css.link} to="/">
+            <Link className={css.link} href="/">
               Android
             </Link>
           </div>

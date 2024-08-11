@@ -1,7 +1,7 @@
 import InputUtil from "../../../../utils/FormUtils/InputUtil/InputUtil";
 import React, { useState } from "react";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../../urlConst"; 
+import ConstData from "../../../../../urlConst"; 
 import { useRouter } from "next/router";
 import Layout1 from "../../../../components/Layout1/Layout1";
 import { MdOutlineCancelPresentation } from "react-icons/md";
@@ -46,7 +46,7 @@ const InstructorChapterNew = () => {
       redirect: "follow"
     };
 
-    fetch(CMS_URL + "onboard/fileupload", requestOptions)
+    fetch(ConstData.CMS_URL + "onboard/fileupload", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         let arr = state.introductory_video;
@@ -65,7 +65,7 @@ const InstructorChapterNew = () => {
     if (chapterTlt === "" || chapterBrief === "" || chapterContent === "" || chapterContent === "") {
        toastComponent("error","All the mandatory field are required");
     } else {
-      axios.post(CMS_URL + "chapters", {
+      axios.post(ConstData.CMS_URL + "chapters", {
         "data": {
           "chapter_title": chapterTlt,
           "chapter_duration": state.chapter_duration,
@@ -83,7 +83,7 @@ const InstructorChapterNew = () => {
       })
         .then(res => {
           setLoading(false);
-          toastComponent("success",textConst.tableCreatedSuccess);
+          toastComponent("success",ConstData.textConst.tableCreatedSuccess);
            setTimeout(()=>{
             navigate.push("/user/my-courses/unit/view");
            },3000);

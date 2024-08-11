@@ -1,25 +1,29 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Navbar2 from "../../components/Navbar2/Navbar2";
 import Button1 from "../../utils/Buttons/Button1/Button1";
 import SelectUtil from "../../utils/FormUtils/SelectUtil/SelectUtil";
 import ImportUtil from "../../utils/FormUtils/InputUtil/InputUtil";
 import { useSelector } from "react-redux";
 import css from "./Checkout.module.css";
 import axios from "axios";
-import { CMS_URL, countryJson, textConst } from "../../urlConst";
-import { useDispatch } from "react-redux";
-import { removeItemFromCart } from "../../reducers/cartSlicer";
-import { config } from "../../utils/config";
 import { ToastContainer } from "react-toastify";
 import toastComponent from "../../toastComponent";
-
+import Cookie from "js-cookie";
+import ConstData from "../../../urlConst";
+const config = {
+  key_secret: "rzp_test_j01bme0LQCu7jS",
+  name: "Edoctry Inc",
+  currency: "INR",
+  description: "Test Transaction",
+  logo: "/publicContent/images/logo/png/logo-color.ico",
+  CorporateAddress: "Razorpay Corporate Office"
+}
 const Checkout = () => {
   const randomString = Date.now() * Math.floor(Math.random() * 800);
   const navigate = useRouter();
   const cartdata = useSelector((state) => state.cart.cart);
-  const dispatch = useDispatch();
+
   const [inputData, setInputData] = useState({
     country: "",
     state: "",
@@ -68,7 +72,7 @@ const Checkout = () => {
     setInputData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
-  }; 
+  };
   const createEnrollment = async (orderDetails, amount) => {
     let courseIdList = [];
     for (let i = 0; i < cartdata.length; i++) {
@@ -86,21 +90,28 @@ const Checkout = () => {
         "address": inputData.address,
         "instructor": cartdata[i].attributes.instructor
       }
-      await axios.post(CMS_URL + "orders", {
+      await axios.post(ConstData.CMS_URL + "orders", {
         "data": body
       }).then(async od => {
 
-        await axios.put(CMS_URL + "courses/" + cartdata[i].id, {
+        await axios.put(ConstData.CMS_URL + "courses/" + cartdata[i].id, {
           "data": { "enrollment_count": cartdata[i].attributes.enrollment_count + 1 }
         }, {
           headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
         }).then(result => { })
           .catch(err => console.log(err))
-
-        dispatch(removeItemFromCart(i));
+        let CookieData = Cookie.get("cart");
+        CookieData = CookieData ? JSON.parse(CookieData) : [];
+        let index = CookieData.indexOf(cartdata[i].id);
+        if (index !== -1) {
+          CookieData.splice(index, 1);
+        }
+        Cookie.set("cart", JSON.stringify(CookieData), { expires: 30 });
+        //setRefresh(true);
+        // dispatch(removeItemFromCart(i));
       }).catch(err => console.log("order err", i, err))
     }
-    await axios.post(CMS_URL + "enrollments", {
+    await axios.post(ConstData.CMS_URL + "enrollments", {
       "data": {
         "customeremail": localStorage.getItem("email"),
         "course": `${courseIdList}`,
@@ -120,12 +131,12 @@ const Checkout = () => {
   const handleCompleteOrder = () => {
     alert("are you sure , you want to proceed?")
 
-    if (inputData.country === "" || inputData.state === "" || inputData.address === "" ) {
-       toastComponent("error",textConst.enterMandatoryField);
+    if (inputData.country === "" || inputData.state === "" || inputData.address === "") {
+      toastComponent("error", ConstData.textConst.enterMandatoryField);
       return;
     } else {
 
-      axios.post(CMS_URL + "onboard/payment", {
+      axios.post(ConstData.CMS_URL + "onboard/payment", {
         amount: price,
         currency: "INR"
       })
@@ -146,7 +157,7 @@ const Checkout = () => {
             },
             handler: async (response) => {
               try {
-                axios.post(CMS_URL + "onboard/payment/verify", response)
+                axios.post(ConstData.CMS_URL + "onboard/payment/verify", response)
                   .then(result => {
                     createEnrollment(response, paymentResData.amount / 100);
 
@@ -189,7 +200,7 @@ const Checkout = () => {
                       name="country"
                       label="Country"
                       txt="Required"
-                      options={countryJson}
+                      options={ConstData.countryJson}
                       value={inputData.country}
                       setValue={(value) => {
                         setInputData((prev) => {

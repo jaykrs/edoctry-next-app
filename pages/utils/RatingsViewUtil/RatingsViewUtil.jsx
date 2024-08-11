@@ -5,8 +5,8 @@ import ProgressBar from "../../utils/ProgressBar/ProgressBar";
 
 import css from "./RatingsViewUtil.module.css";
 
-const RatingsViewUtil = (props) => {
-  const data = props?.data;
+const RatingsViewUtil = ({data={}}) => {
+  //const data = props?.data;
 
   let content = [];
 
@@ -60,7 +60,7 @@ const RatingsViewUtil = (props) => {
       <div className={css.ratingBox}>
         <div className={css.ratingNum}>{totalRatingCalc}</div>
         <div className={css.rStars}>
-          {Array.from(new Array(Math.floor(totalRatingCalc)), (_, i) => (
+          {/* {Array.from(new Array(Math.floor(totalRatingCalc)), (_, i) => (
             <img
               src={starIcon}
               key={`star-${i}`}
@@ -75,7 +75,7 @@ const RatingsViewUtil = (props) => {
               alt="star"
               className={css.starIcon}
             />
-          ))}
+          ))} */}
         </div>
         <div className={css.ratingTxt}>Course Rating</div>
       </div>

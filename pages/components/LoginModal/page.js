@@ -1,30 +1,21 @@
 import { useState } from "react";
 
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
-import InputUtil from "../../../utils/FormUtils/InputUtil/InputUtil";
-import Button1 from "../../../utils/Buttons/Button1/Button1";
-import fImg from "../../../../src/publicContent/icons/facebook.svg";
-//import fImg from "/icons/facebook.svg";
-import gImg from "../../../../src/publicContent/icons/google.svg";
-import aImg from "../../../../src/publicContent/icons/apple-logo.svg";
-import email from "../../../../src/publicContent/icons/email.png";
-import lock from "../../../../src/publicContent/icons/lock.png";
-import closeIcon from "../../../../src/publicContent/icons/close.png";
-
+import InputUtil from "../../utils/FormUtils/InputUtil/InputUtil";
+import Button1 from "../../utils/Buttons/Button1/Button1";
 import css from "./LoginModal.module.css";
-
-const LoginModal = (props) => {
-  const { setModal = () => {} } = props;
+const LoginModal = ({ setModal = () => {} }) => {
+  // const { setModal = () => {} } = props;
   const [state, setState] = useState({
     email: "",
     password: "",
   });
 
   const oauth = [
-    { img: fImg, txt: "Continue with Facebook", link: "/facebook-auth" },
-    { img: gImg, txt: "Continue with Google", link: "/google-auth" },
-    { img: aImg, txt: "Continue with Apple", link: "/apple-auth" },
+    { img: "/publicContent/icons/facebook.svg", txt: "Continue with Facebook", link: "/facebook-auth" },
+    { img: "/publicContent/icons/google.svg", txt: "Continue with Google", link: "/google-auth" },
+    { img: "/publicContent/icons/apple-logo.svg", txt: "Continue with Apple", link: "/apple-auth" },
   ];
 
   let changeHanlder = (e) => {
@@ -48,7 +39,7 @@ const LoginModal = (props) => {
           <div className={css.ttl}>
             <span>Log in to your Edoctry account</span>
             <img
-              src={closeIcon}
+              src={"/publicContent/icons/close.png"}
               alt="close icon"
               className={css.cicon}
               onClick={() => setModal(false)}
@@ -68,7 +59,7 @@ const LoginModal = (props) => {
               type="email"
               name="email"
               state={state.email}
-              icon={email}
+              icon={"/publicContent/icons/email.png"}
               placeholderTxt="Email"
               onChange={changeHanlder}
             />
@@ -76,7 +67,7 @@ const LoginModal = (props) => {
               type="password"
               name="password"
               state={state.password}
-              icon={lock}
+              icon={"/publicContent/icons/lock.png"}
               placeholderTxt="Password"
               onChange={changeHanlder}
             />
@@ -95,23 +86,23 @@ const LoginModal = (props) => {
             />
             <div className={css.blck}>
               <span className={css.blckTxt}>or</span>
-              <Link to="/join/forgot-password" className={css.anchor}>
+              <Link href="/join/forgot-password" className={css.anchor}>
                 Forgot password
               </Link>
             </div>
             <div className={css.blck}>
-              <Link to="/join/login" className={css.anchor}>
+              <Link href="/join/login" className={css.anchor}>
                 Log in to a different account
               </Link>
             </div>
             <div className={css.blck}>
               <span className={css.blckTxt}>Dont have an account?</span>
-              <Link to="/join/signup" className={css.anchor}>
+              <Link href="/join/signup" className={css.anchor}>
                 <b>Signup</b>
               </Link>
             </div>
             <div className={css.blck}>
-              <Link to="/join/login" className={css.anchor}>
+              <Link href="/join/login" className={css.anchor}>
                 <b>Login with your organization</b>
               </Link>
             </div>

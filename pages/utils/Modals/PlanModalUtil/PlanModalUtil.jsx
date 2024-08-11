@@ -6,14 +6,20 @@ import Button1 from "../../Buttons/Button1/Button1";
 import cancelIcon from "../../../publicContent/icons/close.png"
 import css from "./PlanModalUtil.module.css";
 
-const PlanModalUtil = (props) => {
-  const {
-    title = "",
-    content = "",
-    btns = [],
-    state = false,
-    setModal = () => {},
-  } = props;
+const PlanModalUtil = ({
+  title = "",
+  content = "",
+  btns = [],
+  state = false,
+  setModal = () => {},
+}) => {
+  // const {
+  //   title = "",
+  //   content = "",
+  //   btns = [],
+  //   state = false,
+  //   setModal = () => {},
+  // } = props;
 
   useEffect(() => {
     window.addEventListener("click", (e) => {
@@ -41,7 +47,7 @@ const PlanModalUtil = (props) => {
         </div>
         <div className={css.content}>{content}</div>
         <div className={css.btns}>
-          {btns?.map((btn, id) => {
+          {/* {btns?.map((btn, id) => {
             return (
               <Button1
                 txt={btn}
@@ -51,12 +57,14 @@ const PlanModalUtil = (props) => {
                 extraCss={{ textTransform: "capitalize" }}
               />
             );
-          })}
+          })} */}
         </div>
       </div>
     </div>
   );
-  return createPortal(modal, document.getElementById("modal"));
+  // return createPortal(modal,
+  //   //  document.getElementById("modal")
+  //   );
 };
 
 export default PlanModalUtil;

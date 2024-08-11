@@ -1,19 +1,20 @@
 
 import React, { useEffect, useState } from "react";
-import InstructorLayout from "../InstructorLayout/InstructorLayout";
+import Layout1 from "../../../components/Layout1/Layout1";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../components/const/urlConst";
-import { useNavigate } from "react-router-dom";
+import ConstData from "../../../../urlConst";
+import { useRouter } from "next/router";
 import { FaAngleDoubleLeft } from "react-icons/fa";
-import toastComponent from "../../toastComponent";
+import toastComponent from "../../../toastComponent";
 import { ToastContainer } from "react-toastify";
 const AssesmentList = () => {
-    const navigate = useNavigate();
+    const navigate = useRouter();
     const [state, setState] = useState("");
     const [recordDeleted,setRecordDeleted] = useState(false);
-
+   const [userType,setUserType] = useState("");
     useEffect(() => {
         SearchData()
+        setUserType(localStorage.getItem("email"));
     },[]);
 
     useEffect(() => {
@@ -22,7 +23,7 @@ const AssesmentList = () => {
     
 const SearchData = ()=>{
     let courseId = sessionStorage.getItem("courseInsId")
-        axios.get(CMS_URL + "/api/assesments?filters[course][$eq]=" + courseId, {
+        axios.get(ConstData.CMS_URL + "/api/assesments?filters[course][$eq]=" + courseId, {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
             }
@@ -34,23 +35,23 @@ const SearchData = ()=>{
             })
 }
     const handleCreate = () => {
-        navigate("/user/profile/assesment/create");
+        navigate.push("/user/profile/assesment/create");
     }
     const handleAddQuestion = (id) => {
         console.log(id)
         sessionStorage.setItem("assid", id)
-        navigate("/user/profile/assesment/question")
+        navigate.push("/user/profile/assesment/question")
     }
 
     const handleDelete = (id) => {
         if (confirm("Are you sure you want to delete this assessment?")) {
-            axios.delete(CMS_URL + "/api/assesments/" + id, {
+            axios.delete(ConstData.CMS_URL + "/api/assesments/" + id, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("jwt")
                 }
             })
                 .then(res => {
-                    toastComponent("success",textConst.tableDeletedSuccess);
+                    toastComponent("success",ConstData.textConst.tableDeletedSuccess);
                     setRecordDeleted(!recordDeleted);
                 }).catch(err => {
                     toastComponent("error",err.message);
@@ -60,14 +61,14 @@ const SearchData = ()=>{
 
     return (
 
-        <InstructorLayout >
+        <Layout1 >
             <ToastContainer />
             <div>
-                <button className="btn mt-3" onClick={() => { navigate("/user/profile/course/cardpage") }}><FaAngleDoubleLeft size={40} /></button>
-                <div style={{ margin: "50px 3% 10px  3%" }} className={localStorage.getItem("usertype") === "instructor" ? "d-flex justify-content-between" : "d-flex justify-content-start"}>
+                <button className="btn mt-3" onClick={() => { navigate.push("/user/profile/course/cardpage") }}><FaAngleDoubleLeft size={40} /></button>
+                <div style={{ margin: "50px 3% 10px  3%" }} className={userType === "instructor" ? "d-flex justify-content-between" : "d-flex justify-content-start"}>
                     <h1>Assesment</h1>
                     {
-                        localStorage.getItem("usertype") === "instructor" &&
+                        userType === "instructor" &&
                         <button className="btn btn-primary btnStyle1" onClick={handleCreate}>New</button>
                     }
 
@@ -92,7 +93,7 @@ const SearchData = ()=>{
                             </thead>
                             <tbody>
                                 {
-                                    localStorage.getItem("usertype") === "instructor" && state.length > 0 ? state.reverse().map((item, index) => {
+                                    userType === "instructor" && state.length > 0 ? state.reverse().map((item, index) => {
                                         let stateLength = state.length;
                                         return (
                                             <tr key={index}>
@@ -104,7 +105,7 @@ const SearchData = ()=>{
                                                 <td>
                                                     <button className="btn btn-primary" onClick={() => {
                                                         sessionStorage.setItem("assid", item.id);
-                                                        navigate("/user/profile/assesment/question");
+                                                        navigate.push("/user/profile/assesment/question");
                                                     }} >view</button>
                                                 </td>
                                                 <td>
@@ -137,7 +138,7 @@ const SearchData = ()=>{
 
                 </div>
             </div>
-        </InstructorLayout>
+        </Layout1>
     )
 
 };

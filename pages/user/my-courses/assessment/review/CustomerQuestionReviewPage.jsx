@@ -1,20 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Layout1 from "../../Layout1/Layout1";
+import Layout1 from "../../../../components/Layout1/Layout1";
 import axios from "axios";
-import { CMS_URL } from "../../../components/const/urlConst";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { AddCusAns, UpdateCusAns, RemoveAllCusAns } from "../../../reducers/cusAnsSlicer";
-import { setQuestionReview } from "../../../reducers/questionTestReviewSlicer";
-import InstructorMenuBar from "../../../components/LayoutComponents/InstructorMenuBar/InstructorMenuBar";
-import ReviewMenuBar from "../../../components/LayoutComponents/ReviewMenuBar/ReviewMenuBar";
-
+import ConstData from "../../../../../urlConst";
+import ReviewMenuBar from "../../../../components/ReviewMenuBar/ReviewMenuBar";
 const CustomerQuestionReviewPage = () => {
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
-    const cusAnsData = useSelector(store => store.cusAns.cusAns);
-    const qsReviewData = useSelector(store => store.qsReview.qsReview);
-    const location = useLocation();
     const [quesData, setQuesData] = useState("");
     const [currentIndex, setNextIndex] = useState(0);  
     const [scoreData, setScoreData] = useState("");
@@ -35,7 +24,7 @@ const CustomerQuestionReviewPage = () => {
     const [enableBtn, setEnableBtn] = useState(false);
 
     useEffect(() => {
-        axios.get(CMS_URL + "/api/scores?filters[id][$eq]=" + sessionStorage.getItem("scoreId"), {
+        axios.get(ConstData.CMS_URL + "/api/scores?filters[id][$eq]=" + sessionStorage.getItem("scoreId"), {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
             }
@@ -44,7 +33,7 @@ const CustomerQuestionReviewPage = () => {
                 setTotalScore(score.data.data[0].attributes.totalScored)
                 const AnsData = JSON.parse(score.data.data[0].attributes.customerAnswer);
                 setScoreData(AnsData);
-                await axios.get(CMS_URL + "/api/questions?filters[assesment_id][$eq]=" + score.data.data[0].attributes.assesmentid, {
+                await axios.get(ConstData.CMS_URL + "/api/questions?filters[assesment_id][$eq]=" + score.data.data[0].attributes.assesmentid, {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("jwt")
                     }

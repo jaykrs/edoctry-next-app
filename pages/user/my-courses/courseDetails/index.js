@@ -7,7 +7,7 @@ import CourseVideoNavbar from "../../../components/CourseVideoComponents/CourseV
 import Footer from "../../../components/Footer/Footer";
 import css from "./CourseViewPage.module.css";
 import axios from "axios";
-import { CMS_URL } from "../../../urlConst";
+import ConstData from "../../../../urlConst";
 const CourseViewPage = () => {
   const [videoUrl, setVideoUrl] = useState("");
   const [playerFullWidth, setPlayerFullWidth] = useState(false);
@@ -22,7 +22,7 @@ const CourseViewPage = () => {
   })
   
   useEffect(() => {
-    axios.get(CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("coursePlayerID"))
+    axios.get(ConstData.CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("coursePlayerID"))
       .then(res => {
         setCoursesData(res.data.data);
         if (videoUrl === "") {

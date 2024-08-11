@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Layout1 from "../../../../components/Layout1/Layout1";
 import axios from "axios";
-import { CMS_URL } from "../../../../urlConst";
+import ConstData from "../../../../../urlConst";
 import { useDispatch, useSelector } from "react-redux";
-import { AddCusAns, UpdateCusAns, RemoveAllCusAns } from "../../../../reducers/cusAnsSlicer";
-import { setQuestionReview } from "../../../../reducers/questionTestReviewSlicer";
+// import { AddCusAns, UpdateCusAns, RemoveAllCusAns } from "../../../../../reducers/cusAnsSlicer";
+// import { setQuestionReview } from "../../../../../reducers/questionTestReviewSlicer";
 import ReviewMenuBar from "../../../../components/ReviewMenuBar/ReviewMenuBar";
 import PageLoadingComponents from "../../../../utils/PageLoadingComponent/PageLoadingComponents";
 const CustomerQuestionReviewPage = () => {
@@ -33,7 +33,7 @@ const CustomerQuestionReviewPage = () => {
 
     useEffect(() => {
         setLoading(true);
-        axios.get(CMS_URL + "scores?filters[id][$eq]=" + sessionStorage.getItem("scoreId"), {
+        axios.get(ConstData.CMS_URL + "scores?filters[id][$eq]=" + sessionStorage.getItem("scoreId"), {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
             }
@@ -42,7 +42,7 @@ const CustomerQuestionReviewPage = () => {
                 setTotalScore(score.data.data[0].attributes.totalScored)
                 const AnsData = JSON.parse(score.data.data[0].attributes.customerAnswer);
                 setScoreData(AnsData);
-                await axios.get(CMS_URL + "questions?filters[assesment_id][$eq]=" + score.data.data[0].attributes.assesmentid, {
+                await axios.get(ConstData.CMS_URL + "questions?filters[assesment_id][$eq]=" + score.data.data[0].attributes.assesmentid, {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("jwt")
                     }

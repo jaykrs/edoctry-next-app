@@ -2,7 +2,7 @@ import InputUtil from "../../../../utils/FormUtils/InputUtil/InputUtil";
 import React, { useState } from "react";
 import Layout1 from "../../../../components/Layout1/Layout1";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../../urlConst";
+import ConstData from "../../../../../urlConst";
 import { useRouter } from "next/navigation";
 // import MDEditor, { commands } from '@uiw/react-md-editor';
 import toastComponent from "../../../../toastComponent";
@@ -37,9 +37,9 @@ const InstructorUnitNew = () => {
   const handleCreate = () => {
     setLoading(true);
     if (unit === "" || state.unit_duration === "" || labProject === "" || unitBrief === "") {
-      return toastComponent("error", textConst.enterMandatoryField);
+      return toastComponent("error", ConstData.textConst.enterMandatoryField);
     } else {
-      axios.post(CMS_URL + "courseunits", {
+      axios.post(ConstData.CMS_URL + "courseunits", {
         "data": {
           "unit_title": unit,
           "unit_duration": state.unit_duration,
@@ -55,7 +55,7 @@ const InstructorUnitNew = () => {
         }
       })
         .then(res => {
-          toastComponent("success", textConst.tableCreatedSuccess);
+          toastComponent("success", ConstData.textConst.tableCreatedSuccess);
           setTimeout(() => {
             navigate.push("/user/my-courses/view");
           }, 3000);

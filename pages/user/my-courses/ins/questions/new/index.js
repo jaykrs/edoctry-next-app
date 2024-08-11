@@ -3,7 +3,7 @@ import TextAreaUtil from "../../../../../utils/FormUtils/TextAreaUtil/TextAreaUt
 import { FaEnvelopeOpenText } from "react-icons/fa";
 import React, { useState } from "react";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../../../urlConst";
+import ConstData from "../../../../../../urlConst";
 import { useRouter } from "next/navigation";
 import SelectDropdownUtil from "../../../../../utils/FormUtils/SelectDropdownUtil/SelectDropdownUtil";
 import { FaAngleDoubleLeft } from "react-icons/fa";
@@ -59,12 +59,12 @@ const QuestionNew = () => {
             toastComponent("warn","Please select question type");
         } else if (state.questiontype.value === "singleselect") {
             if (quesTlt === "" || state.option_a_text === "" || state.option_b === "" || state.option_c === "" || state.marks <= 0 ) {
-                toastComponent("warn",textConst.enterMandatoryField)
+                toastComponent("warn",ConstData.textConst.enterMandatoryField)
             } else if (state.option_a_is_answer === false && state.option_b_is_answer === false && state.option_c_is_answer === false && state.option_d_is_answer === false && state.option_e_is_answer === false) {
                 toastComponent("warn","Please select respective question answer");
             } else {
                 setLoading(true);
-                axios.post(CMS_URL + "questions", {
+                axios.post(ConstData.CMS_URL + "questions", {
                     "data": {
                         "questiontype": state.questiontype.value,
                         "question_title": quesTlt,
@@ -95,7 +95,7 @@ const QuestionNew = () => {
                     }
                 }).then(res => {
                     setLoading(false);
-                    toastComponent("success",textConst.tableCreatedSuccess);
+                    toastComponent("success",ConstData.textConst.tableCreatedSuccess);
                     setTimeout(()=>{
                       navigate.push("/user/profile/assesment/question");
                     },3000);
@@ -109,12 +109,12 @@ const QuestionNew = () => {
             }
         } else if (state.questiontype.value === "multiselect") {
             if (quesTlt === "" || state.option_a_text === "" || state.option_b === "" || state.option_c === "" || state.marks <= 0 ) {
-                toastComponent("warn",textConst.enterMandatoryField)
+                toastComponent("warn",ConstData.textConst.enterMandatoryField)
             } else if (state.option_a_is_answer === false && state.option_b_is_answer === false && state.option_c_is_answer === false && state.option_d_is_answer === false && state.option_e_is_answer === false) {
                 toastComponent("warn","Please select respective question answer")
             } else {
                 setLoading(true);
-                axios.post(CMS_URL + "questions", {
+                axios.post(ConstData.CMS_URL + "questions", {
                     "data": {
                         "questiontype": state.questiontype.value,
                         "question_title": quesTlt,
@@ -146,7 +146,7 @@ const QuestionNew = () => {
                     }
                 }).then(res => {
                     setLoading(false);
-                    toastComponent("success",textConst.tableCreatedSuccess);
+                    toastComponent("success",ConstData.textConst.tableCreatedSuccess);
                     setTimeout(()=>{
                         navigate.push("/user/profile/assesment/question");
                     },3000);
@@ -160,12 +160,12 @@ const QuestionNew = () => {
             }
         } else if (state.questiontype.value === "truefalse") {
             if (quesTlt === "" || state.option_a_text === "" || state.option_b === "" || state.option_c === "" || state.marks <= 0 ) {
-                toastComponent("warn",textConst.enterMandatoryField)
+                toastComponent("warn",ConstData.textConst.enterMandatoryField)
             } else if (state.option_a_is_answer === false && state.option_b_is_answer === false && state.option_c_is_answer === false && state.option_d_is_answer === false && state.option_e_is_answer === false) {
                 toastComponent("warn","Please select respective question answer");
             } else {
                 setLoading(true);
-                axios.post(CMS_URL + "questions", {
+                axios.post(ConstData.CMS_URL + "questions", {
                     "data": {
                         "questiontype": state.questiontype.value,
                         "question_title": quesTlt,
@@ -187,7 +187,7 @@ const QuestionNew = () => {
                     }
                 }).then(res => {
                     setLoading(false);
-                    toastComponent("success",textConst.tableCreatedSuccess);
+                    toastComponent("success",ConstData.textConst.tableCreatedSuccess);
                     setTimeout(()=>{
                         navigate.push("/user/profile/assesment/question")
                     },3000);
@@ -201,12 +201,12 @@ const QuestionNew = () => {
             }
         } else if (state.questiontype.value === "fillinblank") {
             if (quesTlt === "" || state.option_a_text === "" || state.option_b === "" || state.option_c === "" || state.marks <= 0 ) {
-                toastComponent("warn",textConst.enterMandatoryField)
+                toastComponent("warn",ConstData.textConst.enterMandatoryField)
             } else if (state.option_a_is_answer === false && state.option_b_is_answer === false && state.option_c_is_answer === false && state.option_d_is_answer === false && state.option_e_is_answer === false) {
                 toastComponent("warn","Please select respective question answer")
             } else {
                 setLoading(true);
-                axios.post(CMS_URL + "questions", {
+                axios.post(ConstData.CMS_URL + "questions", {
                     "data": {
                         "questiontype": state.questiontype.value,
                         "question_title": state.question_title,
@@ -232,7 +232,7 @@ const QuestionNew = () => {
                     }
                 }).then(res => {
                     setLoading(false);
-                    toastComponent("success",textConst.tableCreatedSuccess);
+                    toastComponent("success",ConstData.textConst.tableCreatedSuccess);
                     setTimeout(()=>{
                         navigate.push("/user/profile/assesment/question");
                     },1500);
@@ -276,7 +276,7 @@ const QuestionNew = () => {
             redirect: "follow"
         };
 
-        fetch(CMS_URL + "onboard/fileupload", requestOptions)
+        fetch(ConstData.CMS_URL + "onboard/fileupload", requestOptions)
             .then((response) => response.json())
             .then((result) => {
                 if (option === "optionA") {
@@ -291,7 +291,7 @@ const QuestionNew = () => {
                     stateHandler("optionE_img", result.url);
                 }
                 setLoading(false);
-                toastComponent("success",textConst.videoUploadSuccess);
+                toastComponent("success",ConstData.textConst.videoUploadSuccess);
             })
             .catch((error) => {
                 toastComponent("error",error.message);

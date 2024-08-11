@@ -1,19 +1,30 @@
 import { useState } from "react";
 import css from "./SelectDropdownUtil.module.css";
-const SelectDropdownUtil = (props) => {
+const SelectDropdownUtil = ({
+  id = "",
+  label = null,
+  filterType = "",
+  defaultValue = "",
+  value = null,
+  setValue = () => {},
+  multipleOptions = false,
+  options = "",
+  selectBoxCss = {},
+  extraCss = {},
+}) => {
   const [dpToggle, setDPToggle] = useState(false);
-  const {
-    id = "",
-    label = null,
-    filterType = "",
-    defaultValue = "",
-    value = null,
-    setValue = () => {},
-    multipleOptions = false,
-    options = "",
-    selectBoxCss = {},
-    extraCss = {},
-  } = props;
+  // const {
+  //   id = "",
+  //   label = null,
+  //   filterType = "",
+  //   defaultValue = "",
+  //   value = null,
+  //   setValue = () => {},
+  //   multipleOptions = false,
+  //   options = "",
+  //   selectBoxCss = {},
+  //   extraCss = {},
+  // } = props;
 
   const optionHandler = (option) => {
     setValue((prev) => {
@@ -42,7 +53,7 @@ const SelectDropdownUtil = (props) => {
           className={css.selectedDP}
           onClickCapture={() => setDPToggle((prev) => !prev)}
         >
-          <span data-id={id}>{!!value.key ? value.key : defaultValue.key}</span>
+          <span data-id={id}>{value !== null ? value.key : defaultValue !== "" ? defaultValue.key : ""}</span>
           <img
             data-id={id}
             src={"/publicContent/icons/down-arrow.svg"}
@@ -55,7 +66,7 @@ const SelectDropdownUtil = (props) => {
             className={css.options}
             style={{ display: dpToggle ? "block" : "none" }}
           >
-            {options?.map((optionArr) => {
+            {options !== "" ? options?.map((optionArr) => {
               return optionArr?.map((option) => {
                 return (
                   <div
@@ -68,14 +79,14 @@ const SelectDropdownUtil = (props) => {
                   </div>
                 );
               });
-            })}
+            }): ""}
           </div>
         ) : (
           <div
             className={css.options}
             style={{ display: dpToggle ? "block" : "none" }}
           >
-            {options?.map((option) => {
+            {options !== "" ? options?.map((option) => {
               return (
                 <div
                   className={css.option}
@@ -86,7 +97,8 @@ const SelectDropdownUtil = (props) => {
                   {option.key}
                 </div>
               );
-            })}
+            })
+          : ""}
           </div>
         )}
       </div>

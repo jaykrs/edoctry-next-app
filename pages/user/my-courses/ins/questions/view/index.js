@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Layout1 from "../../../../../components/Layout1/Layout1";
 import axios from "axios";
-import { CMS_URL } from "../../../../../urlConst";
+import ConstData from "../../../../../../urlConst";
 import ReactMarkdown from "react-markdown";
 import PageLoadingComponents from "../../../../../utils/PageLoadingComponent/PageLoadingComponents";
 const QuestionViewPage = () => {
@@ -18,7 +18,7 @@ const QuestionViewPage = () => {
 
     useEffect(() => {
         setLoading(true);
-        axios.get(CMS_URL + "questions?filters[id][$eq]=" + sessionStorage.getItem("qsid"), {
+        axios.get(ConstData.CMS_URL + "questions?filters[id][$eq]=" + sessionStorage.getItem("qsid"), {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
             }
@@ -33,7 +33,7 @@ const QuestionViewPage = () => {
             alert("Plese select any option to submit !")
         } else {
             setLoading(true)
-            axios.put(CMS_URL + "questions/" + quesData[0].id, {
+            axios.put(ConstData.CMS_URL + "questions/" + quesData[0].id, {
                 "data": {
                     "cus_a_answer": state.cus_a_answer,
                     "cus_b_answer": state.cus_b_answer,

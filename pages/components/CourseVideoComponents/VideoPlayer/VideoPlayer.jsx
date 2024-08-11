@@ -1,30 +1,9 @@
 import { useState, useRef } from "react";
-
 import css from "./VideoPlayer.module.css";
-
-import playIcon from "../../../../src/publicContent/icons/videoPlayer/play.png";
-import pauseIcon from "../../../../src/publicContent/icons/videoPlayer/pause.png";
-import captionIcon from "../../../../src/publicContent/icons/videoPlayer/caption.png";
-import expandIcon from "../../../../src/publicContent/icons/videoPlayer/expand.png";
-import contractIcon from "../../../../src/publicContent/icons/videoPlayer/opposite-arrows.png";
-import forwardIcon from "../../../../src/publicContent/icons/videoPlayer/forward.png";
-import backwardIcon from "../../../../src/publicContent/icons/videoPlayer/backward.png";
-import muteIcon from "../../../../src/publicContent/icons/videoPlayer/mute.png";
-import volumeIcon from "../../../../src/publicContent/icons/videoPlayer/volume.png";
-import stretchIcon from "../../../../src/publicContent/icons/videoPlayer/stretch.png";
-import settingsIcon from "../../../../src/publicContent/icons/videoPlayer/settings.png";
-import notesIcon from "../../../../src/publicContent/icons/videoPlayer/notes.png";
-import leftArrowIcon from "../../../../src/publicContent/icons/videoPlayer/left-arrow.png";
-import rightArrowIcon from "../../../../src/publicContent/icons/videoPlayer/right-arrow.png";
-
-import video from "../../../videos/Coding.mp4";
-// import video from "/videos/sample2.mp4";
 import { useEffect } from "react";
-import ReactPlayer from 'react-player';
-//import video1 from 'https://www.youtube.com/watch?v=LXb3EKWsInQ';
 
-const VideoPlayer = (props) => {
-  const { playerWidthState, playerWidthSetter, data } = props;
+const VideoPlayer = ({ playerWidthState, playerWidthSetter, data={},url="" }) => {
+  //const { playerWidthState, playerWidthSetter, data } = props;
   const { autoplay = false } = data;
   const [videoState, setVideostate] = useState(false);
   const [playbackOptionsBox, setPlaybackOptionsBox] = useState(false);
@@ -38,6 +17,9 @@ const VideoPlayer = (props) => {
   const [stretchPlayer, setStretchPlayer] = useState(false);
   const [autoPlayState, setAutoPlayState] = useState(autoplay);
   const [fullScreen, setFullScreen] = useState(false);
+  const [currentTimeLine,setCurrentTimeLine] = useState("");
+  const [videoContainer,setVideoContainer] = useState("");
+  const [videoControlsContainer,setVideoControlsContainer] = useState("");
   const [videoDuration, setVideoDuration] = useState({
     current: "0:0:0",
     total: "0:0:0",
@@ -45,87 +27,91 @@ const VideoPlayer = (props) => {
   const [arrowsToggle, setArrowsToggle] = useState(false);
 
   const videoPlayer = useRef();
+  useEffect(()=>{
+    if(typeof window !== 'undefined') {
+    const videoControlsContainers =  document.querySelector("#videoControlsContainer" );
+    setVideoControlsContainer(videoControlsContainers);
+  const videoContainers = document.querySelector("#videoContainer");
+  setVideoContainer(videoContainers);
+  const currentTimeLines = document.querySelector("#currentTimeLine");
+  setCurrentTimeLine(currentTimeLines);
+    window.addEventListener("play", () => {
+      setVideostate(false);
+    });
+    window.addEventListener("pause", () => {
+      setVideostate(true);
+    });
+    window.addEventListener("click", (e) => {
+      if (
+        e.target.dataset.div !== "caption" &&
+        !e.target.id?.split("-")[0].includes("captionlang")
+      ) {
+        setCaptionsMenuBar(false);
+      }
+      if (
+        e.target.dataset.div !== "settings" &&
+        !e.target.id?.split("-")[0].includes("settingsoption") &&
+        !e.target.id.includes("autoplay") &&
+        !e.target.dataset.switch
+      ) {
+        setSettingsMenu(false);
+      }
+      if (
+        e.target.dataset.div !== "playback" &&
+        !e.target.id?.split("-")[0].includes("playbackoption")
+      ) {
+        setPlaybackOptionsBox(false);
+      }
+    });
 
-  // Setting video player timeline settings START
-  const videoControlsContainer = document.querySelector(
-    "#videoControlsContainer"
-  );
-  const videoContainer = document.querySelector("#videoContainer");
-  const currentTimeLine = document.querySelector("#currentTimeLine");
-
-  window.addEventListener("play", () => {
-    setVideostate(false);
-  });
-  window.addEventListener("pause", () => {
-    setVideostate(true);
-  });
-  window.addEventListener("click", (e) => {
-    if (
-      e.target.dataset.div !== "caption" &&
-      !e.target.id?.split("-")[0].includes("captionlang")
-    ) {
-      setCaptionsMenuBar(false);
-    }
-    if (
-      e.target.dataset.div !== "settings" &&
-      !e.target.id?.split("-")[0].includes("settingsoption") &&
-      !e.target.id.includes("autoplay") &&
-      !e.target.dataset.switch
-    ) {
-      setSettingsMenu(false);
-    }
-    if (
-      e.target.dataset.div !== "playback" &&
-      !e.target.id?.split("-")[0].includes("playbackoption")
-    ) {
-      setPlaybackOptionsBox(false);
-    }
-  });
+    videoContainer?.addEventListener("mouseenter", () => {
+      videoControlsContainer?.classList.remove(css["dnone"]);
+      setArrowsToggle(true);
+    });
+    videoContainer?.addEventListener("mouseleave", () => {
+      videoControlsContainer?.classList.add(css["dnone"]);
+      setArrowsToggle(false);
+    });
+    videoPlayer.current?.addEventListener("fullscreenchange", () => {
+      // if (document.fullscreenElement === null) {
+      //   setFullScreen(false);
+      // }
+    });
+    videoPlayer.current?.addEventListener("timeupdate", () => {
+      currentTimeLine.style.width =
+        ((videoPlayer.current.currentTime || 0) /
+          (videoPlayer.current.duration || 0)) *
+          100 +
+        "%";
+    });
+    // Setting video player timeline settings END
+  
+    // Setting video player video duration and timeupdate.
+    videoPlayer.current?.addEventListener("timeupdate", () => {
+      let totalHours = parseInt(
+        (videoPlayer.current.duration || 0) / (60 * 60),
+        10
+      );
+      let totalMinutes = parseInt((videoPlayer.current.duration || 0) / 60, 10);
+      let totalSeconds = parseInt((videoPlayer.current.duration || 0) % 60);
+      let hours = parseInt(videoPlayer.current.currentTime / (60 * 60), 10);
+      let minutes = parseInt(videoPlayer.current.currentTime / 60, 10);
+      let seconds = parseInt(videoPlayer.current.currentTime % 60);
+  
+      setVideoDuration((p) => {
+        return {
+          current: `${hours}:${minutes}:${seconds}`,
+          total: `${totalHours}:${totalMinutes}:${totalSeconds}`,
+        };
+      });
+    });
+  }
+  },[])
 
   // setTimeout(() => {
   //   videoControlsContainer?.classList.add(css["dnone"]);
   // }, [5000]);
-  videoContainer?.addEventListener("mouseenter", () => {
-    videoControlsContainer?.classList.remove(css["dnone"]);
-    setArrowsToggle(true);
-  });
-  videoContainer?.addEventListener("mouseleave", () => {
-    videoControlsContainer?.classList.add(css["dnone"]);
-    setArrowsToggle(false);
-  });
-  videoPlayer.current?.addEventListener("fullscreenchange", () => {
-    if (document.fullscreenElement === null) {
-      setFullScreen(false);
-    }
-  });
-  videoPlayer.current?.addEventListener("timeupdate", () => {
-    currentTimeLine.style.width =
-      ((videoPlayer.current.currentTime || 0) /
-        (videoPlayer.current.duration || 0)) *
-        100 +
-      "%";
-  });
-  // Setting video player timeline settings END
-
-  // Setting video player video duration and timeupdate.
-  videoPlayer.current?.addEventListener("timeupdate", () => {
-    let totalHours = parseInt(
-      (videoPlayer.current.duration || 0) / (60 * 60),
-      10
-    );
-    let totalMinutes = parseInt((videoPlayer.current.duration || 0) / 60, 10);
-    let totalSeconds = parseInt((videoPlayer.current.duration || 0) % 60);
-    let hours = parseInt(videoPlayer.current.currentTime / (60 * 60), 10);
-    let minutes = parseInt(videoPlayer.current.currentTime / 60, 10);
-    let seconds = parseInt(videoPlayer.current.currentTime % 60);
-
-    setVideoDuration((p) => {
-      return {
-        current: `${hours}:${minutes}:${seconds}`,
-        total: `${totalHours}:${totalMinutes}:${totalSeconds}`,
-      };
-    });
-  });
+  
 
   useEffect(() => {
     videoPlayer.current.volume = currVolume;
@@ -274,7 +260,7 @@ const VideoPlayer = (props) => {
 
   useEffect(() => {
     videoPlayer.current.playbackRate = playbackSpeedOption || "1.0";
-  }, [playbackSpeedOption,props.url]);
+  }, [playbackSpeedOption,url]);
 
   const playerArrowClickHandler = (arrow) => {
     console.log("clicked", arrow);
@@ -300,7 +286,7 @@ const VideoPlayer = (props) => {
           id="leftArrow"
           onClickCapture={() => playerArrowClickHandler("left")}
         >
-          <img src={leftArrowIcon} alt="left arrow" className={css.arrowIcon} />
+          <img src={"/publicContent/icons/videoPlayer/left-arrow.png"} alt="left arrow" className={css.arrowIcon} />
         </div>
       ) : null}
       <div
@@ -318,14 +304,14 @@ const VideoPlayer = (props) => {
               {!videoState ? (
                 <img
                   className={[css.playIcon, css.icon].join(" ")}
-                  src={playIcon}
+                  src={"/publicContent/icons/videoPlayer/play.png"}
                   alt="play icon"
                   onClick={playBtnHandler}
                 />
               ) : (
                 <img
                   className={[css.pauseIcon, css.icon].join(" ")}
-                  src={pauseIcon}
+                  src={"/publicContent/icons/videoPlayer/pause.png"}
                   alt="pause icon"
                   onClick={pauseBtnHandler}
                 />
@@ -334,13 +320,13 @@ const VideoPlayer = (props) => {
             <button className={[css.btn].join(" ")}>
               <img
                 className={[css.backwardIcon, css.icon].join(" ")}
-                src={backwardIcon}
+                src={"/publicContent/icons/videoPlayer/backward.png"}
                 alt="backward icon"
                 onClick={reversePlaybackHandler}
               />
               <img
                 className={[css.forwardIcon, css.icon].join(" ")}
-                src={forwardIcon}
+                src={"/publicContent/icons/videoPlayer/forward.png"}
                 alt="forward icon"
                 onClick={forwardPlaybackHanlder}
               />
@@ -381,7 +367,7 @@ const VideoPlayer = (props) => {
             <button className={[css.btn].join(" ")}>
               <img
                 className={[css.notesIcon, css.icon].join(" ")}
-                src={notesIcon}
+                src={"/publicContent/icons/videoPlayer/notes.png"}
                 alt="notes icon"
                 onClick={notesHandler}
               />
@@ -407,14 +393,14 @@ const VideoPlayer = (props) => {
                 {volumeState ? (
                   <img
                     className={[css.volumeIcon, css.icon].join(" ")}
-                    src={volumeIcon}
+                    src={"/publicContent/icons/videoPlayer/volume.png"}
                     alt="volume icon"
                     onClick={volumeHandler}
                   />
                 ) : (
                   <img
                     className={[css.muteIcon, css.icon].join(" ")}
-                    src={muteIcon}
+                    src={"/publicContent/icons/videoPlayer/mute.png"}
                     alt="mute icon"
                     onClick={volumeHandler}
                   />
@@ -450,7 +436,7 @@ const VideoPlayer = (props) => {
                 <img
                   data-div="caption"
                   className={[css.captionIcon, css.icon].join(" ")}
-                  src={captionIcon}
+                  src={"/publicContent/icons/videoPlayer/caption.png"}
                   alt="caption icon"
                 />
               </button>
@@ -499,7 +485,7 @@ const VideoPlayer = (props) => {
                 <img
                   data-div="settings"
                   className={[css.settingsIcon, css.icon].join(" ")}
-                  src={settingsIcon}
+                  src={"/publicContent/icons/videoPlayer/settings.png"}
                   alt="settings icon"
                   onClick={() => setSettingsMenu((p) => !p)}
                 />
@@ -515,14 +501,14 @@ const VideoPlayer = (props) => {
                   css.expandIcon,
                   css.icon,
                 ].join(" ")}
-                src={expandIcon}
+                src={"/publicContent/icons/videoPlayer/expand.png"}
                 alt="expan icon"
               />
             </button>
             <button className={[css.btn].join(" ")} onClick={strecthBtnHandler}>
               <img
                 className={[css.stretchIcon, css.icon].join(" ")}
-                src={stretchPlayer ? contractIcon : stretchIcon}
+                src={stretchPlayer ? "/publicContent/icons/videoPlayer/opposite-arrows.png" : "/publicContent/icons/videoPlayer/stretch.png"}
                 alt="stretch icon"
               />
             </button>
@@ -548,7 +534,7 @@ const VideoPlayer = (props) => {
           onClickCapture={() => playerArrowClickHandler("right")}
         >
           <img
-            src={rightArrowIcon}
+            src={"/publicContent/icons/videoPlayer/right-arrow.png"}
             alt="right arrow"
             className={css.arrowIcon}
           />

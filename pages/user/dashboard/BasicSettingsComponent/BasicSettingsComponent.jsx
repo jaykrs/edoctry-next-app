@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import css from "./BasicSettingsComponent.module.css";
 import axios from "axios";
-import { CMS_URL } from "../../../urlConst";
+import ConstData from "../../../../urlConst";
 import MarkdownEditor from "../../../utils/MarkdownTextareaUtils/MarkdownTextareaUtils";
 import ToastComponents from "../../../toastComponent";
 const BasicSettingsComponent = (props) => {
@@ -50,7 +50,7 @@ const BasicSettingsComponent = (props) => {
     };
 
     if (localStorage.getItem("usertype") === "customer") {
-      fetch(CMS_URL + "customers?filters[customeremail][$eq]=" + localStorage.getItem("email"), requestOptions)
+      fetch(ConstData.CMS_URL + "customers?filters[customeremail][$eq]=" + localStorage.getItem("email"), requestOptions)
         .then(response => response.text())
         .then(result => {
 
@@ -74,7 +74,7 @@ const BasicSettingsComponent = (props) => {
         });
     }
     if (localStorage.getItem("usertype") === "instructor") {
-      fetch(CMS_URL + "instructors?filters[instructoremail][$eq]=" + localStorage.getItem("email"), requestOptions)
+      fetch(ConstData.CMS_URL + "instructors?filters[instructoremail][$eq]=" + localStorage.getItem("email"), requestOptions)
         .then(response => response.text())
         .then(result => {
           let d = JSON.parse(result)
@@ -109,7 +109,7 @@ const BasicSettingsComponent = (props) => {
 
   const handleUpdate = () => {
     if (localStorage.getItem("usertype") === "customer") {
-      axios.put(CMS_URL + "customers/" + state.id, {
+      axios.put(ConstData.CMS_URL + "customers/" + state.id, {
         "data": {
           "customername": state.name,
           "customeraddress": state.address,
@@ -127,7 +127,7 @@ const BasicSettingsComponent = (props) => {
       })
     }
     if (localStorage.getItem("usertype") === "instructor") {
-      axios.put(CMS_URL + "instructors/" + state.id, {
+      axios.put(ConstData.CMS_URL + "instructors/" + state.id, {
         "data": {
           "customername": state.name,
           "qualification": state.qualification,

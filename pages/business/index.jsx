@@ -5,7 +5,7 @@ import SearchBar from "../utils/SearchBar/SearchBar";
 import Layout1 from "../components/Layout1/Layout1";
 import InputUtil from "../utils/FormUtils/InputUtil/InputUtil";
 import Button1 from "../utils/Buttons/Button1/Button1";
-import { CMS_URL, textConst } from "../urlConst";
+import ConstData from "../../urlConst";
 import toastComponent from "../toastComponent";
 import { ToastContainer } from "react-toastify";
 const EdoctryForm = () => {
@@ -17,9 +17,9 @@ const EdoctryForm = () => {
   },[state.email])
   const submitHandler = ()=>{
      if(state.userName === "" && state.email === "" && state.country === "" && state.phone.length === undefined && state.phone.length === 8 ){
-       toastComponent("warn",textConst.enterMandatoryField);
+       toastComponent("warn",ConstData.textConst.enterMandatoryField);
      }else{
-      axios.post(CMS_URL + "contacts",{
+      axios.post(ConstData.CMS_URL + "contacts",{
         data:{
           username:state.userName,phoneNo:state.phone,email:state.email,country:state.country,address:state.address
         }
@@ -29,7 +29,7 @@ const EdoctryForm = () => {
         stateHandler("phone","");
         stateHandler("address","");
         stateHandler("country","");
-        toastComponent("success",textConst.edoctryBusiness);
+        toastComponent("success",ConstData.textConst.edoctryBusiness);
       }).catch(err=>{
         toastComponent("error",err.message);
       })

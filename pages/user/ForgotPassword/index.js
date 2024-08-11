@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
 import Layout1 from "../../components/Layout1/Layout1";
-
 import InputUtil from "../../utils/FormUtils/InputUtil/InputUtil";
 import Button1 from "../../utils/Buttons/Button1/Button1";
 import css from "../verifyUser/verifyUser.module.css";
 import axios from "axios";
 import toastComponent from "../../toastComponent";
 import { ToastContainer } from "react-toastify";
-import {textConst, CMS_URL} from "../../urlConst"
+import ConstData from "../../../urlConst"
 const ForgotPassword = () => {
   const [state, setState] = useState({
     email: "",
@@ -44,11 +42,11 @@ const ForgotPassword = () => {
 
   let submitHandler = () => {
     if (state.email !== "") {
-      axios.get( CMS_URL + "onboard/newPassword/" + state.email)
+      axios.get( ConstData.CMS_URL + "onboard/newPassword/" + state.email)
         .then(res => {
-          setMessage(textConst.ForgotPassword);
+          setMessage(ConstData.textConst.ForgotPassword);
           setBtn(true);
-          toastComponent("success",textConst.ForgotPassword);
+          toastComponent("success",ConstData.textConst.ForgotPassword);
         }).catch(err => {
           toastComponent("error", err.message);
         })

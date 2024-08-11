@@ -5,7 +5,7 @@ import { FaEnvelopeOpenText } from "react-icons/fa";
 import React, { useEffect, useState } from "react";
 import Layout1 from "../../../../components/Layout1/Layout1";
 import axios from "axios";
-import { CMS_URL } from "../../../../urlConst";
+import ConstData from "../../../../../urlConst";
 import { useRouter } from "next/router";
 import css from "./CustomerQuestionPage.module.css";
 import { FaChevronDown } from "react-icons/fa";
@@ -42,7 +42,7 @@ const CustomerQuestionPage = () => {
 
     useEffect(() => {
         setLoading(true);
-        axios.get(CMS_URL + "assesments?filters[id][$eq]=" + sessionStorage.getItem("assid"), {
+        axios.get(ConstData.CMS_URL + "assesments?filters[id][$eq]=" + sessionStorage.getItem("assid"), {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
             }
@@ -51,7 +51,7 @@ const CustomerQuestionPage = () => {
                 setAssData(res.data.data)
                 let date = new Date(res.data.data[0].attributes.createdAt);
                 sessionStorage.setItem("assesmentDetails", JSON.stringify(res.data.data[0]))
-                axios.get(CMS_URL + "instructors?filters[instructoremail][$eq]=" + res.data.data[0].attributes.instructor, {
+                axios.get(ConstData.CMS_URL + "instructors?filters[instructoremail][$eq]=" + res.data.data[0].attributes.instructor, {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("jwt")
                     }
@@ -62,7 +62,7 @@ const CustomerQuestionPage = () => {
                     }).catch(err => {
                         console.log(err);
                     })
-                await axios.get(CMS_URL + "questions?filters[assesment_id][$eq]=" + sessionStorage.getItem("assid"), {
+                await axios.get(ConstData.CMS_URL + "questions?filters[assesment_id][$eq]=" + sessionStorage.getItem("assid"), {
                     headers: {
                         Authorization: "Bearer " + localStorage.getItem("jwt")
                     }
@@ -70,7 +70,7 @@ const CustomerQuestionPage = () => {
                     .then(async ques => {
                         setQuesData(ques.data.data);
 
-                        await axios.get(CMS_URL + "scores?filters[customeremail][$eq]=" + localStorage.getItem("email") + "&filters[assesmentid][$eq]=" + sessionStorage.getItem("assid"), {
+                        await axios.get(ConstData.CMS_URL + "scores?filters[customeremail][$eq]=" + localStorage.getItem("email") + "&filters[assesmentid][$eq]=" + sessionStorage.getItem("assid"), {
                             headers: {
                                 Authorization: "Bearer " + localStorage.getItem("jwt")
                             }

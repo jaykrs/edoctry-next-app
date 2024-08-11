@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import PlanModalUtil from "../../utils/Modals/PlanModalUtil/PlanModalUtil";
 import css from "./CourseCardWithOptions.module.css";
-const CourseCardWithOptions = (props) => {
-  const { isOptions = false, options, data } = props;
+const CourseCardWithOptions = ({isOptions = false, options, data={}}) => {
+  // const { isOptions = false, options, data } = props;
   const {
     path = "",
     img = "",

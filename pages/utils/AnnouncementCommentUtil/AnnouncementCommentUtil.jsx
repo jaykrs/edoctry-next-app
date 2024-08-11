@@ -1,19 +1,17 @@
 import { useState } from "react";
 import Link from "next/link";
-
 import css from "./AnnouncementCommentUtil.module.css";
-
 import flagReportIcon from "../../publicContent/icons/flag-report.png";
 import flagReportFilledIcon from "../../publicContent/icons/flag-report-filled.png";
 
-const AnnouncementCommentUtil = (props) => {
+const AnnouncementCommentUtil = ({data={}}) => {
   const {
     id = 0,
     name = "",
     img = "",
     date = new Date(),
     comment = "",
-  } = props.data;
+  } = data;
 
   const [flagState, setFlagState] = useState(false);
 
@@ -24,7 +22,7 @@ const AnnouncementCommentUtil = (props) => {
       </div>
       <div className={css.cntBox}>
         <div className={css.leftBox}>
-          <Link to={id} className={css.ttl}>
+          <Link href={id} className={css.ttl}>
             {name}
           </Link>
           <div className={css.date}>{new Date(date)?.toLocaleDateString()}</div>

@@ -4,7 +4,7 @@ import css from "./CreateCourse.module.css";
 import React, { useState , useEffect} from "react";
 import InstructorLayout from "../../../components/InstructorLayout/InstructorLayout";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../urlConst";
+import ConstData from "../../../../urlConst";
 import { useRouter } from "next/navigation";
 import SelectDropdownUtil from "../../../utils/FormUtils/SelectDropdownUtil/SelectDropdownUtil";
 import { FaAngleDoubleLeft } from "react-icons/fa";
@@ -58,11 +58,11 @@ console.log("state",state)
   const handleCreate = () => {
     
     if (courseTlt === "" || state.course_fee === 0 || state.course_fee_premium === 0 || state.duration === 0 || state.language.value === undefined || courseBrief === "" || courseOutline === "" || state.course_logo === "") {
-      toastComponent("error", textConst.enterMandatoryField);
+      toastComponent("error", ConstData.textConst.enterMandatoryField);
       return;
     } else {
       setLoading(true);
-      axios.post(CMS_URL + "courses", {
+      axios.post(ConstData.CMS_URL + "courses", {
         "data": {
           "course_title": courseTlt,
           "course_fee": Number(state.course_fee),
@@ -123,15 +123,15 @@ console.log("state",state)
       redirect: "follow"
     };
 
-    fetch(CMS_URL + "onboard/fileupload", requestOptions)
+    fetch(ConstData.CMS_URL + "onboard/fileupload", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         setLoading(false);
         stateHandler("course_logo", result.thumbnailUrl);
-        toastComponent("success", textConst.logoUploadSuccess);
+        toastComponent("success", ConstData.textConst.logoUploadSuccess);
       })
       .catch((error) => {
-        toastComponent("error", "Logo" + textConst.uploadFailed)
+        toastComponent("error", "Logo" + ConstData.textConst.uploadFailed)
         setTimeout(()=>{
           setLoading(false);
         },3000)
@@ -153,15 +153,15 @@ console.log("state",state)
       redirect: "follow"
     };
 
-    fetch(CMS_URL + "onboard/fileupload", requestOptions)
+    fetch(ConstData.CMS_URL + "onboard/fileupload", requestOptions)
       .then((response) => response.json())
       .then((result) => {
         setLoading(false);
         stateHandler("introductory_video", result.url);
-        toastComponent("success", textConst.videoUploadSuccess)
+        toastComponent("success", ConstData.textConst.videoUploadSuccess)
       })
       .catch((error) => {
-        toastComponent("error", "Video" + textConst.uploadFailed)
+        toastComponent("error", "Video" + ConstData.textConst.uploadFailed)
         setTimeout(()=>{
           setLoading(false);
         },3000)

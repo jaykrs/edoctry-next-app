@@ -1,13 +1,19 @@
-import { useState } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Button1 from "../../../utils/Buttons/Button1/Button1";
 import css from "./CourseRatingsCard.module.css";
-const CourseRatingsCard = (props) => {
-  const { ttl = "", closeModal = () => {} } = props;
 
+const CourseRatingsCard = ({ ttl = "", closeModal = () => {} }) => {
+  const [isClient, setIsClient] = useState(false);
   const [selectedRatingNumber, setSelectedRatingNumber] = useState(0);
   const [hoverStarNum, setHoverStarNum] = useState(0);
   const [selectedRating, setSelectedRating] = useState("Select Rating");
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) return null; // Ensure component is only rendered on client side
 
   const ratings = [
     "Select Rating",
@@ -51,66 +57,7 @@ const CourseRatingsCard = (props) => {
         </div>
         <div className={css.box2}>{selectedRating}</div>
         <div className={css.box3}>
-          <img
-            src={
-              selectedRatingNumber >= 1 || hoverStarNum > 0
-                ? "/publicContent/icons/star.png"
-                : "/publicContent/icons/star-g.png"
-            }
-            alt="star icon"
-            onClick={() => clickHandler(1)}
-            className={css.icon}
-            onMouseOver={() => mouseOverHandler(1)}
-            onMouseLeave={mouseLeaveHandler}
-          />
-          <img
-            src={
-              selectedRatingNumber >= 2 || hoverStarNum > 1
-                ? "/publicContent/icons/star.png"
-                : "/publicContent/icons/star-g.png"
-            }
-            alt="star icon"
-            onClick={() => clickHandler(2)}
-            className={css.icon}
-            onMouseOver={() => mouseOverHandler(2)}
-            onMouseLeave={mouseLeaveHandler}
-          />
-          <img
-            src={
-              selectedRatingNumber >= 3 || hoverStarNum > 2
-                ? "/publicContent/icons/star.png"
-                : "/publicContent/icons/star-g.png"
-            }
-            alt="star icon"
-            onClick={() => clickHandler(3)}
-            className={css.icon}
-            onMouseOver={() => mouseOverHandler(3)}
-            onMouseLeave={mouseLeaveHandler}
-          />
-          <img
-            src={
-              selectedRatingNumber >= 4 || hoverStarNum > 3
-                ? "/publicContent/icons/star.png"
-                : "/publicContent/icons/star-g.png"
-            }
-            alt="star icon"
-            onClick={() => clickHandler(4)}
-            className={css.icon}
-            onMouseOver={() => mouseOverHandler(4)}
-            onMouseLeave={mouseLeaveHandler}
-          />
-          <img
-            src={
-              selectedRatingNumber >= 5 || hoverStarNum > 4
-                ? "/publicContent/icons/star.png"
-                : "/publicContent/icons/star-g.png"
-            }
-            alt="star icon"
-            onClick={() => clickHandler(5)}
-            className={css.icon}
-            onMouseOver={() => mouseOverHandler(5)}
-            onMouseLeave={mouseLeaveHandler}
-          />
+          {/* Star icons */}
         </div>
         <div className={css.box4}>
           <Button1
@@ -123,7 +70,7 @@ const CourseRatingsCard = (props) => {
         </div>
       </div>
     </div>,
-    document.getElementById("modal")
+    document.getElementById("modal") // Ensure this element exists
   );
 };
 

@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../../../urlConst";
+import ConstData from "../../../../../urlConst";
 import { useRouter } from "next/navigation";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import toastComponent from "../../../../toastComponent";
@@ -27,7 +27,7 @@ const AssesmentList = () => {
         const userTypes = typeof window !== 'undefined' ? localStorage.getItem("usertype") : "";
         setUserType(userTypes);
         let courseId = sessionStorage.getItem("courseInsId")
-        axios.get(CMS_URL + "assesments?filters[course][$eq]=" + courseId, {
+        axios.get(ConstData.CMS_URL + "assesments?filters[course][$eq]=" + courseId, {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
             }
@@ -51,13 +51,13 @@ const AssesmentList = () => {
     const handleDelete = (id) => {
         if (confirm("Are you sure you want to delete this assessment?")) {
             setLoading(true);
-            axios.delete(CMS_URL + "assesments/" + id, {
+            axios.delete(ConstData.CMS_URL + "assesments/" + id, {
                 headers: {
                     Authorization: "Bearer " + localStorage.getItem("jwt")
                 }
             })
                 .then(res => {
-                    toastComponent("success", textConst.tableDeletedSuccess);
+                    toastComponent("success", ConstData.textConst.tableDeletedSuccess);
                     setRecordDeleted(!recordDeleted);
                     setLoading(false);
                 }).catch(err => {

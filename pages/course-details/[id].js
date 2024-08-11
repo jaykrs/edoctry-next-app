@@ -4,31 +4,33 @@ import Layout1 from '../components/Layout1/Layout1';
 import CourseFloatingBuyCard from '../components/CourseFloatingBuyCard/CourseFloatingBuyCard';
 import { FaGlobe, FaBookTanakh, FaPlay, FaFileCircleExclamation, FaCircle } from "react-icons/fa6";
 import moment from 'moment';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import('bootstrap/dist/js/bootstrap.bundle.min.js');
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import('bootstrap/dist/js/bootstrap.bundle.min.js');
 import ReactMarkdown from "react-markdown";
-export default function Page(props) {
+const CourseDetail = ({posts={}})=> {
   const router = useRouter();
-  console.log("data props", props);
+  if (!posts || !posts.attributes) {
+    return <div>No course details available.</div>;
+  }
   return (
     <>
       <Layout1>
         {
-          props.posts != undefined ?
+          Object.keys(posts).length > 0 ?
             <div>
-              <CourseFloatingBuyCard data={props.posts} />
+              <CourseFloatingBuyCard data={posts} />
               <div className=" d-flex justify-content-center" style={{backgroundColor: "blanchedalmond",width: "100%",height: "auto",padding: "20px"}}>
                 <div style={{ width: "10%" }}></div>
                 <div style={{ width: "60%" }}>
                   <h1 className="">
-                    <ReactMarkdown>{props.posts.attributes.course_title}</ReactMarkdown>
+                    <ReactMarkdown>{posts.attributes.course_title}</ReactMarkdown>
                   </h1>
-                  <p style={{marginRight: "20px"}}>Total Enrollment :  {props.posts.attributes.enrollment_count}</p>
-                  <p style={{marginRight: "20px"}} >Created by :  {props.posts.attributes.instrucctorName}</p>
+                  <p style={{marginRight: "20px"}}>Total Enrollment :  {posts.attributes.enrollment_count}</p>
+                  <p style={{marginRight: "20px"}} >Created by :  {posts.attributes.instrucctorName}</p>
                   <div className="d-flex justify-content-start">
-                    {/* <p><FaBookTanakh /> Last updated : {moment(props.posts.attributes.updatedAt).format('DD-MMM-YYYY')} </p> */}
+                    {/* <p><FaBookTanakh /> Last updated : {moment(posts.attributes.updatedAt).format('DD-MMM-YYYY')} </p> */}
 
-                    {/* <p> <FaGlobe /> {props.posts.attributes.language ? props.posts.attributes.language.toUpperCase() : "ENGLISH"}</p>  */}
+                    {/* <p> <FaGlobe /> {posts.attributes.language ? posts.attributes.language.toUpperCase() : "ENGLISH"}</p>  */}
                   </div>
                 </div>
                 <div style={{ width: "20%" }}></div>
@@ -38,7 +40,7 @@ export default function Page(props) {
                   <h1 className="card-header">What you'll learn</h1>
                   <div className="card-body">
                     <div>
-                      <ReactMarkdown>{props.posts.attributes.course_brief}</ReactMarkdown>
+                      <ReactMarkdown>{posts.attributes.course_brief}</ReactMarkdown>
                     </div>
 
                   </div>
@@ -46,7 +48,7 @@ export default function Page(props) {
                  <div className="card" style={{margin: "30px 0 0 15%",width: "50%",position: "static"}}>
                   <h1 className="card-header">This Course includes : </h1>
                   <div className="card-body">
-                    <p><FaPlay />{props.posts.attributes.duration} Hours on-demand video </p>
+                    <p><FaPlay />{posts.attributes.duration} Hours on-demand video </p>
                     <p><FaFileCircleExclamation /> Assesment</p>
                   </div>
 
@@ -54,15 +56,13 @@ export default function Page(props) {
                 <div className="card" style={{margin: "30px 0 0 15%",width: "50%",position: "static"}}>
                   <h1 className="card-header">Course Content </h1>
                   <div className="card-body">
-                    <ReactMarkdown>{props.posts.attributes.course_outline}</ReactMarkdown>
-
+                    <ReactMarkdown>{posts.attributes.course_outline}</ReactMarkdown>
                   </div>
-
                 </div>
                 <div className="card" style={{margin: "30px 0 0 15%",width: "50%",position: "static"}}>
                   <h1 className="card-header">Requirements </h1>
                   <div className="card-body">
-                    <ReactMarkdown>{props.posts.attributes.course_requirement}</ReactMarkdown>
+                    <ReactMarkdown>{posts.attributes.course_requirement}</ReactMarkdown>
                   </div>
 
                 </div>
@@ -114,3 +114,5 @@ export async function getStaticPaths() {
     fallback: true
   }
 }
+
+export default CourseDetail;

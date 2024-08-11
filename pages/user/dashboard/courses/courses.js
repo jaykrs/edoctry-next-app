@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import css from "./Courses.module.css";
-import { httpList } from "../../../utils/httpRequest/HttpRequest";
-import { DateFormat } from "../../../utils/httpRequest/DateFormat";
 import { MdModeEditOutline } from "react-icons/md";
 import { useRouter } from "next/router";
+import axios from "axios";
+import ConstData from "../../../../urlConst";
 const CoursesList = (props) => {
     const { loading = false, setLoading = (() => { }) } = props;
     const [insdata, setInsData] = useState("");
@@ -22,7 +22,7 @@ const CoursesList = (props) => {
     useEffect(() => {
         setLoading(true);
         if (localStorage.getItem("usertype") === "instructor") {
-            httpList("courses?filters[instructor][$eq]=" + localStorage.getItem("email"), false)
+            axios.get(ConstData.CMS_URL + "courses?filters[instructor][$eq]=" + localStorage.getItem("email"))
                 .then(res => {
                     setCourseData(res.data.data);
                     let CourseEnrollment = 0;
@@ -46,7 +46,11 @@ const CoursesList = (props) => {
                     }, 5000);
                 })
         } else if (localStorage.getItem("usertype") === "customer") {
-            httpList("orders?filters[customeremail][$eq]=" + localStorage.getItem("email"), true)
+            axios.get(ConstData.CMS_URL + "orders?filters[customeremail][$eq]=" + localStorage.getItem("email"), {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("jwt")
+                }
+            })
                 .then(res => {
                     setCourseData(res.data.data);
                     let endOffset = state.currentPage * state.recordsPerPage;
@@ -98,6 +102,11 @@ const CoursesList = (props) => {
                 return { ...prev, ["currentPage"]: pageNo }
             })
         }
+    }
+    const DateFormat = function (dateString) {
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        let date = new Date(dateString);
+        return date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear();
     }
     return (
         <div className={css.outerDiv}>

@@ -1,12 +1,6 @@
-import { useState } from "react";
-import Link from "next/link";
-import thumbsCircleWhiteIcon from "../../../src/publicContent/icons/like-hand-symbol-in-a-circle-white.png";
-import thumbsCircleIcon from "../../../src/publicContent/icons/like-hand-symbol-in-a-circle.png";
-import starIcon from "../../../publicContent/icons/star.png";
-
+import { useState, useEffect } from "react";
 import css from "./CommentViewUtil.module.css";
-
-const CommentViewUtil = (props) => {
+const CommentViewUtil = ({ data = {} }) => {
   const {
     id = "00",
     img = "",
@@ -15,18 +9,19 @@ const CommentViewUtil = (props) => {
     date = new Date(),
     comment = "",
     like = "",
-  } = props.data;
+  } = data;
 
   const [liked, setLiked] = useState(like || "");
 
   const likeHandler = (value) => {
-    setLiked((prev) => {
-      if (prev === value) {
-        return "";
-      }
-      return value;
-    });
+    setLiked((prev) => (prev === value ? "" : value));
   };
+
+  useEffect(() => {
+    // Example: If you need to access `navigator` or `window`, do it here
+  }, []);
+
+  const formattedDate = date instanceof Date ? date.toLocaleDateString() : date;
 
   return (
     <div className={css.outerDiv}>
@@ -39,14 +34,14 @@ const CommentViewUtil = (props) => {
           <div className={css.rating}>
             {Array.from(new Array(rating), (_, i) => (
               <img
-                src={starIcon}
+                src={"/publicContent/icons/star.png"}
                 key={`star-${i}`}
                 alt="star"
                 className={css.starIcon}
               />
             ))}
           </div>
-          <div className={css.time}>{date}</div>
+          <div className={css.time}>{formattedDate}</div>
         </div>
         <div className={css.cnt}>{comment}</div>
         <div className={css.fdbkBox}>
@@ -54,15 +49,13 @@ const CommentViewUtil = (props) => {
           <div className={css.box2}>
             <img
               onClick={() => likeHandler("liked")}
-              src={liked === "liked" ? thumbsCircleIcon : thumbsCircleWhiteIcon}
+              src={liked === "liked" ? "/publicContent/icons/like-hand-symbol-in-a-circle.png" : "/publicContent/icons/like-hand-symbol-in-a-circle-white.png"}
               alt="thumbs down"
               className={css.fdbkIcon}
             />
             <img
               onClick={() => likeHandler("disliked")}
-              src={
-                liked === "disliked" ? thumbsCircleIcon : thumbsCircleWhiteIcon
-              }
+              src={liked === "disliked" ? "/publicContent/icons/like-hand-symbol-in-a-circle.png" : "/publicContent/icons/like-hand-symbol-in-a-circle-white.png"}
               alt="thumbs up"
               className={css.fdbkIconR}
             />

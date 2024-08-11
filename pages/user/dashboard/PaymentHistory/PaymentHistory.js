@@ -1,10 +1,10 @@
 
 import React, { useEffect, useState } from 'react';
 import css from "./PaymentHistory.module.css";
-import { httpList } from '../../../utils/httpRequest/HttpRequest';
-import { DateFormat } from '../../../utils/httpRequest/DateFormat';
-const PaymentHistory = (props) => {
-    const { loading = false, setLoading = (() => { }) } = props;
+import axios from 'axios';
+import ConstData from '../../../../urlConst';
+const PaymentHistory = ({ loading = false, setLoading = (() => { }) }) => {
+    //const { loading = false, setLoading = (() => { }) } = props;
     const [data, setData] = useState([]);
     const [toggle, setToggle] = useState(true);
     const [orderData, setOrderData] = useState("");
@@ -12,6 +12,7 @@ const PaymentHistory = (props) => {
     const [cusDetails, setCusDetails] = useState("");
     const [hideModel, showModel] = useState(true);
     const [stateList, setStateList] = useState("");
+    const [userType,setUserType] = useState("");
     const [state, setState] = useState({
         currentPage: 1,
         recordsPerPage: 5,
@@ -22,8 +23,13 @@ const PaymentHistory = (props) => {
     })
     useEffect(() => {
         setLoading(true);
+        setUserType(localStorage.getItem("usertype"))
         if (localStorage.getItem("usertype") === "instructor") {
-            httpList("orders?filters[instructor][$eq]=" + localStorage.getItem("email"), true)
+            axios.get(ConstData.CMS_URL + "orders?filters[instructor][$eq]=" + localStorage.getItem("email"), {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("jwt")
+                }
+            })
                 .then(res => {
                     setData(res.data.data)
                     let endOffset = state.currentPage * state.recordsPerPage;
@@ -44,7 +50,11 @@ const PaymentHistory = (props) => {
 
         }
         if (localStorage.getItem("usertype") === "customer") {
-            httpList("orders?filters[customeremail][$eq]=" + localStorage.getItem("email"), true)
+            axios.get(ConstData.CMS_URL + "orders?filters[customeremail][$eq]=" + localStorage.getItem("email"), {
+                headers: {
+                    Authorization: "Bearer " + localStorage.getItem("jwt")
+                }
+            })
                 .then(res => {
                     setData(res.data.data)
                     let endOffset = state.currentPage * state.recordsPerPage;
@@ -66,7 +76,11 @@ const PaymentHistory = (props) => {
     const getCustomerDetails = (email) => {
         showModel(!hideModel);
         setLoading(true);
-        httpList("customers?filters[customeremail][$eq]=" + email, true)
+        axios.get(ConstData.CMS_URL + "customers?filters[customeremail][$eq]=" + email, {
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("jwt")
+            }
+        })
             .then(res => {
                 setCusDetails(res.data.data);
                 setLoading(false);
@@ -80,7 +94,7 @@ const PaymentHistory = (props) => {
     }
     const OrderList = () => {
         setLoading(true);
-        httpList("courses?filters[instructor][$eq]=" + localStorage.getItem("email"), false)
+        axios.get(ConstData.CMS_URL + "courses?filters[instructor][$eq]=" + localStorage.getItem("email"))
             .then(res => {
                 setOrderData(res.data.data)
                 setLoading(false);
@@ -94,7 +108,11 @@ const PaymentHistory = (props) => {
     const handlePaymentList = (id) => {
         setToggle(false);
         setLoading(true);
-        httpList("/api/orders?filters[courseid][$eq]=" + id, true)
+        axios.get(ConstData.CMS_URL + "orders?filters[courseid][$eq]=" + id,{
+            headers: {
+                Authorization: "Bearer " + localStorage.getItem("jwt")
+            }
+        })
             .then(res => {
                 setIndOrderData(res.data.data);
                 setLoading(false);
@@ -138,6 +156,11 @@ const PaymentHistory = (props) => {
             })
         }
     }
+    const DateFormat =  function (dateString) {
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        let date = new Date(dateString);
+        return date.getDate() + " " + months[date.getMonth()] + " " + date.getFullYear();
+    }
     return (
         <>
             <div className={css.outerDiv}>
@@ -147,7 +170,7 @@ const PaymentHistory = (props) => {
                         <p onClick={() => {
                             setToggle(true);
                         }}>All <input type='radio' checked={toggle} /></p>
-                        {localStorage.getItem("usertype") === "instructor" &&
+                        {userType === "instructor" &&
                             <div className="dropdown" id={css.drobdownBtn}>
                                 <button type="button" className="btn btn dropdown-toggle mi-5" data-bs-toggle="dropdown">
                                     Select Courses
@@ -174,7 +197,7 @@ const PaymentHistory = (props) => {
                                     <th scope="col">Amount</th>
                                     <th scope="col"  >Order Id</th>
                                     <th scope="col">Payment On</th>
-                                    {localStorage.getItem("usertype") === "instructor" &&
+                                    {userType === "instructor" &&
                                         <th scope="col" >Student Details</th>}
                                 </tr>
                             </thead>
@@ -192,7 +215,7 @@ const PaymentHistory = (props) => {
                                                     <td scope="col">{item.attributes.amount}</td>
                                                     <td scope="col"  >{item.attributes.oderid}</td>
                                                     <td scope="col" >{createdOn}</td>
-                                                    {localStorage.getItem("usertype") === "instructor" &&
+                                                    {userType === "instructor" &&
                                                         <td scope="col"><button className="btn btn-primary" onClick={() => getCustomerDetails(item.attributes.customeremail)}>View</button></td>}
 
                                                 </tr>

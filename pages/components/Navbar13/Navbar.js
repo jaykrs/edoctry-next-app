@@ -1,20 +1,16 @@
 "use client"
 import React, { useState } from "react";
-import Link from "next/link"; // Import Link from next/link
+import Link from "next/link";
 import css from "./Navbar.module.css";
 import SearchBar from "../../utils/SearchBar/SearchBar";
-//import Button1 from "../../utils/Buttons/Button1/Button1";
-import Button1 from "@/app/utils/Buttons/Button2/Button2";
+import Button1 from "../../utils/Buttons/Button1/Button1";
 const Navbar = () => {
   let [menuState, setMenuState] = useState(false);
   const [modal, setModal] = useState(false);
- // const router = useRouter(); // Use useRouter hook
-
   const navigateHandler = () => {
     sessionStorage.setItem("backtoHomePage", true);
-    router.push("/"); // Use router.push for navigation
+    router.push("/");
   };
-
   return (
     <>
       <div className={css.navbar}>

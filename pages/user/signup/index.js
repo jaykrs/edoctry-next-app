@@ -12,7 +12,7 @@ import Button1 from "../../utils/Buttons/Button2/Button2";
 import Layout1 from "../../components/Layout1/Layout1";
 import CheckboxUtil from "../../utils/FormUtils/CheckboxUtil/CheckboxUtil";
 import Link from "next/link";
-import { CMS_URL } from "../../urlConst";
+import ConstData from "../../../urlConst";
 import PageLoadingComponents from "../../utils/PageLoadingComponent/PageLoadingComponents";
 const Signup = () => {
   const [loading, setLoading] = useState(false);
@@ -57,7 +57,7 @@ const Signup = () => {
     }
     setLoading(true);
     axios
-      .post(CMS_URL + "auth/local/register", state)
+      .post(ConstData.CMS_URL + "auth/local/register", state)
       .then((response) => {
         if (response.status === 200 && response.data.jwt) {
           const { usertype } = response.data.user;
@@ -70,7 +70,7 @@ const Signup = () => {
 
           axios
             .post(
-              `${CMS_URL}${usertype}s`,
+              `${ConstData.CMS_URL}${usertype}s`,
               postData
             )
             .then(() => {

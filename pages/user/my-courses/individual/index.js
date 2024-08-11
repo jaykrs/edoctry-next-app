@@ -4,11 +4,11 @@ import { useRouter } from "next/navigation";
 import Layout1 from "../../../components/Layout1/Layout1";
 import css from "./courseAssesmentCardPage.module.css";
 import axios from "axios";
-import { CMS_URL } from "../../../urlConst";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import StepCard from "../../../components/StepCard/StepCard";
 import { ToastContainer } from "react-toastify";
 import toastComponent from "../../../toastComponent";
+import ConstData from "../../../../urlConst";
 const CourseAssesmentCardPage = () => {
   const tabs = [
     { name: "All Courses", link: "learning" },
@@ -29,11 +29,11 @@ const CourseAssesmentCardPage = () => {
     } else {
       if (localStorage.getItem("usertype") === "customer") {
 
-        axios.get(CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseVid"))
+        axios.get(ConstData.CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseVid"))
           .then(res => {
             setData(res.data.data)
 
-            axios.get(CMS_URL + "courseunits?filters[courseid][$eq]=" + res.data.data[0].id)
+            axios.get(ConstData.CMS_URL + "courseunits?filters[courseid][$eq]=" + res.data.data[0].id)
               .then(cUnit => {
                 setCourseunit(cUnit.data.data)
               }).catch(err => {

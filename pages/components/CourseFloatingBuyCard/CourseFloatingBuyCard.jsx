@@ -3,24 +3,20 @@ import css from "./CourseFloatingBuyCard.module.css";
 import Button1 from "../../utils/Buttons/Button1/Button1";
 import InputUtil from "../../utils/FormUtils/InputUtil/InputUtil";
 import axios from "axios";
-import { CMS_URL, textConst } from "../../urlConst";
-// import { config } from "../../../utils/config";
+import ConstData from "../../../urlConst";
 import { CiPlay1 } from "react-icons/ci";
 import toastComponent from "../../toastComponent";
 import { ToastContainer } from "react-toastify";
 import { useRouter } from 'next/navigation';
-import { useDispatch } from "react-redux";
-import { addToCart } from "../../reducers/cartSlicer";
 import Cookie from "js-cookie";
-const CourseFloatingBuyCard = (props) => {
+const CourseFloatingBuyCard = ({data={},scrolled=false,setCoupon,}) => {
   const navigate = useRouter();
-  const dispatch = useDispatch();
   const [state, setState] = useState('https://ik.imagekit.io/jaykrs/file_example_MP4_640_3MG_men2_9EcU.mp4');
   const [btnStyle, setBtnStyle] = useState(false);
-  let data = props.data.attributes;
+  // let data = props.data.attributes;
   let discount = ((data.course_fee_premium - data.course_fee) / data.course_fee_premium) * 100;
-  const { scrolled, setCoupon, applyCoupon, setApplyCoupon, setShareModal } = props;
-
+  //const { scrolled, setCoupon, setShareModal } = props;
+const [applyCoupon,setApplyCoupon] = useState(false);
   const styleGuide = {
     display: "none",
   };
@@ -35,9 +31,9 @@ const CourseFloatingBuyCard = (props) => {
     //alert("Added to cart");
     let cartData = Cookie.get("cart");
     cartData = cartData ? JSON.parse(cartData) : [];
-    cartData.push(props.data.id);
+    cartData.push(data.id);
     Cookie.set("cart", JSON.stringify(cartData), { expires: 30 });
-    toastComponent("warn", textConst.addToCart);
+    toastComponent("warn", ConstData.textConst.addToCart);
     setTimeout(() => {
       // dispatch(addToCart({
       //   id: props.data.id,
@@ -50,7 +46,7 @@ const CourseFloatingBuyCard = (props) => {
 
   const handleBuy = () => {
     if (null != localStorage.getItem("jwt") && localStorage.getItem("loginStatus")) {
-      sessionStorage.setItem("courseData", JSON.stringify(props.data))
+      sessionStorage.setItem("courseData", JSON.stringify(data))
       navigate.push("/user/checkout")
     } else {
       localStorage.setItem("buyItem", "backToCourseDetails")
@@ -59,7 +55,7 @@ const CourseFloatingBuyCard = (props) => {
   }
   const handleVideoPlayer = () => {
     setBtnStyle(true);
-    setState(props.data.attributes.introductory_video);
+    setState(data.attributes.introductory_video);
   }
  
   return (
@@ -84,10 +80,12 @@ const CourseFloatingBuyCard = (props) => {
           </div>
         </div>
       </div>
-      <div className={css.outerDiv} style={scrolled ? outStyleGuide : {}}>
+      {
+        Object.keys(data).length > 0 ? 
+        <div className={css.outerDiv} style={scrolled ? outStyleGuide : {}}>
         <div className={css.innRightDiv} style={scrolled ? styleGuide : {}}>
           <div className={css.imgBox}>
-            <img src={props.data.attributes.course_logo} alt="course thumbnail" className={css.crsThumb} />
+            <img src={data.attributes.course_logo} alt="course thumbnail" className={css.crsThumb} />
           </div>
           <div className={css.maskDiv}></div>
           <div className={css.imgMask}>
@@ -104,13 +102,13 @@ const CourseFloatingBuyCard = (props) => {
               {new Intl.NumberFormat("en-IN", {
                 style: "currency",
                 currency: "INR",
-              }).format(props.data.attributes.course_fee.toFixed(2))}
+              }).format(data.attributes.course_fee.toFixed(2))}
             </div>
             <div className={css.dscPrc}>
               {new Intl.NumberFormat("en-IN", {
                 style: "currency",
                 currency: "INR",
-              }).format(props.data.attributes.course_fee_premium.toFixed(2))}
+              }).format(data.attributes.course_fee_premium.toFixed(2))}
             </div>
             <div className={css.desc}>{discount.toFixed(2)}% off</div>
           </div>
@@ -200,7 +198,8 @@ const CourseFloatingBuyCard = (props) => {
           />
         </div>
 
-      </div>
+      </div> : ""
+      }
 
     </>
   );

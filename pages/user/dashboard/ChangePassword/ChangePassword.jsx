@@ -2,20 +2,22 @@ import { useState } from "react";
 import InputUtil from "../../../utils/FormUtils/InputUtil/InputUtil";
 import Button1 from "../../../utils/Buttons/Button1/Button1";
 import css from "./ChangePassword.module.css";
-import { CMS_URL, textConst } from "../../../urlConst";
+import ConstData from "../../../../urlConst";
 import axios from "axios";
 import toastComponent from "../../../toastComponent";
 import { ToastContainer } from "react-toastify";
 
-const ChangePassword = (props) => {
-  const {loading=false,setLoading=(()=>{})} = props;
+const ChangePassword = ({loading=false,setLoading=(()=>{})}) => {
+  // const {loading=false,setLoading=(()=>{})} = props;
   const [state, setState] = useState({
     oldPassword: "",
-    newPassword: "",
-    email : localStorage.getItem("email")
+    newPassword: ""
   });
   const [message, setMessage] = useState("");
-
+//   const [email,setEmail] = useState("");
+//   useEffect=(()=>{
+//     setEmail(localStorage.getItem("email"));
+//  },[])
   let changeHanlder = (e) => {
     setState((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
@@ -25,7 +27,7 @@ const ChangePassword = (props) => {
 
   let submitHandler = () => {
     if(state.oldPassword === "" || state.newPassword === "" || state.oldPassword === state.newPassword){
-      toastComponent("error",textConst.newPasswordUpdate);
+      toastComponent("error",ConstData.textConst.newPasswordUpdate);
       return;
     }
    // let passRgx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
@@ -33,17 +35,17 @@ const ChangePassword = (props) => {
 
    
     if(!passRgx.test(state.newPassword)){
-      toastComponent("error",textConst.invalidData + "password");
+      toastComponent("error",ConstData.textConst.invalidData + "password");
     }
     setLoading(true);
-    axios.put(CMS_URL + "/api/onboard/update/password", state,{
+    axios.put(ConstData.CMS_URL + "/api/onboard/update/password", state,{
       headers:{
         Authorization: "Bearer " + localStorage.getItem("jwt")
       }
     })
       .then(response => {
          setLoading(false);
-            toastComponent("success",textConst.passwordSuccess);
+            toastComponent("success",ConstData.textConst.passwordSuccess);
       },{
         headers:{
             Authorization: "Bearer " + localStorage.getItem("jwt")

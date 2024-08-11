@@ -9,8 +9,7 @@ import { ToastContainer } from "react-toastify";
 import css from "./Login.module.css";
 import Link from "next/link";
 import toastComponent from "../../toastComponent";
-import { CMS_URL, textConst } from "../../urlConst";
-import { httpGet } from "../../utils/httpRequest/HttpRequest";
+import ConstData from "../../../urlConst";
 import PageLoadingComponent from "../../utils/PageLoadingComponent/PageLoadingComponents";
 const Page = () => {
   const router = useRouter();
@@ -38,7 +37,7 @@ const Page = () => {
       return;
     }
     // process.env.API_HOST + 
-    axios.post(CMS_URL + "auth/local", { identifier: state.email, password: state.password })
+    axios.post(ConstData.CMS_URL + "auth/local", { identifier: state.email, password: state.password })
       .then(result => {
         console.log("result", result)
         if (result.request.status === 200) {
@@ -69,12 +68,12 @@ const Page = () => {
 
   const handleUnBlock = async () => {
     setLoading(true);
-    await httpGet("onboard/email/token/" + state.email, false)
+    await axios.get("onboard/email/token/" + state.email)
       .then(res => {
         if (res.status === 200) {
-          toastComponent("success", textConst.userUnBlockSuccess);
+          toastComponent("success", ConstData.textConst.userUnBlockSuccess);
           setTimeout(()=>{
-            setMessage(textConst.userUnBlockSuccess);
+            setMessage(ConstData.textConst.userUnBlockSuccess);
           },3000)
         } else {
           setMessage("Something went Wrong Please");

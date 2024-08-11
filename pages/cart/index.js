@@ -4,12 +4,10 @@ import css from "./Cart.module.css";
 import Layout1 from "../components/Layout1/Layout1";
 import Button1 from "../utils/Buttons/Button1/Button1";
 import CheckoutCourseCard from "../components/CheckoutCourseCard/CheckoutCourseCard";
-import { useSelector, useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import store from "../store";
 import Cookie from "js-cookie";
 import axios from "axios";
-import { CMS_URL } from "../urlConst";
+import ConstData from "../../urlConst";
 import PageLoadingComponents from "../utils/PageLoadingComponent/PageLoadingComponents";
 import toastComponent from "../toastComponent";
 import { ToastContainer } from "react-toastify";
@@ -17,7 +15,6 @@ const Cart = () => {
   const navigate = useRouter();
   const [coupon, setCoupon] = useState("");
   const [appliedCoupon, setAppliedCoupon] = useState("");
-  let dispatch = useDispatch();
   let [cart, setCart] = useState("");
   let [price, setPrice] = useState(0);
   let [discount, setDiscount] = useState(0);
@@ -28,7 +25,7 @@ const Cart = () => {
   const [refresh,setRefresh] = useState(false);
   useEffect(() => {
     setLoading(true);
-   axios.get(CMS_URL + "courses")
+   axios.get(ConstData.CMS_URL + "courses")
    .then(res=>{
      let filteredCourses = res.data.data.filter(course => CookieData.includes(course.id));
      setCart(filteredCourses);
@@ -43,7 +40,7 @@ const Cart = () => {
   }, [])
   useEffect(() => {
     setLoading(true);
-   axios.get(CMS_URL + "courses")
+   axios.get(ConstData.CMS_URL + "courses")
    .then(res=>{
      let filteredCourses = res.data.data.filter(course => CookieData.includes(course.id));
      setCart(filteredCourses);

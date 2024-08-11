@@ -1,14 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
+import Link from "next/link";
 import AnnouncementCommentUtil from "../../../../utils/AnnouncementCommentUtil/AnnouncementCommentUtil";
-
 import css from "./AnnouncementsTabComponent.module.css";
-
-import imgC from "../../../../../src/publicContent/images/showcase.jpg";
-import flagReportIcon from "../../../../../src/publicContent/icons/flag-report.png";
-import flagReportFilledIcon from "../../../../../src/publicContent/icons/flag-report-filled.png";
-
 const AnnouncementsTabComponent = () => {
   const [flagState, setFlagState] = useState(false);
   const [displayCommentsCount, setDisplayCommnetsCount] = useState(3);
@@ -16,7 +9,7 @@ const AnnouncementsTabComponent = () => {
     {
       id: "u-1",
       name: "koushil",
-      img: imgC,
+      img: "/publicContent/images/showcase.jpg",
       date: "12-12-2022",
       ttl: "NextJS 13",
       desc: `Hi Everyone!
@@ -27,70 +20,70 @@ const AnnouncementsTabComponent = () => {
         {
           id: 1,
           name: "koushil",
-          img: imgC,
+          img: "/publicContent/images/showcase.jpg",
           date: "12-12-2022",
           comment: "This is a comment!",
         },
         {
           id: 2,
           name: "koushil",
-          img: imgC,
+          img: "/publicContent/images/showcase.jpg",
           date: "12-12-2022",
           comment: "This is a comment!",
         },
         {
           id: 3,
           name: "koushil",
-          img: imgC,
+          img: "/publicContent/images/showcase.jpg",
           date: "12-12-2022",
           comment: "This is a comment!",
         },
         {
           id: 4,
           name: "koushil",
-          img: imgC,
+          img: "/publicContent/images/showcase.jpg",
           date: "12-12-2022",
           comment: "This is a comment!",
         },
         {
           id: 5,
           name: "koushil",
-          img: imgC,
+          img: "/publicContent/images/showcase.jpg",
           date: "12-12-2022",
           comment: "This is a comment!",
         },
         {
           id: 6,
           name: "koushil",
-          img: imgC,
+          img: "/publicContent/images/showcase.jpg",
           date: "12-12-2022",
           comment: "This is a comment!",
         },
         {
           id: 7,
           name: "koushil",
-          img: imgC,
+          img: "/publicContent/images/showcase.jpg",
           date: "12-12-2022",
           comment: "This is a comment!",
         },
         {
           id: 8,
           name: "koushil",
-          img: imgC,
+          img: "/publicContent/images/showcase.jpg",
           date: "12-12-2022",
           comment: "This is a comment!",
         },
         {
           id: 9,
           name: "koushil",
-          img: imgC,
+          img: "/publicContent/images/showcase.jpg",
           date: "12-12-2022",
           comment: "This is a comment!",
         },
         {
           id: 10,
           name: "koushil",
-          img: imgC,
+          img: "/publicContent/images/showcase.jpg",
           date: "12-12-2022",
           comment: "This is a comment!",
         },
@@ -99,7 +92,7 @@ const AnnouncementsTabComponent = () => {
     {
       id: "u-2",
       name: "nani",
-      img: imgC,
+      img: "/publicContent/images/showcase.jpg",
       date: "12-12-2022",
       ttl: "NextJS 13",
       desc: `Hi Everyone!
@@ -110,7 +103,7 @@ const AnnouncementsTabComponent = () => {
         {
           id: 1,
           name: "nani",
-          img: imgC,
+          img: "/publicContent/images/showcase.jpg",
           date: "03-03-2022",
           comment: "This is a comment too!",
         },
@@ -132,7 +125,7 @@ const AnnouncementsTabComponent = () => {
                   />
                 </div>
                 <div className={css.proLeftBox}>
-                  <Link to={userData.id} className={css.ttl}>
+                  <Link href={userData.id} className={css.ttl}>
                     {userData.name}
                   </Link>
                   <div className={css.tagBox}>
@@ -145,7 +138,7 @@ const AnnouncementsTabComponent = () => {
                       onClick={() => setFlagState((p) => !p)}
                     >
                       <img
-                        src={flagState ? flagReportFilledIcon : flagReportIcon}
+                        src={flagState ? "/publicContent/icons/flag-report-filled.png" : "/publicContent/icons/flag-report.png"}
                         alt="flag"
                         className={css.icon}
                       />
@@ -176,7 +169,7 @@ const AnnouncementsTabComponent = () => {
                 </div>
               </div>
               <div className={css.cntBox}>
-                <div className={css.rightBox}>
+                {/* <div className={css.rightBox}>
                   {userData.comments?.map((item, id) => {
                     if (id < displayCommentsCount) {
                       return (
@@ -184,7 +177,7 @@ const AnnouncementsTabComponent = () => {
                       );
                     }
                   })}
-                </div>
+                </div> */}
               </div>
               <div
                 className={css.showMoreBtn}

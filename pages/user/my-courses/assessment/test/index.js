@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Layout1 from "../../../../components/Layout1/Layout1";
 import axios from "axios";
-import { CMS_URL,textConst } from "../../../../urlConst";
+import ConstData from "../../../../../urlConst";
 import { useRouter } from "next/router"; 
-import { useDispatch, useSelector } from "react-redux";
-import { AddCusAns, UpdateCusAns, RemoveAllCusAns } from "../../../../reducers/cusAnsSlicer";
+import { useDispatch } from "react-redux";
+import { AddCusAns, RemoveAllCusAns } from "../../../../../reducers/cusAnsSlicer";
 // import  css from "./customerAssesmentTest.css";
 import InstructorMenuBar from "../../../../components/InstructorMenuBar/InstructorMenuBar";
 import toastComponent from "../../../../toastComponent";
@@ -12,8 +12,9 @@ import { ToastContainer } from "react-toastify";
 import PageLoadingComponents from "../../../../utils/PageLoadingComponent/PageLoadingComponents";
 const CustomerAssesmentTestPage = () => {
     const navigate = useRouter();
-    const dispatch = useDispatch();
-    const cusAnsData = useSelector(store => store.cusAns.cusAns);
+   // const dispatch = useDispatch();
+    const cusAnsData = [];
+    // useSelector(store => store.cusAns.cusAns);
     const [quesData, setQuesData] = useState("");
     const [currentIndex, setNextIndex] = useState(0);
     const [currState, setCurrState] = useState();
@@ -30,7 +31,7 @@ const CustomerAssesmentTestPage = () => {
     useEffect(() => {
         setLoading(true);
         console.log("sessionStorage.getItem",localStorage.getItem("jwt"))
-        axios.get(CMS_URL + "questions?filters[assesment_id][$eq]=" + sessionStorage.getItem("testId"), {
+        axios.get(ConstData.CMS_URL + "questions?filters[assesment_id][$eq]=" + sessionStorage.getItem("testId"), {
             headers: {
                 Authorization: "Bearer " + localStorage.getItem("jwt")
             }
@@ -61,7 +62,7 @@ const CustomerAssesmentTestPage = () => {
                     scoreMark += quesData[i].attributes.marks
                 }
                 if (cusAnsData.length - 1 === i) {
-                    await axios.post(CMS_URL + "scores", {
+                    await axios.post(ConstData.CMS_URL + "scores", {
                         "data": {
                             "customeremail": localStorage.getItem("email"),
                             "customerAnswer": JSON.stringify(cusAnsData),
@@ -79,8 +80,8 @@ const CustomerAssesmentTestPage = () => {
                         }
                     }).then(res => {
                         setLoading(false);
-                        dispatch(RemoveAllCusAns())
-                        toastComponent("success", textConst.testSubmit);
+                       // dispatch(RemoveAllCusAns())
+                        toastComponent("success", ConstData.textConst.testSubmit);
                         setTimeout(()=>{
                             navigate.push("/user/my-courses/assessment/questions");
                         },1500)
@@ -101,7 +102,7 @@ const CustomerAssesmentTestPage = () => {
         if (state.cus_a_answer === false && state.cus_b_answer === false && state.cus_c_answer === false && state.cus_d_answer === false && state.cus_e_answer === false) {
             toastComponent("warn", "Please Select Answer!");
         } else {
-            dispatch(AddCusAns({ index: currentIndex, qsid: quesData[currentIndex].id, Answer: state }))
+           // dispatch(AddCusAns({ index: currentIndex, qsid: quesData[currentIndex].id, Answer: state }))
 
             if (currentIndex < quesData.length - 1) {
                 setNextIndex(currentIndex + 1)
