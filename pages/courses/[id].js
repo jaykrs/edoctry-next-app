@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Layout1 from "../components/Layout1/Layout1";
 import ReactMarkdown from "react-markdown";
 
-const Courses = ({posts={}}) =>{
+function CoursesPost({posts={}}){
     const router = useRouter();
     const handleView = (id, title) => {
         // if (localStorage.getItem("usertype") === "instructor") {
@@ -68,7 +68,7 @@ const Courses = ({posts={}}) =>{
 export async function getStaticProps({ params }) {
     const templateId = params.id;
     let posts = {};
-    posts = await getCachedTemplate(templateId);
+    posts = await getCachedTemplates(templateId);
     return {
         props: {
             posts
@@ -76,20 +76,49 @@ export async function getStaticProps({ params }) {
     }
 }
 
-export async function getCachedTemplate(templateId) { 
+export async function getCachedTemplates(templateId) { 
     const endpointUrl = process.env.API_HOST + 'courses?filters[metadata][$contains]=' + templateId;
     let templateData = [];
     await fetch(endpointUrl, { next: { revalidate: 3600 } }).then(async (response) => { if (response.status === 200) templateData = await response.json(); }).catch((error) => console.error("Error " + error));
     return templateData;
 };
 
-export async function getStaticPaths() {
-    return {
-        paths: [
-            { params: { id: '' } },
-        ],
-        fallback: true
-    }
-}
+// export async function getStaticPaths() {
+//     return {
+//         paths: [
+//             { params: { id: '' } },
+//         ],
+//         fallback: true
+//     }
+// }
 
-export default Courses;
+export async function getStaticPaths() {
+    const allPosts = await fetchAllPosts();
+    const paths = allPosts.map(post => ({
+      params: { id: post.id.toString() },
+    }));
+  
+    return {
+      paths,
+      fallback: true,
+    };
+  }
+  
+  async function fetchAllPosts() {
+    const endpointUrl = `${process.env.API_HOST}courses`;
+    let posts = [];
+  
+    try {
+      const response = await fetch(endpointUrl);
+      if (response.status === 200) {
+        const data = await response.json();
+        posts = data.data.map(post => ({ id: post.id }));
+      }
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  
+    return posts;
+  }
+
+export default CoursesPost;

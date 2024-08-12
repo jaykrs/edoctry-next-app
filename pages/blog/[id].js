@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import Layout1 from '../components/Layout1/Layout1';
 
-const BlogPost = ({ posts, templateId="" }) => {
+const BlogPost = ({ posts, templateId = "" }) => {
   return (
     <>
       <Layout1 title={templateId}>
@@ -38,7 +38,10 @@ async function getCachedTemplate(templateId) {
     const response = await fetch(endpointUrl);
     if (response.status === 200) {
       const data = await response.json();
-      templateData = data.data[0].attributes.template;
+      if (data.status === 200) {
+        templateData = data.data[0].attributes.template;
+      }
+
     }
   } catch (error) {
     console.error("Error fetching data:", error);

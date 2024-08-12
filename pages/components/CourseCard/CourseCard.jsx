@@ -1,32 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import css from "./CourseCard.module.css";
 import { MdArrowOutward } from "react-icons/md";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
+import Link from "next/link";
 const CourseCard = ({data={},extraCss={}}) => {
-  //let data = props.data;
-  //const extraCss = props.extraCss;
   const router = useRouter();
-  const userType = typeof window !== 'undefined' ? localStorage.getItem("usertype") : "";
-  // let totalRating = (
-  //   (1 * stars?.a + 2 * stars?.b + 3 * stars?.c + 4 * stars?.d + 5 * stars?.e) /
-  //     stars?.a +
-  //   stars?.b +
-  //   stars?.c +
-  //   stars?.d +
-  //   stars?.e
-  // ).toFixed(2);
-
-  // let duration = new Date(courseDuration * 1000);
-  // let hours = duration.getUTCHours();
-  // let minutes = duration.getUTCMinutes();
-
-  // let durationInHrs =
-  //   hours?.toString().padStart(2, "0") +
-  //   "." +
-  //   minutes?.toString().padStart(1, "0");
-
+  const [userType,setUserType] = useState("");
+  useEffect(()=>{
+    let userTypes = typeof window !== 'undefined' ? localStorage.getItem("usertype") : "";
+    setUserType(userTypes);
+  },[])
   
-  let handleOnClick = () => {
+  const handleOnClick = () => {
 
     if (userType === "instructor") {
       sessionStorage.setItem("courseInsId", data.id);
@@ -38,8 +23,7 @@ const CourseCard = ({data={},extraCss={}}) => {
       
     }
     router.push(`/coursedetails/${data.id}`)
-
-   
+    
   }
   return (
     <>
@@ -66,7 +50,7 @@ const CourseCard = ({data={},extraCss={}}) => {
                 currency: "INR",
               }).format(data.attributes.course_fee_premium)}
             </span>
-            <button className="btn btn-outline-primary btn-sm" style={{marginLeft:"2px"}} onClick={handleOnClick}>View <MdArrowOutward size={20}  /></button>
+            <button className="btn btn-outline-primary btn-sm" style={{marginLeft:"2px"}}  onClick={handleOnClick}>View <MdArrowOutward size={20}  /></button>
           </div>
           {/* <div className={css.tags}>
             

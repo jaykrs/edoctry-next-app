@@ -106,13 +106,42 @@ export async function getCachedTemplate(templateId) {
   return courseData;
 };
 
+// export async function getStaticPaths() {
+//   return {
+//     paths: [
+//       { params: { id: '' } },
+//     ],
+//     fallback: true
+//   }
+// }
+
 export async function getStaticPaths() {
+  const allPosts = await fetchAllPosts();
+  const paths = allPosts.map(post => ({
+    params: { id: post.id.toString() },
+  }));
+
   return {
-    paths: [
-      { params: { id: '' } },
-    ],
-    fallback: true
+    paths,
+    fallback: true,
+  };
+}
+
+async function fetchAllPosts() {
+  const endpointUrl = `${process.env.API_HOST}courses`;
+  let posts = [];
+
+  try {
+    const response = await fetch(endpointUrl);
+    if (response.status === 200) {
+      const data = await response.json();
+      posts = data.data.map(post => ({ id: post.id }));
+    }
+  } catch (error) {
+    console.error("Error fetching posts:", error);
   }
+
+  return posts;
 }
 
 export default CourseDetail;

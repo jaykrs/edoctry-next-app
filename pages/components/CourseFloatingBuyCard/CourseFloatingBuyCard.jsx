@@ -85,7 +85,7 @@ const [applyCoupon,setApplyCoupon] = useState(false);
         <div className={css.outerDiv} style={scrolled ? outStyleGuide : {}}>
         <div className={css.innRightDiv} style={scrolled ? styleGuide : {}}>
           <div className={css.imgBox}>
-            <img src={data.attributes.course_logo} alt="course thumbnail" className={css.crsThumb} />
+            <img src={data.attributes?.course_logo} alt="course thumbnail" className={css.crsThumb} />
           </div>
           <div className={css.maskDiv}></div>
           <div className={css.imgMask}>
@@ -102,13 +102,13 @@ const [applyCoupon,setApplyCoupon] = useState(false);
               {new Intl.NumberFormat("en-IN", {
                 style: "currency",
                 currency: "INR",
-              }).format(data.attributes.course_fee.toFixed(2))}
+              }).format(data.attributes?.course_fee.toFixed(2))}
             </div>
             <div className={css.dscPrc}>
               {new Intl.NumberFormat("en-IN", {
                 style: "currency",
                 currency: "INR",
-              }).format(data.attributes.course_fee_premium.toFixed(2))}
+              }).format(data.attributes?.course_fee_premium.toFixed(2))}
             </div>
             <div className={css.desc}>{discount.toFixed(2)}% off</div>
           </div>
