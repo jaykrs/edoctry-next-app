@@ -14,7 +14,7 @@ const CourseDetail = ({posts={}})=> {
   }
   return (
     <>
-      <Layout1>
+      <Layout1> 
         {
           Object.keys(posts).length > 0 ?
             <div>

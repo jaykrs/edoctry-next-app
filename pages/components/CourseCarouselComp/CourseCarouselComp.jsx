@@ -25,7 +25,7 @@ const CourseCarouselComp = ({ ttl, link = null, linkTxt = "", coursesData=[] }) 
     setState(prev => {
       return { ...prev, ["noOfPage"]: pageCount }
     })
-  }, [stateList])
+  }, [])
   const settings = {
     dots: false,
     infinite: false,

@@ -1,7 +1,9 @@
+
 import React, { useEffect, useState } from "react";
 import css from "./CourseCard.module.css";
 import { MdArrowOutward } from "react-icons/md";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 const CourseCard = ({data={},extraCss={}}) => {
   const router = useRouter();
   const [userType,setUserType] = useState("");
