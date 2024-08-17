@@ -5,8 +5,10 @@ import css from "./index.module.css";
 import BannerComp from "./components/BannerComp/BannerComp";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import CourseCard from "./components/CourseCard/CourseCard";
 export default function Page(props) {
-const [slug,setSlug] = useState("topCourses")
+  const [slug, setSlug] = useState("topCourses")
   const jsonData = [
     {
       id: "tab-1",
@@ -23,7 +25,7 @@ const [slug,setSlug] = useState("topCourses")
       ttl: "java popular course",
       slug: "java",
     },
-    
+
   ];
   return (
     <>
@@ -45,7 +47,7 @@ const [slug,setSlug] = useState("topCourses")
                       }
                       key={item.id}
                       onClick={() => setSlug(item.slug)}
-                      style={{ color: item.slug === slug ? "blue" : "", cursor: "pointer",borderBottom : item.slug === slug ? "solid 3px blue"  : ""}}
+                      style={{ color: item.slug === slug ? "blue" : "", cursor: "pointer", borderBottom: item.slug === slug ? "solid 3px blue" : "" }}
                     >
                       {item.ttl}
                     </p>
@@ -53,28 +55,28 @@ const [slug,setSlug] = useState("topCourses")
                 </div>
               </div>
               {
-                slug === "topCourses" ? 
-                <VerticalCourseDraftCard
-                ttl=""
-                link="/coursesDetails"
-                linkTxt="Top Courses"
-                data={props.coursesSet1}
-              /> : slug === "popularTrending" ? 
-              <VerticalCourseDraftCard
-                ttl="Popular Trending"
-                link="/coursesDetails"
-                linkTxt="Popular Courses"
-                data={props.coursesSet2}
-              /> :  slug === "java" ? 
-              <VerticalCourseDraftCard
-              ttl="java popular course"
-              link="/coursesDetails"
-              linkTxt="java trak"
-              data={props.coursesSet3}
-            /> : ""
+                slug === "topCourses" ?
+                  <VerticalCourseDraftCard
+                    ttl=""
+                    link="/coursesDetails"
+                    linkTxt="Top Courses"
+                    data={props.coursesSet1}
+                  /> : slug === "popularTrending" ?
+                    <VerticalCourseDraftCard
+                      ttl="Popular Trending"
+                      link="/coursesDetails"
+                      linkTxt="Popular Courses"
+                      data={props.coursesSet2}
+                    /> : slug === "java" ?
+                      <VerticalCourseDraftCard
+                        ttl="java popular course"
+                        link="/coursesDetails"
+                        linkTxt="java trak"
+                        data={props.coursesSet3}
+                      /> : ""
               }
-              
-              
+
+
             </div>
           </div>
         </div>

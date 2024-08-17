@@ -80,7 +80,6 @@ const CourseDetail = ({posts={}})=> {
 }
 export async function getStaticProps({ params }) {
   const templateId = params.id;
-  // console.log("templateId", templateId);
   let posts = "Error";
   posts = await getCachedTemplate(templateId);
 
@@ -93,7 +92,6 @@ export async function getStaticProps({ params }) {
 
 export async function getCachedTemplate(templateId) {
   const endpointUrl = process.env.API_HOST + 'courses/' + templateId;
-  //let templateData = "No Data Available";
   let courseData = {};
   await fetch(endpointUrl, { next: { revalidate: 3600 } }).then(async (response) => {
 
@@ -105,15 +103,6 @@ export async function getCachedTemplate(templateId) {
   }).catch((error) => console.error("Error " + error));
   return courseData;
 };
-
-// export async function getStaticPaths() {
-//   return {
-//     paths: [
-//       { params: { id: '' } },
-//     ],
-//     fallback: true
-//   }
-// }
 
 export async function getStaticPaths() {
   const allPosts = await fetchAllPosts();

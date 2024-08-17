@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import css from "./CourseCard.module.css";
 import { MdArrowOutward } from "react-icons/md";
 import { useRouter } from "next/router";
-import Link from "next/link";
 const CourseCard = ({data={},extraCss={}}) => {
   const router = useRouter();
   const [userType,setUserType] = useState("");
@@ -16,7 +15,7 @@ const CourseCard = ({data={},extraCss={}}) => {
     if (userType === "instructor") {
       sessionStorage.setItem("courseInsId", data.id);
       sessionStorage.setItem("courseTitle", data.attributes.course_title);
-      router.push("/user/my-courses/courseView/card");
+      router.replace("/user/my-courses/courseView/card");
       return;
     } else {
       localStorage.setItem("courseId", data.id);
@@ -56,44 +55,6 @@ const CourseCard = ({data={},extraCss={}}) => {
             
           </div> */}
         </div>
-        {/* </Link> */}
-        {/* <div className={css.hovCard}>
-          <div className={css.innerBox}> */}
-            {/* <div className="d-flex justify-content-between">
-              {/* <div className={css.ttl} dangerouslySetInnerHTML={{__html : data.attributes.course_title}} > </div> */}
-              {/* <div className={css.ttl}>
-                <div dangerouslySetInnerHTML={{ __html: data.attributes.course_title }} ></div>
-              </div>
-              <button className="btn btn-primary" onClick={handleOnClick}>View</button> */}
-            {/* </div>  */}
-           
-            {/* <div className={css.shrtDet}>
-              <div className={css.tags}>
-                <TAG1 />
-              </div>
-              <div className={css.lstUpdt}>
-                Updated <b>{data.attributes.updatedAt}</b>
-              </div>
-            </div> */}
-            {/* <div className={css.btns}>
-              {
-                localStorage.getItem("usertype") != "instructor" &&
-                <>
-                  <Button1
-                    onClick={addToCartHandler}
-                    txt="Add to cart"
-                    color="#fff"
-                    bck="#a435f0"
-                    hovBck="#8710d8"
-                    extraCss={{ width: "100%", border: "none" }}
-                  />
-                  <CircleButton onClick={addToWishListHandler} img={heartIcon} />
-                </>
-              }
-
-            </div> */}
-          {/* </div>
-        </div> */}
       </div> : ""
       }
     </>

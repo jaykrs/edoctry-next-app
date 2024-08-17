@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Slider from "react-slick";
+// import Slider from "react-slick";
 import CourseCard from "../CourseCard/CourseCard";
 import ArrowsComp from "../ArrowComp/ArrowsComp";
 import css from "./CourseCarouselComp.module.css";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+// import "slick-carousel/slick/slick.css";
+// import "slick-carousel/slick/slick-theme.css";
 const CourseCarouselComp = ({ ttl, link = null, linkTxt = "", coursesData=[] }) => {
   // const { ttl, link = null, linkTxt = "", coursesData } = props;
   const [stateList, setStateList] = useState([]);
