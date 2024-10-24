@@ -49,7 +49,7 @@ const Footer = () => {
                 <Link href={"/blog/affiliate"}>Affiliate</Link>
               </li>
               <li className={css.cli}>
-                <Link href={"/blog/investors"}>Investors</Link>
+                <Link href={"/blog/inventers"}>Inventers</Link>
               </li>
             </ul>
           </div>

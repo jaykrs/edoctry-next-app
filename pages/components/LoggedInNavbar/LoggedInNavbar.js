@@ -59,11 +59,11 @@ const LoggedInNavbar = () => {
         <div className={css.searchBox}>
           <SearchBar />
         </div>
-        <div className={css.hovBox} target="_blank">
+        {/* <div className={css.hovBox} target="_blank">
           <Link href="/business" passHref className={css.linkOver}>
             <p className={css.anchor}>Edoctry Business</p>
           </Link>
-        </div>
+        </div> */}
         {userType === "instructor" && (
           <Link href="/user/my-courses/courseView" passHref className={css.linkOver} >
             <p className={css.hovBox}>Instructor</p>

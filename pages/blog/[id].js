@@ -2,6 +2,7 @@ import { useRouter } from 'next/router';
 import Layout1 from '../components/Layout1/Layout1';
 
 const BlogPost = ({ posts, templateId = "" }) => {
+  console.log("posts", posts, templateId)
   return (
     <>
       <Layout1 title={templateId}>
@@ -24,29 +25,42 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       posts,
-      templateId
+      templateId,
+      host:process.env.API_HOST
     },
     revalidate: 3600,
   };
 }
 
 async function getCachedTemplate(templateId) {
-  const endpointUrl = `${process.env.API_HOST}templates?filters[name][$eq]=${templateId}`;
+  // const endpointUrl = `${process.env.API_HOST}templates?filters[name][$eq]=${templateId}`;
+  // let templateData = "";
+
+  // try {
+  //   const response = await fetch(endpointUrl);
+  //   if (response.status === 200) {
+  //     const data = await response.json();
+  //     if (data.status === 200) {
+  //       templateData = data.data[0].attributes.template;
+  //     }
+
+  //   }
+  // } catch (error) {
+  //   console.error("Error fetching data:", error);
+  // }
+
+  // return templateData;
+
+  const endpointUrl = process.env.API_HOST + 'templates?filters[name][$eq]=' + templateId;
   let templateData = "";
-
-  try {
-    const response = await fetch(endpointUrl);
-    if (response.status === 200) {
-      const data = await response.json();
-      if (data.status === 200) {
-        templateData = data.data[0].attributes.template;
+  await fetch(endpointUrl, { next: { revalidate: 3600 } })
+    .then(async (response) => {
+      if (response.status === 200) {
+        templateData = await response.json();
+        templateData = templateData.data[0].attributes.template;
       }
-
-    }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
-
+    })
+    .catch((error) => console.error("Error " + error));
   return templateData;
 }
 

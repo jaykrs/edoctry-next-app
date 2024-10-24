@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import CourseCard from "./components/CourseCard/CourseCard";
 export default function Page(props) {
+  console.log("props",props);
   const [slug, setSlug] = useState("topCourses")
   const jsonData = [
     {

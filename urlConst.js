@@ -260,7 +260,7 @@ import React from "react";
 // ]
 
 const ConstData = {
-  CMS_URL : "https://edoctry.adaptable.app/api/",
+  CMS_URL : "http://api.edoctry.com/api/",
   UI_URL : "https://edoctry.com/",
   jsonPageData : [
     {

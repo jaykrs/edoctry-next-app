@@ -41,25 +41,28 @@ const Navbar = () => {
           <div className={css.searchBox}>
             <SearchBar />
           </div>
-          <Link href="/business" style={{ textDecoration: "none" }}>
+          {/* <Link href="/business" style={{ textDecoration: "none" }}>
             <p className={css.hovBox}>Teach on Edoctry</p>
-          </Link>
-          <Link href="/cart" className={css.cartBox}>
-            <p>
-              <img className={css.cartIcon} src={"/publicContent/icons/shopping-cart.png"} alt="cart icon" />
-            </p>
-          </Link>
-          <p style={{ margin: "-34px -3px 0 -15px" }} >
-            {data}
-          </p>
+          </Link> */}
+
 
           <div className={css.btns}>
-            <Link href="/user/login" style={{ textDecoration: "none" }}>
+            <Link href="/cart" className={css.cartBox}>
               <p>
-                <Button1 txt="Login" />
+                <img className={css.cartIcon} src={"/publicContent/icons/shopping-cart.png"} alt="cart icon" />
+              </p>
+              <p style={{ margin: "-56px 0px 0px 10px" }} >
+                {data}
               </p>
             </Link>
-            <Link href="/user/signup" style={{ textDecoration: "none" }}>
+
+            <Link href="/user/login" style={{ textDecoration: "none" }} className={css.profile}>
+              <p>
+                {/* <Button1 txt="Login" /> */}
+                <img src={"/publicContent/icons/user-empty.png"} className={css.profileIcon} />
+              </p>
+            </Link>
+            {/* <Link href="/user/signup" style={{ textDecoration: "none" }}>
               <p>
                 <Button1
                   txt="Sign up"
@@ -68,7 +71,7 @@ const Navbar = () => {
                   hovBck="#000"
                 />
               </p>
-            </Link>
+            </Link> */}
             {/* <Button1 disableBtn={true} img={"/publicContent/icons/globe.png"} txt="" onClick={() => setModal(true)} /> */}
           </div>
         </div>
