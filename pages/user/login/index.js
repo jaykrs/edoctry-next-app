@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import Layout1 from "../../components/Layout1/Layout1";
 import InputUtil from "../../utils/FormUtils/InputUtil/InputUtil";
@@ -20,6 +20,12 @@ const Page = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [btnStatus, setBtnStatus] = useState(false);
+
+  useEffect(()=>{
+    if(localStorage.getItem("usertype") && localStorage.getItem("jwt") && localStorage.getItem("loginStatus")){
+      router.push("/");
+    }
+  },[])
 
   let changeHandler = (e) => {
     setState((prev) => ({
@@ -57,11 +63,12 @@ const Page = () => {
           toastComponent("error", "Something went wrong. Please try again.");
         }
       })
-      .catch(error => {
-        // console.log("error", error);
-        // if (error.response.status === 400 && error.message === "Your account has been blocked by an administrator") {
-        //   setBtnStatus(true);
-        // }
+      .catch(error => { 
+        if(error.response.status){
+          if (error.response.status === 400 && error.message === "Your account has been blocked by an administrator") {
+            setBtnStatus(true);
+          }
+        }
         toastComponent("error", error.message);
       });
   };

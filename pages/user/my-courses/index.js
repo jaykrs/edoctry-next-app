@@ -6,16 +6,21 @@ import css from "./MyCoursesPage.module.css";
 import axios from "axios";
 import ConstData from "../../../urlConst";
 import CourseCardWithOptions from "../../components/CourseCardWithOptions/CourseCardWithOptions";
+import PageLoadingComponents from "../../utils/PageLoadingComponent/PageLoadingComponents";
+import { ToastContainer } from "react-toastify";
+import toastComponent from "../../toastComponent";
 
 const MyCoursesPage = () => {
   const [courseData, setCourseData] = useState("");
   const router = useRouter();
+  const [loading,setLoading] = useState(false);
   useEffect(() => {
     if (localStorage.getItem("loginStatus") !== "true") {
       localStorage.clear();
       router.push("/");
     } else {
       if (localStorage.getItem("usertype") === "customer") {
+        setLoading(true);
         axios.get(ConstData.CMS_URL + "orders?filters[customeremail][$eq]=" + localStorage.getItem("email") + "&filters[payment_status][$eq]=true", {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("jwt")
@@ -23,15 +28,22 @@ const MyCoursesPage = () => {
         })
           .then(res => {
             let data = [...new Set(res.data.data)]
+            if(data.length === 0){
+              toastComponent("warn","Course Not found!");
+            }
             setCourseData(data)
+            setLoading(false);
           }).catch(err => {
-            console.log(err);
+            console.log(err.message);
+            setLoading(false);
           })
       }
     }
   }, []);
   return (
     <Layout1 title={"my-courses"}>
+      <ToastContainer />
+      <PageLoadingComponents  loading={loading} setLoading={setLoading} />
       <div className={css.outerDiv}>
         <div className={css.topBar}>
           <div className={css.topBarTtl}>My Learning</div>
@@ -85,10 +97,7 @@ const MyCoursesPage = () => {
                   </>
                 )
               })
-                : <img
-                  src="/publicContent/images/progress-circle.gif"
-                  alt="progress"
-                />
+                : ""
             }
           </div>
 

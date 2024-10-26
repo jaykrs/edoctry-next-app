@@ -1,12 +1,11 @@
-
 import { useState } from "react";
-
 import css from "./SelectUtil.module.css";
-
 import downArrowIcon from "../../../publicContent/icons/down-arrow.svg";
 
 const SelectUtil = (props) => {
   const [state, setState] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  
   const {
     img = null,
     label = "",
@@ -24,6 +23,10 @@ const SelectUtil = (props) => {
     setValue(value);
     dropdownHandler();
   };
+
+  const filteredOptions = options.filter(option =>
+    option.txt.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className={css.outerDiv}>
@@ -43,9 +46,15 @@ const SelectUtil = (props) => {
             <img className={css.icon} src={downArrowIcon} alt="down arrow" />
           </div>
           <div className={[css.optionsBox, state ? null : css.dnone].join(" ")}>
-            
-            {options?.map((option, id) => {
-              return (
+            <input
+              type="text"
+              className={css.searchInput}
+              placeholder="Search..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            {filteredOptions.length > 0 ? (
+              filteredOptions.map((option, id) => (
                 <div
                   onClick={() => optionHandler(option.value)}
                   key={id}
@@ -55,8 +64,10 @@ const SelectUtil = (props) => {
                 >
                   {option.txt}
                 </div>
-              );
-            })}
+              ))
+            ) : (
+              <div className={css.noOptions}>No options found</div>
+            )}
           </div>
         </div>
       </div>

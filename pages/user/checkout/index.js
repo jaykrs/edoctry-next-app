@@ -80,7 +80,9 @@ const CheckoutPage = () => {
         }
         await axios.post(ConstData.CMS_URL + "orders", {
             "data": body
-        }).then(od => {
+        },{
+            headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+          }).then(od => {
 
         }).catch(err => console.log("order err", i, err))
 
@@ -95,7 +97,9 @@ const CheckoutPage = () => {
                 "payment_status": true,
                 "amount": amount
             }
-        }).then(res => {
+        },{
+            headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+          }).then(res => {
             navigate.push("/user/my-courses");
         }).catch(err => {
             console.log(err)
@@ -123,7 +127,9 @@ const CheckoutPage = () => {
                 axios.post(ConstData.CMS_URL + "onboard/payment", {
                     amount: inputData.courseData.course_fee,
                     currency: "INR"
-                })
+                },{
+                    headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+                  })
                     .then(res => {
                         // console.log(res.data.data)
                         let paymentResData = res.data.data
@@ -141,7 +147,9 @@ const CheckoutPage = () => {
                             // },
                             handler: async (response) => {
                                 try {
-                                    axios.post(ConstData.CMS_URL + "onboard/payment/verify", response)
+                                    axios.post(ConstData.CMS_URL + "onboard/payment/verify", response,{
+                                        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+                                      })
                                         .then(result => {
                                             createEnrollment(response, paymentResData.amount / 100);
 
@@ -149,7 +157,7 @@ const CheckoutPage = () => {
                                             console.log(err)
                                         })
                                 } catch (err) {
-                                    console.log(err)
+                                    toastComponent("error", err.message);
                                 }
                             },
                             "notes": {

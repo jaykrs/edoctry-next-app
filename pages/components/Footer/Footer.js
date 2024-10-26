@@ -56,7 +56,7 @@ const Footer = () => {
           <div className={css.clmn}>
             <ul className={css.cul}>
               <li className={css.cli}>
-                <Link href={"/blog/inventers"}>Terms</Link>
+                <Link href={"/blog/terms"}>Terms</Link>
               </li>
               <li className={css.cli}>
                 <Link href={"/blog/privacy"}>Privacy policy</Link>

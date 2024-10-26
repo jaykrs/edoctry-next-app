@@ -20,6 +20,12 @@ const AssesmentList = () => {
     useEffect(() => {
         SearchData()
     },[recordDeleted]);
+
+    useEffect(()=>{
+        if(!localStorage.getItem("usertype") && !localStorage.getItem("jwt") && !localStorage.getItem("loginStatus")){
+          router.push("/");
+        }
+      },[])
     
 const SearchData = ()=>{
     let courseId = sessionStorage.getItem("courseInsId")

@@ -20,7 +20,7 @@ const Checkout = () => {
   const [pricePremium, setPricePremium] = useState(0);
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   //const cartData = useSelector((state) => state.cart.cart);
   let CookieData = Cookie.get("cart");
   const [inputData, setInputData] = useState({
@@ -43,7 +43,7 @@ const Checkout = () => {
     axios.get(ConstData.CMS_URL + "courses")
       .then(res => {
         let filteredCourses = res.data.data.filter(course => CookieData.includes(course.id));
-        cartData(filteredCourses);
+        setCartData(filteredCourses);
         setLoading(false);
       }).catch(err => {
         toastComponent("error", err.message);
@@ -54,11 +54,11 @@ const Checkout = () => {
   }, [])
 
   useEffect(() => {
-    loadData
+    loadData()
   }, [cartData])
 
   let loadData = () => {
-    let iPrice=0, iPricePremium=0, iDiscount=0, courseid, course_logo, course_title, instructor;
+    let iPrice = 0, iPricePremium = 0, iDiscount = 0, courseid, course_logo, course_title, instructor;
     if (cartData.length > 0) {
       for (let i = 0; i < cartData.length; i++) {
         iPrice += cartData[i].attributes.course_fee;
@@ -107,6 +107,8 @@ const Checkout = () => {
       }
       await axios.post(ConstData.CMS_URL + "orders", {
         "data": body
+      },{
+        headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
       }).then(async od => {
 
         await axios.put(ConstData.CMS_URL + "courses/" + cartData[i].id, {
@@ -124,7 +126,9 @@ const Checkout = () => {
         Cookie.set("cart", JSON.stringify(CookieData), { expires: 30 });
         //setRefresh(true);
         // dispatch(removeItemFromCart(i));
-      }).catch(err => console.log("order err", i, err))
+      }).catch(err => {
+        toastComponent("error",err.message);
+      })
     }
     await axios.post(ConstData.CMS_URL + "enrollments", {
       "data": {
@@ -144,65 +148,73 @@ const Checkout = () => {
     })
   }
   const handleCompleteOrder = () => {
-    alert("are you sure , you want to proceed?")
 
-    if (inputData.country === "" || inputData.state === "" || inputData.address === "") {
-      toastComponent("error", ConstData.textConst.enterMandatoryField);
-      return;
-    } else {
+    if (confirm("are you sure , you want to proceed?")) {
+      if (inputData.country === "" || inputData.state === "" || inputData.address === "") {
+        toastComponent("error", ConstData.textConst.enterMandatoryField);
+        return;
+      } else {
 
-      axios.post(ConstData.CMS_URL + "onboard/payment", {
-        amount: price,
-        currency: "INR"
-      })
-        .then(res => {
-          let paymentResData = res.data.data
-          var options = {
-            "key": ConstData.payKeyConfig.key_secret,
-            "amount": paymentResData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
-            "currency": paymentResData.currency,
-            "name": ConstData.payKeyConfig.name, //your business name
-            "description": ConstData.payKeyConfig.description,
-            "image": ConstData.payKeyConfig.logo,
-            "order_id": paymentResData.id,
-            "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
-              // "name": localStorage.getItem("username"), //your customer's name
-              "email": localStorage.getItem("email"),
-              // "contact": "1234567890" //Provide the customer's phone number for better conversion rates 
-            },
-            handler: async (response) => {
-              try {
-                axios.post(ConstData.CMS_URL + "onboard/payment/verify", response)
-                  .then(result => {
-                    createEnrollment(response, paymentResData.amount / 100);
-
-                  }).catch(err => {
-                    console.log(err)
-                  })
-              } catch (err) {
-                console.log(err)
-              }
-            },
-            "notes": {
-              "address": "Razorpay Corporate Office"
-            },
-            "theme": {
-              "color": "#3399cc"
-            }
-          };
-          const rzp1 = window.Razorpay(options);
-          rzp1.open();
-        }).catch(err => {
-          console.log(err)
+        axios.post(ConstData.CMS_URL + "onboard/payment", {
+          amount: price,
+          currency: "INR"
+        },
+        {
+          headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
         })
+          .then(res => {
+            let paymentResData = res.data.data
+            var options = {
+              "key": ConstData.payKeyConfig.key_secret,
+              "amount": paymentResData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+              "currency": paymentResData.currency,
+              "name": ConstData.payKeyConfig.name, //your business name
+              "description": ConstData.payKeyConfig.description,
+              "image": ConstData.payKeyConfig.logo,
+              "order_id": paymentResData.id,
+              "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+                // "name": localStorage.getItem("username"), //your customer's name
+                "email": localStorage.getItem("email"),
+                // "contact": "1234567890" //Provide the customer's phone number for better conversion rates 
+              },
+              handler: async (response) => {
+                try {
+                  axios.post(ConstData.CMS_URL + "onboard/payment/verify", response,
+                    {
+                      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+                    })
+                    .then(result => {
+                      createEnrollment(response, paymentResData.amount / 100);
+
+                    }).catch(err => {
+                      toastComponent("error",err.message);
+                    })
+                } catch (err) {
+                  toastComponent("error",err.message);
+                }
+              },
+              "notes": {
+                "address": "Razorpay Corporate Office"
+              },
+              "theme": {
+                "color": "#3399cc"
+              }
+            };
+            const rzp1 = window.Razorpay(options);
+            rzp1.open();
+          }).catch(err => {
+            toastComponent("error",err.message);
+          })
+      }
     }
 
   }
+
   return (
     <>
       {/* <Navbar2 /> */}
       <ToastContainer />
-      <PageLoadingComponents  loading={loading} setLoading={setLoading} />
+      <PageLoadingComponents loading={loading} setLoading={setLoading} />
       <div className={css.outerDiv}>
         <div className={css.bdy}>
           <div className={css.leftDiv}>
@@ -248,7 +260,7 @@ const Checkout = () => {
                       state={inputData.state}
                       onChange={changeHanlder}
                       icon={"/publicContent/icons/globe.png"}
-                      extraCss={{ width: "50%" }}
+                      extraCss={{ width: "50%",height:"50%" }}
                     />
                   </div>
 

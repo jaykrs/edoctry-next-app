@@ -29,6 +29,12 @@ const Signup = () => {
   const [message, setMessage] = useState("");
   const router = useRouter();
 
+
+  useEffect(() => {
+    if (localStorage.getItem("usertype") && localStorage.getItem("jwt") && localStorage.getItem("loginStatus")) {
+      router.push("/");
+    }
+  }, [])
   const changeHandler = (e) => {
     setState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
@@ -93,13 +99,13 @@ const Signup = () => {
         }
       })
       .catch((err) => {
-        
+
         setTimeout(() => {
           setLoading(false);
           console.log("1 err")
           toastComponent("error", err.message);
         }, 4000)
-        
+
       });
   };
   return (
