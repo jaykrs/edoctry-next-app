@@ -29,7 +29,6 @@ const Cart = () => {
    .then(res=>{
      let filteredCourses = res.data.data.filter(course => CookieData.includes(course.id));
      setCart(filteredCourses);
-     loadCardtData()
      setLoading(false);
    }).catch(err=>{
     toastComponent("error",err.message);
@@ -44,7 +43,6 @@ const Cart = () => {
    .then(res=>{
      let filteredCourses = res.data.data.filter(course => CookieData.includes(course.id));
      setCart(filteredCourses);
-     loadCardtData()
      setLoading(false);
    }).catch(err=>{
     toastComponent("error",err.message);
@@ -58,66 +56,18 @@ const Cart = () => {
   },[cart])
   let loadCardtData = async () => {
     if (cart.length > 0) {
+     let iPrice = 0,iPricePremium=0;
       for (let i = 0; i < cart.length; i++) {
-        price += cart[i].attributes.course_fee;
-        pricePremium += cart[i].attributes.course_fee_premium;
+        
+        iPrice += cart[i].attributes.course_fee;
+        iPricePremium += cart[i].attributes.course_fee_premium;
       }
-      setPrice(price);
-      setPricePremium(pricePremium);
-      let discounts = (((pricePremium - price) / pricePremium) * 100).toFixed(2);
+      setPrice(iPrice);
+      setPricePremium(iPricePremium);
+      let discounts = (((iPricePremium - iPrice) / iPricePremium) * 100).toFixed(2);
       setDiscount(discounts);
     } 
   }
-  const cartData = [
-    // {
-    //   id: 1,
-    //   img: cardImg,
-    //   link: "/course/python",
-    //   ttl: "Learn Python: The complete python programming course",
-    //   authors: ["Koushil", "Nani"],
-    //   ratings: { totalratings: 4.3, count: 3445 },
-    //   duration: 10000,
-    //   lectures: 146,
-    //   level: "All",
-    //   price: 649,
-    //   discount: 3399,
-    //   couponApplied: "koushil mankali",
-    //   bestSeller: true,
-    // },
-  ];
-
-  const whitlistedCourses = [
-    {
-      id: 1,
-      img: '/publicContent/images/card.jpg',
-      link: "/course/python",
-      ttl: "Learn Python: The complete python programming course",
-      authors: ["Koushil", "Nani"],
-      ratings: { totalratings: 4.3, count: 3445 },
-      duration: 10000,
-      lectures: 146,
-      level: "All",
-      price: 649,
-      discount: 3399,
-      couponApplied: "koushil mankali",
-      bestSeller: true,
-    },
-    {
-      id: 2,
-      img: "/publicContent/images/card.jpg",
-      link: "/course/python",
-      ttl: "Learn Python: The complete python programming course",
-      authors: ["Koushil", "Nani"],
-      ratings: { totalratings: 4.3, count: 3445 },
-      duration: 10000,
-      lectures: 146,
-      level: "All",
-      price: 649,
-      discount: 3399,
-      couponApplied: "koushil mankali",
-      bestSeller: true,
-    },
-  ];
 
   let clearCouponHandler = () => {
     setAppliedCoupon("");

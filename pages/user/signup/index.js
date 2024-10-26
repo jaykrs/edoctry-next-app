@@ -82,7 +82,8 @@ const Signup = () => {
             })
 
             .catch((err) => {
-              toastComponent("error", err.response.data.error.message);
+              console.log("2 err")
+              toastComponent("error", err.message);
               setTimeout(() => {
                 setLoading(false);
               }, 5000)
@@ -95,7 +96,8 @@ const Signup = () => {
         
         setTimeout(() => {
           setLoading(false);
-          toastComponent("error", err.response.data.error.message);
+          console.log("1 err")
+          toastComponent("error", err.message);
         }, 4000)
         
       });

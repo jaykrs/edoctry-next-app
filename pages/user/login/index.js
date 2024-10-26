@@ -58,17 +58,17 @@ const Page = () => {
         }
       })
       .catch(error => {
-        console.log("error", error);
-        if (error.response.status === 400 && error.response.data.error.message === "Your account has been blocked by an administrator") {
-          setBtnStatus(true);
-        }
-        toastComponent("error", error.response.data.error.message);
+        // console.log("error", error);
+        // if (error.response.status === 400 && error.message === "Your account has been blocked by an administrator") {
+        //   setBtnStatus(true);
+        // }
+        toastComponent("error", error.message);
       });
   };
 
   const handleUnBlock = async () => {
     setLoading(true);
-    await axios.get("onboard/email/token/" + state.email)
+    await axios.get(ConstData.CMS_URL + "onboard/email/token/" + state.email)
       .then(res => {
         if (res.status === 200) {
           toastComponent("success", ConstData.textConst.userUnBlockSuccess);
@@ -87,7 +87,7 @@ const Page = () => {
           setBtnStatus(false);
         },6000)
       }).catch(err => {
-        toastComponent("error",error.response.data.error.message);
+        toastComponent("error",err.message);
         setTimeout(()=>{
           setLoading(false);
         },5000)

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Button1 from "../../utils/Buttons/Button1/Button1";
@@ -11,19 +11,18 @@ import { ToastContainer } from "react-toastify";
 import toastComponent from "../../toastComponent";
 import Cookie from "js-cookie";
 import ConstData from "../../../urlConst";
-const config = {
-  key_secret: "rzp_test_j01bme0LQCu7jS",
-  name: "Edoctry Inc",
-  currency: "INR",
-  description: "Test Transaction",
-  logo: "/publicContent/images/logo/png/logo-color.ico",
-  CorporateAddress: "Razorpay Corporate Office"
-}
+import PageLoadingComponents from "../../utils/PageLoadingComponent/PageLoadingComponents";
+
 const Checkout = () => {
   const randomString = Date.now() * Math.floor(Math.random() * 800);
   const navigate = useRouter();
-  const cartdata = useSelector((state) => state.cart.cart);
-
+  const [cartData, setCartData] = useState([]);
+  const [pricePremium, setPricePremium] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [loading,setLoading] = useState(false);
+  //const cartData = useSelector((state) => state.cart.cart);
+  let CookieData = Cookie.get("cart");
   const [inputData, setInputData] = useState({
     country: "",
     state: "",
@@ -39,21 +38,37 @@ const Checkout = () => {
 
   })
 
-  let price, pricePremium, discount, courseid, course_logo, course_title, instructor;
-  if (cartdata.length > 0) {
+  useEffect(() => {
+    setLoading(true);
+    axios.get(ConstData.CMS_URL + "courses")
+      .then(res => {
+        let filteredCourses = res.data.data.filter(course => CookieData.includes(course.id));
+        cartData(filteredCourses);
+        setLoading(false);
+      }).catch(err => {
+        toastComponent("error", err.message);
+        setTimeout(() => {
+          setLoading(false);
+        }, 5000)
+      })
+  }, [])
 
-    price = 0;
-    pricePremium = 0;
-    for (let i = 0; i < cartdata.length; i++) {
-      price += cartdata[i].attributes.course_fee;
-      pricePremium += cartdata[i].attributes.course_fee_premium;
+  useEffect(() => {
+    loadData
+  }, [cartData])
+
+  let loadData = () => {
+    let iPrice=0, iPricePremium=0, iDiscount=0, courseid, course_logo, course_title, instructor;
+    if (cartData.length > 0) {
+      for (let i = 0; i < cartData.length; i++) {
+        iPrice += cartData[i].attributes.course_fee;
+        iPricePremium += cartData[i].attributes.course_fee_premium;
+      }
+      iDiscount = (((iPricePremium - iPrice) / iPricePremium) * 100).toFixed(2);
+      setPrice(iPrice);
+      setPricePremium(iPricePremium);
+      setDiscount(iDiscount);
     }
-    discount = (((pricePremium - price) / pricePremium) * 100).toFixed(2);
-    console.log('cart Price', price, pricePremium, discount)
-  } else {
-    price = 0;
-    pricePremium = 0;
-    discount = 0;
   }
 
 
@@ -75,34 +90,34 @@ const Checkout = () => {
   };
   const createEnrollment = async (orderDetails, amount) => {
     let courseIdList = [];
-    for (let i = 0; i < cartdata.length; i++) {
-      courseIdList.push(cartdata[i].id)
+    for (let i = 0; i < cartData.length; i++) {
+      courseIdList.push(cartData[i].id)
       let body = {
         "customeremail": localStorage.getItem("email"),
-        "courseid": `${cartdata[i].id}`,
-        "amount": cartdata[i].attributes.course_fee,
+        "courseid": `${cartData[i].id}`,
+        "amount": cartData[i].attributes.course_fee,
         "payment_status": true,
-        "course_logo": cartdata[i].attributes.course_logo,
-        "course_title": cartdata[i].attributes.course_title,
+        "course_logo": cartData[i].attributes.course_logo,
+        "course_title": cartData[i].attributes.course_title,
         "oderid": `${orderDetails.razorpay_order_id}`,
         "country": inputData.country,
         "state": inputData.state,
         "address": inputData.address,
-        "instructor": cartdata[i].attributes.instructor
+        "instructor": cartData[i].attributes.instructor
       }
       await axios.post(ConstData.CMS_URL + "orders", {
         "data": body
       }).then(async od => {
 
-        await axios.put(ConstData.CMS_URL + "courses/" + cartdata[i].id, {
-          "data": { "enrollment_count": cartdata[i].attributes.enrollment_count + 1 }
+        await axios.put(ConstData.CMS_URL + "courses/" + cartData[i].id, {
+          "data": { "enrollment_count": cartData[i].attributes.enrollment_count + 1 }
         }, {
           headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
         }).then(result => { })
           .catch(err => console.log(err))
         let CookieData = Cookie.get("cart");
         CookieData = CookieData ? JSON.parse(CookieData) : [];
-        let index = CookieData.indexOf(cartdata[i].id);
+        let index = CookieData.indexOf(cartData[i].id);
         if (index !== -1) {
           CookieData.splice(index, 1);
         }
@@ -143,12 +158,12 @@ const Checkout = () => {
         .then(res => {
           let paymentResData = res.data.data
           var options = {
-            "key": config.key_secret,
+            "key": ConstData.payKeyConfig.key_secret,
             "amount": paymentResData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             "currency": paymentResData.currency,
-            "name": config.name, //your business name
-            "description": config.description,
-            "image": config.logo,
+            "name": ConstData.payKeyConfig.name, //your business name
+            "description": ConstData.payKeyConfig.description,
+            "image": ConstData.payKeyConfig.logo,
             "order_id": paymentResData.id,
             "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
               // "name": localStorage.getItem("username"), //your customer's name
@@ -187,6 +202,7 @@ const Checkout = () => {
     <>
       {/* <Navbar2 /> */}
       <ToastContainer />
+      <PageLoadingComponents  loading={loading} setLoading={setLoading} />
       <div className={css.outerDiv}>
         <div className={css.bdy}>
           <div className={css.leftDiv}>
@@ -262,7 +278,7 @@ const Checkout = () => {
               <div className={css.bx}>
                 <h2 className={css.cbdyTtl}>Order</h2>
                 <div className={css.crsBox}>
-                  {cartdata?.map((item, index) => {
+                  {cartData?.map((item, index) => {
                     return (
                       <div className={css.cres} key={index}>
                         <div className={css.crsebx1}>
