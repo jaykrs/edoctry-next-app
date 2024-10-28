@@ -89,7 +89,7 @@ const Signup = () => {
 
             .catch((err) => {
               console.log("2 err")
-              toastComponent("error", err.message);
+              toastComponent("error", err.response.data.error.message);
               setTimeout(() => {
                 setLoading(false);
               }, 5000)
@@ -103,7 +103,7 @@ const Signup = () => {
         setTimeout(() => {
           setLoading(false);
           console.log("1 err")
-          toastComponent("error", err.message);
+          toastComponent("error", err.response.data.error.message);
         }, 4000)
 
       });
@@ -136,6 +136,7 @@ const Signup = () => {
                 icon={"/publicContent/icons/email.png"}
                 placeholderTxt="Email"
                 onChange={changeHandler}
+                extraCss={{color:"#000"}}
               />
               {/* Other InputUtil components */}
               <div className="pb-2">
@@ -148,11 +149,11 @@ const Signup = () => {
                     name="usertype"
                     onChange={changeHandler}
                   >
-                    <option disabled selected >
+                    <option disabled value={""} className="optionTxt" >
                       User type
                     </option>
-                    <option value="customer">Customer</option>
-                    <option value="instructor">Instructor</option>
+                    <option value="customer" className="optionTxt">Customer</option>
+                    <option value="instructor" className="optionTxt" >Instructor</option>
                   </select>
                 </div>
               </div>

@@ -10,15 +10,8 @@ import { ToastContainer } from "react-toastify";
 import { useRouter } from "next/router";
 import Markdown from "react-markdown";
 import ConstData from "../../../urlConst";
-import Razorpay from "razorpay";
-const config = {
-    key_secret: "rzp_test_j01bme0LQCu7jS",
-    name: "Edoctry Inc",
-    currency: "INR",
-    description: "Test Transaction",
-    logo: "/publicContent/images/logo/png/logo-color.ico",
-    CorporateAddress: "Razorpay Corporate Office"
-}
+
+
 const CheckoutPage = () => {
     const navigate = useRouter();
     useEffect(() => {
@@ -124,7 +117,7 @@ const CheckoutPage = () => {
             toastComponent("success", "Payment is done successfully!");
             setTimeout(() => {
                 navigate.push("/user/my-courses");
-            }, 4000);
+            }, 3000);
         }).catch(err => {
             console.log(err)
         })
@@ -143,12 +136,12 @@ const CheckoutPage = () => {
                     .then(res => {
                         let paymentResData = res.data.data;
                         var options = {
-                            "key": config.key_secret,
+                            "key": ConstData.payKeyConfig.key_secret,
                             "amount": paymentResData.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                             "currency": paymentResData.currency,
-                            "name": config.name, // your business name
-                            "description": config.description,
-                            "image": config.logo,
+                            "name": ConstData.payKeyConfig.name, // your business name
+                            "description": ConstData.payKeyConfig.description,
+                            "image": ConstData.payKeyConfig.logo,
                             "order_id": paymentResData.id,
                             handler: async (response) => {
                                 try {
