@@ -31,6 +31,7 @@ const LoggedInNavbar = () => {
     localStorage.clear();
     sessionStorage.clear()
     router.push("/");
+   // Cookie.remove("cart");
     if(router.asPath === "/"){
        window.location.reload(true);
     }

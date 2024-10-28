@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import axios from "axios";
 
@@ -148,7 +148,7 @@ const Signup = () => {
                     name="usertype"
                     onChange={changeHandler}
                   >
-                    <option disabled selected>
+                    <option disabled selected >
                       User type
                     </option>
                     <option value="customer">Customer</option>

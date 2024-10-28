@@ -9,7 +9,7 @@ function CoursesPost({posts={}}){
     const router = useRouter();
     const handleView = (id, title) => {
         // if (localStorage.getItem("usertype") === "instructor") {
-        //     sessionStorage.setItem("courseInsId", id);
+        //     sessionStorage.setItem("courseInsId", id); 
         //     sessionStorage.setItem("courseTitle", title)
         // } else {
         //     localStorage.setItem("courseId", id);

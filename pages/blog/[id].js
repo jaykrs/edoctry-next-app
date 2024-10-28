@@ -2,7 +2,6 @@ import { useRouter } from 'next/router';
 import Layout1 from '../components/Layout1/Layout1';
 
 const BlogPost = ({ posts, templateId = "" }) => {
-  console.log("posts", posts, templateId)
   return (
     <>
       <Layout1 title={templateId}>

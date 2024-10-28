@@ -9,14 +9,14 @@ import toastComponent from "../../toastComponent";
 import { ToastContainer } from "react-toastify";
 import { useRouter } from 'next/navigation';
 import Cookie from "js-cookie";
-const CourseFloatingBuyCard = ({data={},scrolled=false,setCoupon,}) => {
+const CourseFloatingBuyCard = ({ data = {}, scrolled = false, setCoupon, }) => {
   const navigate = useRouter();
   const [state, setState] = useState('https://ik.imagekit.io/jaykrs/file_example_MP4_640_3MG_men2_9EcU.mp4');
   const [btnStyle, setBtnStyle] = useState(false);
   // let data = props.data.attributes;
   let discount = ((data.course_fee_premium - data.course_fee) / data.course_fee_premium) * 100;
   //const { scrolled, setCoupon, setShareModal } = props;
-const [applyCoupon,setApplyCoupon] = useState(false);
+  const [applyCoupon, setApplyCoupon] = useState(false);
   const styleGuide = {
     display: "none",
   };
@@ -31,16 +31,20 @@ const [applyCoupon,setApplyCoupon] = useState(false);
     //alert("Added to cart");
     let cartData = Cookie.get("cart");
     cartData = cartData ? JSON.parse(cartData) : [];
-    cartData.push(data.id);
-    Cookie.set("cart", JSON.stringify(cartData), { expires: 30 });
-    toastComponent("warn", ConstData.textConst.addToCart);
+    if (cartData.includes(data.id)) {
+      toastComponent("warn", ConstData.textConst.courseExist);
+    } else {
+      cartData.push(data.id);
+      Cookie.set("cart", JSON.stringify(cartData), { expires: 30 });
+      toastComponent("warn", ConstData.textConst.addToCart);
+    }
     setTimeout(() => {
       // dispatch(addToCart({
       //   id: props.data.id,
       //   attributes: data
       // }))
       navigate.push("/cart");
-    }, 2000);
+    }, 3000);
   }
 
 
@@ -57,7 +61,7 @@ const [applyCoupon,setApplyCoupon] = useState(false);
     setBtnStyle(true);
     setState(data.attributes.introductory_video);
   }
- 
+
   return (
     <>
       <ToastContainer />
@@ -81,83 +85,83 @@ const [applyCoupon,setApplyCoupon] = useState(false);
         </div>
       </div>
       {
-        Object.keys(data).length > 0 ? 
-        <div className={css.outerDiv} style={scrolled ? outStyleGuide : {}}>
-        <div className={css.innRightDiv} style={scrolled ? styleGuide : {}}>
-          <div className={css.imgBox}>
-            <img src={data.attributes?.course_logo} alt="course thumbnail" className={css.crsThumb} />
-          </div>
-          <div className={css.maskDiv}></div>
-          <div className={css.imgMask}>
-            {/* <div className={css.imgODiv}>
+        Object.keys(data).length > 0 ?
+          <div className={css.outerDiv} style={scrolled ? outStyleGuide : {}}>
+            <div className={css.innRightDiv} style={scrolled ? styleGuide : {}}>
+              <div className={css.imgBox}>
+                <img src={data.attributes?.course_logo} alt="course thumbnail" className={css.crsThumb} />
+              </div>
+              <div className={css.maskDiv}></div>
+              <div className={css.imgMask}>
+                {/* <div className={css.imgODiv}>
               
             </div> */}
-            <p onClick={handleVideoPlayer}><CiPlay1 size={50} color="#fff" /></p>
-            <div className={css.maskTxt}>Preview</div>
-          </div>
-        </div>
-        <div className={css.crsePmtDt}>
-          <div className={css.prcDet}>
-            <div className={css.prc}>
-              {new Intl.NumberFormat("en-IN", {
-                style: "currency",
-                currency: "INR",
-              }).format(data.attributes?.course_fee.toFixed(2))}
+                <p onClick={handleVideoPlayer}><CiPlay1 size={50} color="#fff" /></p>
+                <div className={css.maskTxt}>Preview</div>
+              </div>
             </div>
-            <div className={css.dscPrc}>
-              {new Intl.NumberFormat("en-IN", {
-                style: "currency",
-                currency: "INR",
-              }).format(data.attributes?.course_fee_premium.toFixed(2))}
-            </div>
-            <div className={css.desc}>{discount.toFixed(2)}% off</div>
-          </div>
-          <div className={css.tmLeft}>
-            <img src={"/publicContent/icons/alarm.png"} alt="clock icon" className={css.cicon} />
-            <span>
-              <b>{2} hours</b> left at this price!
-            </span>
-          </div>
-          <div className={css.btns}>
-            <div className={css.btnsSec1}>
-              <Button1
-                txt="Add To Cart"
-                color="#fff"
-                bck="#a435f0"
-                hovBck="#8710d8"
-                onClick={handleAddToCart}
-                extraCss={{
-                  width: "83%",
-                  padding: "0.7rem",
-                  margin: "0",
-                  border: "1px solid var(--purple)",
-                }}
-              />
-              <Button1
-                txt={null}
-                img={"/publicContent/icons/heart.png"}
-                extraCss={{
-                  width: "15%",
-                  margin: "0",
-                  padding: "0.7rem",
-                }}
-              />
-            </div>
-            <div className={css.btnsSec2}>
-              <Button1
-                txt="Buy now"
-                onClick={handleBuy}
-                extraCss={{
-                  width: "100%",
-                  padding: "0.7rem",
-                  margin: "0.5rem 0",
-                }}
-              />
-            </div>
-          </div>
-          <div className={css.crsePmtDtTxt}>30-Day Money-Back Guarantee</div>
-          <div className={css.crsePmtDtTxt}>Full Lifetime Access</div>
-          {/* <div className={css.crsePmtDtExSec}>
+            <div className={css.crsePmtDt}>
+              <div className={css.prcDet}>
+                <div className={css.prc}>
+                  {new Intl.NumberFormat("en-IN", {
+                    style: "currency",
+                    currency: "INR",
+                  }).format(data.attributes?.course_fee.toFixed(2))}
+                </div>
+                <div className={css.dscPrc}>
+                  {new Intl.NumberFormat("en-IN", {
+                    style: "currency",
+                    currency: "INR",
+                  }).format(data.attributes?.course_fee_premium.toFixed(2))}
+                </div>
+                <div className={css.desc}>{discount.toFixed(2)}% off</div>
+              </div>
+              <div className={css.tmLeft}>
+                <img src={"/publicContent/icons/alarm.png"} alt="clock icon" className={css.cicon} />
+                <span>
+                  <b>{2} hours</b> left at this price!
+                </span>
+              </div>
+              <div className={css.btns}>
+                <div className={css.btnsSec1}>
+                  <Button1
+                    txt="Add To Cart"
+                    color="#fff"
+                    bck="#a435f0"
+                    hovBck="#8710d8"
+                    onClick={handleAddToCart}
+                    extraCss={{
+                      width: "83%",
+                      padding: "0.7rem",
+                      margin: "0",
+                      border: "1px solid var(--purple)",
+                    }}
+                  />
+                  <Button1
+                    txt={null}
+                    img={"/publicContent/icons/heart.png"}
+                    extraCss={{
+                      width: "15%",
+                      margin: "0",
+                      padding: "0.7rem",
+                    }}
+                  />
+                </div>
+                <div className={css.btnsSec2}>
+                  <Button1
+                    txt="Buy now"
+                    onClick={handleBuy}
+                    extraCss={{
+                      width: "100%",
+                      padding: "0.7rem",
+                      margin: "0.5rem 0",
+                    }}
+                  />
+                </div>
+              </div>
+              <div className={css.crsePmtDtTxt}>30-Day Money-Back Guarantee</div>
+              <div className={css.crsePmtDtTxt}>Full Lifetime Access</div>
+              {/* <div className={css.crsePmtDtExSec}>
             <div
               className={css.innCrsePmtDtExSec}
               onClick={() => setShareModal((prev) => !prev)}
@@ -172,33 +176,33 @@ const [applyCoupon,setApplyCoupon] = useState(false);
               Apply the Coupon
             </div>
           </div> */}
-          <div className={css.inptBox}>
-            {applyCoupon ? (
-              <InputUtil
-                btnTxt="Apply"
-                onChange={(e) => setCoupon(e.target.value)}
-                btnClick={() => console.log(coupon, "coupon")}
-                extraCss={{ height: "42px" }}
+              <div className={css.inptBox}>
+                {applyCoupon ? (
+                  <InputUtil
+                    btnTxt="Apply"
+                    onChange={(e) => setCoupon(e.target.value)}
+                    btnClick={() => console.log(coupon, "coupon")}
+                    extraCss={{ height: "42px" }}
+                  />
+                ) : (
+                  ""
+                )}
+              </div>
+            </div>
+            <hr />
+            <div className={css.footerSec}>
+              <div className={css.fooTtl}>Training 5 or more people?</div>
+              <div className={css.fooDesc}>
+                Get your team access to 1,000+ top Edoctry courses anytime, anywhere.
+              </div>
+              <Button1
+                txt="Try Edoctry Business"
+                extraCss={{ width: "100%", padding: "0.7rem", margin: 0 }}
+                onClick={() => { navigate.push("/bussiness") }}
               />
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
-        <hr />
-        <div className={css.footerSec}>
-          <div className={css.fooTtl}>Training 5 or more people?</div>
-          <div className={css.fooDesc}>
-            Get your team access to 1,000+ top Edoctry courses anytime, anywhere.
-          </div>
-          <Button1
-            txt="Try Edoctry Business"
-            extraCss={{ width: "100%", padding: "0.7rem", margin: 0 }}
-            onClick={() => { navigate.push("/bussiness") }}
-          />
-        </div>
+            </div>
 
-      </div> : ""
+          </div> : ""
       }
 
     </>

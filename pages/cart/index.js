@@ -79,7 +79,6 @@ const Cart = () => {
 
   let submitCoupon = () => {
     setAppliedCoupon(coupon);
-    console.log(coupon, "coupon");
   };
 
   const handleCheckout = () => {

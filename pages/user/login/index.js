@@ -58,6 +58,7 @@ const Page = () => {
           } else if (result.data.user.usertype === "instructor") {
             router.push("/user/my-courses/courseView");
           }
+          
           toastComponent("success", "Successfully Logged In");
         } else {
           toastComponent("error", "Something went wrong. Please try again.");

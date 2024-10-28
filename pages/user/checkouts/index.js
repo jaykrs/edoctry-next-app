@@ -51,6 +51,15 @@ const Checkout = () => {
           setLoading(false);
         }, 5000)
       })
+
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
   }, [])
 
   useEffect(() => {
@@ -107,7 +116,7 @@ const Checkout = () => {
       }
       await axios.post(ConstData.CMS_URL + "orders", {
         "data": body
-      },{
+      }, {
         headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
       }).then(async od => {
 
@@ -127,7 +136,7 @@ const Checkout = () => {
         //setRefresh(true);
         // dispatch(removeItemFromCart(i));
       }).catch(err => {
-        toastComponent("error",err.message);
+        toastComponent("error", err.message);
       })
     }
     await axios.post(ConstData.CMS_URL + "enrollments", {
@@ -141,8 +150,14 @@ const Checkout = () => {
         "payment_status": true,
         "amount": amount
       }
+    }, {
+      headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
     }).then(res => {
-      navigate.push("/user/my-courses");
+
+      toastComponent("success", "Payment is done successfully!");
+      setTimeout(() => {
+        navigate.push("/user/my-courses");
+      }, 4000);
     }).catch(err => {
       console.log(err)
     })
@@ -159,9 +174,9 @@ const Checkout = () => {
           amount: price,
           currency: "INR"
         },
-        {
-          headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
-        })
+          {
+            headers: { Authorization: "Bearer " + localStorage.getItem("jwt") }
+          })
           .then(res => {
             let paymentResData = res.data.data
             var options = {
@@ -187,10 +202,10 @@ const Checkout = () => {
                       createEnrollment(response, paymentResData.amount / 100);
 
                     }).catch(err => {
-                      toastComponent("error",err.message);
+                      toastComponent("error", err.message);
                     })
                 } catch (err) {
-                  toastComponent("error",err.message);
+                  toastComponent("error", err.message);
                 }
               },
               "notes": {
@@ -200,16 +215,16 @@ const Checkout = () => {
                 "color": "#3399cc"
               }
             };
-            const rzp1 = window.Razorpay(options);
+            const rzp1 = new window.Razorpay(options);
             rzp1.open();
           }).catch(err => {
-            toastComponent("error",err.message);
+            console.log("error", err);
+            toastComponent("error", err.message);
           })
       }
     }
 
   }
-
   return (
     <>
       {/* <Navbar2 /> */}
@@ -260,7 +275,7 @@ const Checkout = () => {
                       state={inputData.state}
                       onChange={changeHanlder}
                       icon={"/publicContent/icons/globe.png"}
-                      extraCss={{ width: "50%",height:"50%" }}
+                      extraCss={{ width: "50%", height: "50%" }}
                     />
                   </div>
 
