@@ -47,8 +47,9 @@ const CreateNewAssesment = () => {
       }
       ).then(result => {
         setLoading(false);
+        toastComponent("success","new unit created successfully")
         setTimeout(() => {
-          navigate.push("/user/my-courses/ins/assesment")
+          navigate.push("/user/my-courses/ins/assessment")
         }, 3000)
 
       }).catch(err => {

@@ -90,7 +90,7 @@ const Page = () => {
         setTimeout(()=>{
           setState((prev) => ({
             ...prev,
-            ["email"]: "",["password"]:"",
+            ["password"]:"",
           }));
           setBtnStatus(false);
         },6000)
@@ -101,7 +101,6 @@ const Page = () => {
         },5000)
       })
   }
-
   return (
     <>
       <Layout1 title="Login">

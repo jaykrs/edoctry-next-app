@@ -18,7 +18,7 @@ const InstructorUnitViewPage = () => {
     const [loading,setLoading] = useState(false);
     const [state, setState] = useState({
         currentPage: 1,
-        recordsPerPage: 2,
+        recordsPerPage: 10,
         itemOffset: 0,
         noOfPage: 0,
         pagNextBtn: false,

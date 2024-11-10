@@ -14,6 +14,9 @@ const CourseViewPage = () => {
   const [coursesData, setCoursesData] = useState("");
   const [btnStyle, setBtnStyle] = useState(false);
   const [state, setState] = useState({
+    course_brief:"",
+    course_outline:"",
+    course_requirement:"",
     unitBrief: "",
     unitLabProject: "",
     chapterBrief: "",
@@ -25,8 +28,12 @@ const CourseViewPage = () => {
     axios.get(ConstData.CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("coursePlayerID"))
       .then(res => {
         setCoursesData(res.data.data);
+        let content = res.data.data[0].attributes;
+        setState(prev => {
+          return { ...prev, ["course_brief"]: content.course_brief, ["course_outline"]: content.course_outline, ["course_requirement"]: content.course_requirement }
+        })
         if (videoUrl === "") {
-          setVideoUrl(res.data.data[0].attributes.introductory_video)
+          setVideoUrl(content.introductory_video)
         }
       }).catch(err => {
         console.log(err);
@@ -38,11 +45,12 @@ const CourseViewPage = () => {
     setVideoUrl(url);
   }
   const updateCourseViewContent = (unitBrief, unitLabProject, chapterBrief, chapterContent, chapterResourses) => {
+    console.log("course state",{unitBrief,unitLabProject,chapterBrief,chapterContent,chapterResourses});
     setState(prev => {
       return { ...prev, ["unitBrief"]: unitBrief, ["unitLabProject"]: unitLabProject, ["chapterBrief"]: chapterBrief, ["chapterContent"]: chapterContent, ["chapterResourses"]: chapterResourses }
     })
   }
-  console.log("coursesData",coursesData);
+ 
   return (
     <>
       {

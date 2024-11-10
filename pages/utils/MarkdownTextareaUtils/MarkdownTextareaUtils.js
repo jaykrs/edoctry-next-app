@@ -3,16 +3,33 @@ import React, { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
-const MarkdownEditor = (props) => {
-    const {model="",setModel=(()=>{}),title="",required=false} = props;
+const MarkdownEditor = ({ model = "", setModel, title = "", required = false }) => {
+    const [showModal, setShowModal] = useState(false); // Track modal visibility
+
     const handleTextareaChange = (event) => {
         setModel(event.target.value);
     };
+
+    const handlePreviewClick = () => {
+        setShowModal(true); // Show the modal
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false); // Close the modal
+    };
+
     return (
         <div>
-            <div class="d-flex justify-content-between">
-                <h3 className='markdownTextareaTlt'><strong>{title}</strong><span className="mandatoryField" style={{display : required === true ? "" : "none"}}>*</span></h3>
-                <button type="button" class="position-relative markdownBtn" data-bs-toggle="modal" data-bs-target="#markdownModel">
+            <div className="d-flex justify-content-between">
+                <h3 className='markdownTextareaTlt'>
+                    <strong>{title}</strong>
+                    <span className="mandatoryField" style={{ display: required === true ? "" : "none" }}>*</span>
+                </h3>
+                <button
+                    type="button"
+                    className="position-relative markdownBtn"
+                    onClick={handlePreviewClick} // Use the React method to show modal
+                >
                     Preview
                 </button>
             </div>
@@ -21,26 +38,24 @@ const MarkdownEditor = (props) => {
                 value={model}
                 onChange={handleTextareaChange}
                 placeholder="Enter Markdown text here..."
-                className='markdownTextarea'
+                className="markdownTextarea"
             />
-            <div style={{ marginTop: '10px' }}>
 
-            </div>
-
-            <div class="modal fade" id="markdownModel" tabindex="-1" aria-labelledby="markdownModelLabel" aria-hidden="true">
-                <div class="modal-dialog modal-xl">
-                    <div class="modal-content">
-                        
-                        <div class="modal-body">
-                            <ReactMarkdown remarkPlugins={[remarkGfm]}>{model}</ReactMarkdown>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            {/* Modal is controlled by React state */}
+            {showModal && (
+                <div className="modal fade show" style={{ display: "block" }} tabIndex="-1" aria-labelledby="markdownModelLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-xl">
+                        <div className="modal-content">
+                            <div className="modal-body">
+                                <ReactMarkdown remarkPlugins={[remarkGfm]}>{model}</ReactMarkdown>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={handleCloseModal}>Close</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
+            )}
         </div>
     );
 };

@@ -66,7 +66,7 @@ const InstructorUnitEditPage = () => {
           "unit_duration": state.unit_duration,
           "labproject": labProject,
           "unit_brief": unitBrief,
-          "courseid": state.courseid,
+        //  "courseid": state.courseid,
           "unit_introductory_video" : state.unit_introductory_video
         }
       },{

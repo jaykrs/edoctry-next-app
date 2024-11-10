@@ -21,6 +21,27 @@ const CourseViewTabComponent = (props) => {
     },
     {
       id: 2,
+      name: "Course Brief",
+      icon: null,
+     // link: "overview",
+     data: data.course_brief
+    },
+    {
+      id: 2,
+      name: "Course Outline",
+      icon: null,
+     // link: "overview",
+     data: data.course_outline
+    },
+    {
+      id: 2,
+      name: "Course Content",
+      icon: null,
+     // link: "overview",
+     data: data.course_requirement
+    },
+    {
+      id: 2,
       name: "Unit Brief",
       icon: null,
      // link: "overview",
@@ -46,14 +67,14 @@ const CourseViewTabComponent = (props) => {
       icon: null,
      // link: "announcements",
       data:data.chapterContent,
-    },
-    {
-      id: 6,
-      name: "Chapter Resources",
-      icon: null,
-     // link: "reviews",
-     data:data.chapterResourses
-    },
+    }
+    // {
+    //   id: 6,
+    //   name: "Chapter Resources",
+    //   icon: null,
+    //  // link: "reviews",
+    //  data:data.chapterResourses
+    // },
   ];
   return (
     <div className={css.outerDiv}>

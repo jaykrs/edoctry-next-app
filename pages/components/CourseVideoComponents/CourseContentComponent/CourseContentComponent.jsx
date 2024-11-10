@@ -103,6 +103,7 @@ const CourseContentComponent = (props) => {
                                   <div
                                     className={css.descBdy}
                                     key={`subItem-${ih}`}
+                                    onClick={()=>  props.updateCourseViewContent(item.attributes.unit_brief, item.attributes.labproject, ch.attributes.chapter_brief, ch.attributes.chapter_content, ch.attributes.chapter_resource) }
                                   >
                                     <div className={css.descBdyLeft}>
                                       <CustomCheckboxUtil
@@ -122,6 +123,7 @@ const CourseContentComponent = (props) => {
                                           gap: "0",
                                           margin: "0.5rem",
                                         }}
+                                        
                                       />
                                     </div>
                                     <div className={css.descBdyRight} >
@@ -134,7 +136,7 @@ const CourseContentComponent = (props) => {
                                         {
                                           ch.attributes.chapter_video.split(",").map((video, vi) => {
                                             return (
-                                              <div className="d-flex justify-content-start" onClick={() => props.updateCourseViewContent(item.attributes.unit_brief, item.attributes.labproject, ch.attributes.chapter_brief, ch.attributes.chapter_content, ch.attributes.chapter_resource)}>
+                                              <div key={vi} className="d-flex justify-content-start" onClick={() => props.updateCourseViewContent(item.attributes.unit_brief, item.attributes.labproject, ch.attributes.chapter_brief, ch.attributes.chapter_content, ch.attributes.chapter_resource)}>
                                                 {
                                                   video !== "" && <RiVideoFill size={20} style={{ marginTop: "4px" }} />
                                                 }

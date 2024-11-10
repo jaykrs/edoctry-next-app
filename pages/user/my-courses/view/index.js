@@ -8,6 +8,7 @@ import { FaAngleDoubleLeft } from "react-icons/fa";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { ToastContainer } from "react-toastify";
 import Layout1 from "../../../components/Layout1/Layout1";
+import toastComponent from "../../../toastComponent";
 
 const InstructorCourseViewPage = () => {
     const userType = typeof window !== 'undefined' ? localStorage.getItem("usertype") : "";
@@ -84,7 +85,7 @@ const InstructorCourseViewPage = () => {
             })
                 .then(res => {
                     setTimeout(() => {
-                        toastComponent("success", textConst.tableDeletedSuccess);
+                        toastComponent("success", ConstData.textConst.tableDeletedSuccess);
                     }, 3000);
                     setRecordDeleted(!recordDeleted);
                     setLoading(false);

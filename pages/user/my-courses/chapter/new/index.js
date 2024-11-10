@@ -37,6 +37,7 @@ const InstructorChapterNew = () => {
 
   }
   const videoUpload = () => {
+    setLoading(true);
     const formdata = new FormData();
     formdata.append("file", state.videoPath);
 
@@ -49,12 +50,14 @@ const InstructorChapterNew = () => {
     fetch(ConstData.CMS_URL + "onboard/fileupload", requestOptions)
       .then((response) => response.json())
       .then((result) => {
+        setLoading(false);
         let arr = state.introductory_video;
         arr.push(result.url);
         stateHandler("introductory_video", arr);
         toastComponent("success","video uploaded successfilly");
       })
       .catch((error) => {
+        setLoading(false);
         toastComponent("error",error.message);
       });
 
@@ -89,7 +92,7 @@ const InstructorChapterNew = () => {
            },3000);
          
         }).catch(err => {
-          toastComponent("error",err.message);
+          toastComponent("error",err.response.data.error.message);
           setTimeout(()=>{
             setLoading(false);
           },3000);

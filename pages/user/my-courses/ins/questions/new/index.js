@@ -23,10 +23,6 @@ const QuestionNew = () => {
       //  { key: "Fill_In_Blank", value: "fillinblank" }
 
     ];
-    let questionTrueOption = [
-        { txt: "True", value: "True" },
-        { txt: "False", value: "False" }
-    ]
 
     const navigate = useRouter();
     const [loading,setLoading] = useState(false);
@@ -97,7 +93,7 @@ const QuestionNew = () => {
                     setLoading(false);
                     toastComponent("success",ConstData.textConst.tableCreatedSuccess);
                     setTimeout(()=>{
-                      navigate.push("/user/profile/assesment/question");
+                      navigate.push("/user/my-courses/ins/questions");
                     },3000);
                     
                 }).catch(err => {
@@ -148,7 +144,7 @@ const QuestionNew = () => {
                     setLoading(false);
                     toastComponent("success",ConstData.textConst.tableCreatedSuccess);
                     setTimeout(()=>{
-                        navigate.push("/user/profile/assesment/question");
+                        navigate.push("/user/my-courses/ins/questions");
                     },3000);
                     
                 }).catch(err => {
@@ -189,7 +185,7 @@ const QuestionNew = () => {
                     setLoading(false);
                     toastComponent("success",ConstData.textConst.tableCreatedSuccess);
                     setTimeout(()=>{
-                        navigate.push("/user/profile/assesment/question")
+                        navigate.push("/user/my-courses/ins/questions")
                     },3000);
                     
                 }).catch(err => {
@@ -234,7 +230,7 @@ const QuestionNew = () => {
                     setLoading(false);
                     toastComponent("success",ConstData.textConst.tableCreatedSuccess);
                     setTimeout(()=>{
-                        navigate.push("/user/profile/assesment/question");
+                        navigate.push("/user/my-courses/ins/questions");
                     },1500);
                     
                 }).catch(err => {

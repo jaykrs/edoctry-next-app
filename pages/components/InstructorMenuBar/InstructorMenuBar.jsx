@@ -1,16 +1,13 @@
-import { useState } from "react";
-
-// import smallLogoIcon from "../../../../src/publicContent/images/logo/svg/logo-black.svg";
-// import queryIcon from "../../../../src/publicContent/icons/query-question-mark.png";
-// import captionIcon from "../../../../src/publicContent/icons/caption.png";
-// import playTvIcon from "../../../../src/publicContent/icons/tv-monitor.png";
-// import analyticsIcon from "../../../../src/publicContent/icons/data-analytics.png";
-// import settingsIcon from "../../../../src/publicContent/icons/settings.png";
+'use client'
+import { useEffect, useState } from "react";
 import css from "./InstructorMenuBar.module.css";
 import { FaCircleUser } from "react-icons/fa6";
 const InstructorMenuBar = (props) => {
+  const [userName, setUserName] = useState("");
+  useEffect(() => {
+    setUserName(typeof window !== 'undefined' ? localStorage.getItem("username") : "")
+  },[])
   const { cusAnsData = [], setNextIndex, setState, quesData = [] } = props;
-  const userName = typeof window !== 'undefined' ? localStorage.getItem("username") : "";
   const handleCurrState = (index) => {
     setNextIndex(index);
     if (cusAnsData[index] !== undefined) {
@@ -56,7 +53,7 @@ const InstructorMenuBar = (props) => {
             })
               : ""
           }
-          
+
           {/* <Link to="/" className={css.iconBox}>
           <img className={css.icon} src={smallLogoIcon} alt="icon" />
         </Link>
@@ -132,14 +129,14 @@ const InstructorMenuBar = (props) => {
        */}
         </div>
         <div className={css.checkBox} >
-            <div>
-              <p></p> <span>ANSWERED</span>
-            </div>
-            <div>
-              <p style={{ backgroundColor: "#fff" }} ></p> <span>Not ANSWERED</span>
-            </div>
-
+          <div>
+            <p></p> <span>ANSWERED</span>
           </div>
+          <div>
+            <p style={{ backgroundColor: "#fff" }} ></p> <span>Not ANSWERED</span>
+          </div>
+
+        </div>
       </div>
     </>
   );
