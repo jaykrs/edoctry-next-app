@@ -24,7 +24,7 @@ const CourseContentComponent = (props) => {
         .then(res => {
           let data = res.data.data;
           setCourseUnitData(res.data.data);
-
+          
           if (data.length > 0) {
             for (let i = 0; i < data.length; i++) {
               axios.get(ConstData.CMS_URL + "chapters?filters[courseunitid][$eq]=" + data[i].id, {

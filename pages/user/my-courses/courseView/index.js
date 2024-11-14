@@ -145,7 +145,7 @@ const InstructorCoursePage = () => {
       <>
         <h2 className={css.ttl}>Courses</h2>
         <div className={css.topNav}>
-          <div className={css.left}>
+          <div className={css.left}> 
             <SearchBar2
               searchBar={searchBar}
               setSearchBar={setSearchBarHandler}

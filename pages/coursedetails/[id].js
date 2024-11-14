@@ -3,10 +3,13 @@ import Layout1 from '../components/Layout1/Layout1';
 import CourseFloatingBuyCard from "../components/CourseFloatingBuyCard/CourseFloatingBuyCard";
 import { FaGlobe, FaBookTanakh, FaPlay, FaFileCircleExclamation, FaCircle } from "react-icons/fa6";
 import ReactMarkdown from "react-markdown";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Cookie from "js-cookie";
  export default function CourseDetails({posts={}}){
-    
+     const [userType,setUserType] = useState("");
+     useEffect(()=>{
+       setUserType(localStorage.getItem("usertype"));
+     },[])
     return (
         <>
             {
@@ -14,7 +17,10 @@ import Cookie from "js-cookie";
                     <Layout1 title={posts?.attributes.course_title}>
 
                         <div>
-                            <CourseFloatingBuyCard data={posts} />
+                            {
+                                userType === "customer" && 
+                                <CourseFloatingBuyCard data={posts} />
+                            }
                             <div className=" d-flex justify-content-center" style={{ backgroundColor: "blanchedalmond", width: "100%", height: "auto", padding: "20px" }}>
                                 <div style={{ width: "10%" }}></div>
                                 <div style={{ width: "60%" }}>
