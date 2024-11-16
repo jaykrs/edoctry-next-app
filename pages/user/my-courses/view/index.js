@@ -27,6 +27,11 @@ const InstructorCourseViewPage = () => {
         pagPreBtn: false
     })
     useEffect(() => {
+        if(localStorage.getItem("usertype") !== "instructor" || localStorage.getItem("loginStatus") === "false" || localStorage.getItem("email") === "" ){
+            localStorage.clear();
+            sessionStorage.clear();
+            navigate.push("/");
+          }
         if (typeof window !== 'undefined') {
             searchData();
         }

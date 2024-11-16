@@ -1,5 +1,5 @@
 import InputUtil from "../../../../utils/FormUtils/InputUtil/InputUtil";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout1 from "../../../../components/Layout1/Layout1";
 import axios from "axios";
 import ConstData from "../../../../../urlConst";
@@ -10,7 +10,6 @@ import { ToastContainer } from "react-toastify";
 import MarkdownTextareaUtils from "../../../../utils/MarkdownTextareaUtils/MarkdownTextareaUtils";
 import PageLoadingComponents from "../../../../utils/PageLoadingComponent/PageLoadingComponents";
 const InstructorUnitNew = () => {
-  
   let langOption = [
     { key: "Select Language", value: "" },
     { key: "English", value: "english" },
@@ -28,6 +27,18 @@ const InstructorUnitNew = () => {
     lapproject_attachment: "",
     unit_introductory_video: "",
   })
+  useEffect(()=>{
+    setLoading(true);
+    if(localStorage.getItem("usertype") !== "instructor" || localStorage.getItem("loginStatus") === "false" || localStorage.getItem("email") === "" ){
+      localStorage.clear();
+      sessionStorage.clear();
+      navigate.push("/");
+      setLoading(false);
+    }else{
+      setLoading(false);
+    }
+  },[])
+
   let changeHandler = (e) => {
     setState((prev) => {
       return { ...prev, [e.target.name]: e.target.value }

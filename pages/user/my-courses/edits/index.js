@@ -43,6 +43,11 @@ const CourseEditPage = () => {
 
   useEffect(() => {
     setLoading(true);
+    if(localStorage.getItem("usertype") !== "instructor" || localStorage.getItem("loginStatus") === "false" || localStorage.getItem("email") === "" ){
+      localStorage.clear();
+      sessionStorage.clear();
+      navigate.push("/");
+    }
     axios.get(ConstData.CMS_URL + "courses?filters[id][$eq]=" + sessionStorage.getItem("courseEditId"))
       .then(res => {
         let data = res.data.data[0];

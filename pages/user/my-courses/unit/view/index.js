@@ -15,7 +15,7 @@ const InstructorUnitViewPage = () => {
     const navigate = useRouter();
     const [chapterList, setChapterList] = useState("");
     const [recordDeleted, setRecordDeleted] = useState(false);
-    const [loading,setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [state, setState] = useState({
         currentPage: 1,
         recordsPerPage: 10,
@@ -25,6 +25,11 @@ const InstructorUnitViewPage = () => {
         pagPreBtn: false
     })
     useEffect(() => {
+        if (localStorage.getItem("usertype") !== "instructor" || localStorage.getItem("loginStatus") === "false" || localStorage.getItem("email") === "") {
+            localStorage.clear();
+            sessionStorage.clear();
+            navigate.push("/");
+        }
         SearchData();
     }, [])
 
@@ -71,9 +76,9 @@ const InstructorUnitViewPage = () => {
                 setRecordDeleted(!recordDeleted);
             }).catch(err => {
                 toastComponent("error", err.message);
-                setTimeout(()=>{
+                setTimeout(() => {
                     setLoading(false);
-                  },3000)
+                }, 3000)
             })
         }
     }
@@ -203,10 +208,10 @@ const InstructorUnitViewPage = () => {
                         })
 
                             : ""
-                            // <img
-                            //     src="/publicContent/images/progress-circle.gif"
-                            //     alt="progress"
-                            // />
+                        // <img
+                        //     src="/publicContent/images/progress-circle.gif"
+                        //     alt="progress"
+                        // />
                     }
                     {/* <button className="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">View Course Details</button> */}
                 </div>

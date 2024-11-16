@@ -1,20 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import InstructorLayout from "../../../../components/InstructorLayout/InstructorLayout";
 import css from "./InstructorAssesmentCardPage.module.css";
 import { FaAngleDoubleLeft } from "react-icons/fa";
 import StepOneComp from "../../../../components/InstructorComponents/StepComponents/StepOneComp/StepOneComp";
 import Layout1 from "../../../../components/Layout1/Layout1";
+import PageLoadingComponents from "../../../../utils/PageLoadingComponent/PageLoadingComponents";
 const InstructorAssesmentCardPage = () => {
+  const [loading, setLoading] = useState(true);
   const navigate = useRouter();
-
+  
   useEffect(()=>{
-    if(localStorage.getItem("usertype") !== "instructor" || localStorage.getItem("loginStatus") === "true" || localStorage.getItem("email") === "" ){
+    if(localStorage.getItem("usertype") !== "instructor" || localStorage.getItem("loginStatus") === "false" || localStorage.getItem("email") === "" ){
       localStorage.clear();
       sessionStorage.clear();
       navigate.push("/");
+      setLoading(false);
+    }else{
+      setLoading(false);
     }
-  })
+    
+  },[])
   const tabs = [
     { name: "All Courses", link: "learning" },
     // { name: "My Lists", link: "lists" },
@@ -64,6 +69,7 @@ const InstructorAssesmentCardPage = () => {
   ];
   return (
     <Layout1>
+      <PageLoadingComponents loading={loading} />
       <div className={css.outerDiv}>
         <div className={css.topBar}>
           <div className={css.btnStyle}> <button className="btn mt-3" style={{ marginLeft: "40px" }} onClick={() => { navigate.push("/user/my-courses/courseView") }} ><FaAngleDoubleLeft size={40} /></button></div>
