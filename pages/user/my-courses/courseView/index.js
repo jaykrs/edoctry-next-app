@@ -228,6 +228,7 @@ const InstructorCoursePage = () => {
         data={courseData} 
         link={"/user/my-courses/courseView"}
         linkTxt={"Txt for link"}
+        from={"insHome"}
         />
       </div>
       {commonContent}

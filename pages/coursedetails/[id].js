@@ -18,7 +18,7 @@ import Cookie from "js-cookie";
 
                         <div>
                             {
-                                userType === "customer" && 
+                                userType !== "instructor" && 
                                 <CourseFloatingBuyCard data={posts} />
                             }
                             <div className=" d-flex justify-content-center" style={{ backgroundColor: "blanchedalmond", width: "100%", height: "auto", padding: "20px" }}>
@@ -38,7 +38,7 @@ import Cookie from "js-cookie";
                                 <div style={{ width: "20%" }}></div>
                             </div>
                             <div>
-                                <div className="card " style={{ margin: "30px 0 0 15%", width: "50%", position: "static" }}>
+                                <div className="card " style={{ margin: "30px 0 0 10%", width: userType !== "instructor" ? "60%" : "80%", position: "static" }}>
                                     <h1 className="card-header">What you'll learn</h1>
                                     <div className="card-body">
                                         <div>
@@ -47,7 +47,7 @@ import Cookie from "js-cookie";
 
                                     </div>
                                 </div>
-                                <div className="card" style={{ margin: "30px 0 0 15%", width: "50%", position: "static" }}>
+                                <div className="card" style={{ margin: "30px 0 0 10%", width: userType !== "instructor" ? "60%" : "80%", position: "static" }}>
                                     <h1 className="card-header">This Course includes : </h1>
                                     <div className="card-body">
                                         <p><FaPlay />{posts?.attributes.duration} Hours on-demand video </p>
@@ -55,7 +55,7 @@ import Cookie from "js-cookie";
                                     </div>
 
                                 </div>
-                                <div className="card" style={{ margin: "30px 0 0 15%", width: "50%", position: "static" }}>
+                                <div className="card" style={{ margin: "30px 0 0 10%", width: userType !== "instructor" ? "60%" : "80%", position: "static" }}>
                                     <h1 className="card-header">Course Content </h1>
                                     <div className="card-body">
                                         <ReactMarkdown>{posts?.attributes.course_outline}</ReactMarkdown>
@@ -63,7 +63,7 @@ import Cookie from "js-cookie";
                                     </div>
 
                                 </div>
-                                <div className="card" style={{ margin: "30px 0 0 15%", width: "50%", position: "static" }}>
+                                <div className="card" style={{ margin: "30px 0 0 10%", width: userType !== "instructor" ? "60%" : "80%", position: "static" }}>
                                     <h1 className="card-header">Requirements </h1>
                                     <div className="card-body">
                                         <ReactMarkdown>{posts?.attributes.course_requirement}</ReactMarkdown>

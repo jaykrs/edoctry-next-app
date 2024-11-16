@@ -9,9 +9,10 @@ const VerticalCourseDraftCard = (props) => {
     link = "#",
     data = "",
     ttl = "",
-    linkTxt = ""
+    linkTxt = "",
+    from=""
   } = props;
- 
+ console.log("from ", from)
   return (
     <>
      <div className="{css.courseviewflex}">
@@ -21,6 +22,7 @@ const VerticalCourseDraftCard = (props) => {
         link={link}
         linkTxt={linkTxt}
         coursesData={data}
+        from={from}
       />
       
       // data.map((item,index)=>{

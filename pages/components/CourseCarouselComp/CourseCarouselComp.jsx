@@ -6,7 +6,7 @@ import ArrowsComp from "../ArrowComp/ArrowsComp";
 import css from "./CourseCarouselComp.module.css";
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
-const CourseCarouselComp = ({ ttl, link = null, linkTxt = "", coursesData=[] }) => {
+const CourseCarouselComp = ({ ttl, link = null, linkTxt = "", coursesData=[],from }) => {
   // const { ttl, link = null, linkTxt = "", coursesData } = props;
   const [stateList, setStateList] = useState([]);
   const [state, setState] = useState({
@@ -107,7 +107,7 @@ const CourseCarouselComp = ({ ttl, link = null, linkTxt = "", coursesData=[] }) 
       {/* <Slider {...settings} > */}
       <div className={css.courseListView}>
         {stateList?.map((item, id) => {
-          return <CourseCard key={id} data={item} link={link} />;
+          return <CourseCard key={id} data={item} link={link} from={from} />;
         })}
       </div>
       {/* </Slider> */}

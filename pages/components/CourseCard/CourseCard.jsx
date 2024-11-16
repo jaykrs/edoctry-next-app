@@ -4,8 +4,8 @@ import css from "./CourseCard.module.css";
 import { MdArrowOutward } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-const CourseCard = ({data={},extraCss={}}) => {
-  console.log("data course",data);
+const CourseCard = ({data={},extraCss={},from=""}) => {
+
   const router = useRouter();
   const [userType,setUserType] = useState("");
   useEffect(()=>{
@@ -15,17 +15,15 @@ const CourseCard = ({data={},extraCss={}}) => {
   
   const handleOnClick = () => {
 
-    // if (userType === "instructor") {
-    //   console.log("email", localStorage.getItem("email",data));
-    //   sessionStorage.setItem("courseInsId", data.id);
-    //   sessionStorage.setItem("courseTitle", data.attributes.course_title);
-    //   router.replace("/user/my-courses/courseView/card");
-    //   return;
-    // } else {
+    if (userType === "instructor" && from=== "insHome") {
+      sessionStorage.setItem("courseInsId", data.id);
+      sessionStorage.setItem("courseTitle", data.attributes.course_title);
+      router.replace("/user/my-courses/courseView/card");
+      return;
+  
+    } else {
       localStorage.setItem("courseId", data.id);
-
-      
-   // }
+    }
     router.push(`/coursedetails/${data.id}`)
     
   }

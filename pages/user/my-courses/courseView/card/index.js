@@ -7,11 +7,14 @@ import StepOneComp from "../../../../components/InstructorComponents/StepCompone
 import Layout1 from "../../../../components/Layout1/Layout1";
 const InstructorAssesmentCardPage = () => {
   const navigate = useRouter();
-  // if(location != undefined){
-  //   sessionStorage.setItem("cardDetails",JSON.stringify(location));
-  // }else{
-   //  location = JSON.parse(sessionStorage.getItem("cardDetails"));
-  // }
+
+  useEffect(()=>{
+    if(localStorage.getItem("usertype") !== "instructor" || localStorage.getItem("loginStatus") === "true" || localStorage.getItem("email") === "" ){
+      localStorage.clear();
+      sessionStorage.clear();
+      navigate.push("/");
+    }
+  })
   const tabs = [
     { name: "All Courses", link: "learning" },
     // { name: "My Lists", link: "lists" },
@@ -70,38 +73,11 @@ const InstructorAssesmentCardPage = () => {
         <div className={css.cardOuter}>
           <div className={css.outDiv}></div>
           <div className={css.innerDiv} >
-            {/* <NavLink to={"/user/profile/course/view"} className={css.navlink}>
-              <div className="card">
-                <h3 className="card-header">Course Content</h3>
-                <img src={courseImg} alt="Courses" className={css.cardImg} />
-              </div>
-            </NavLink>
-            <NavLink to={"/user/profile/assesment/list"} className={css.navlink}>
-              <div className="card">
-                <h3 className="card-header">Assesment</h3>
-                <img src={assImg} alt="assesment" className={css.cardImg} />
-              </div>
-            </NavLink> */}
             <div className={css.outerDiv1}>
               {/* <CreateCourseHeader currentStep={currentStep} totalSteps={totalSteps} /> */}
               <div className={css.stepsContent}>
                 <StepOneComp  StepCardData={StepCardData} />
               </div>
-              {/* <CreateCourseFooter
-        currentStep={currentStep}
-        totalSteps={totalSteps}
-        setCurrentStep={changeStepHandler}
-        moveToCreatePage={moveToCreatePage}
-      /> */}
-              {/* <StepCard
-                box={1}
-                active={active}
-                setActive={setActive}
-                key={1}
-                icon={"/publicContent/icons/tv.png"}
-                ttl={"Course Content"}
-                desc={"course title"}
-              /> */}
             </div>
           </div>
           <div style={{ width: "10%" }} ></div>
