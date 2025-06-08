@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import CourseCard from "./components/CourseCard/CourseCard";
 import HeroBanner from "./components/HeroBanner/HeroBanner";
+import RichTextComp from "./components/RichTextComp/RichTextComp";
 export default function Page(props) {
   const [slug, setSlug] = useState("topCourses")
   const jsonData = [
@@ -35,6 +36,9 @@ export default function Page(props) {
         <div className={css.ma}>
           <div className={css.banner}>
             <HeroBanner />
+          </div>
+          <div className={css.banner}>
+            <RichTextComp richTextName="homesection1"/>
           </div>
           <div className="coursecontainerbg">
             <div className="coursecontainer">
@@ -80,6 +84,7 @@ export default function Page(props) {
 
             </div>
           </div>
+           
         </div>
       </Layout1>
 
