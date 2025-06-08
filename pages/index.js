@@ -2,11 +2,12 @@ import Layout1 from "./components/Layout1/Layout1";
 import VerticalCategoryMenuBar from "./components/VerticalCategoryMenuBar/VerticalCategoryMenuBar";
 import VerticalCourseDraftCard from "./utils/VerticalCourseDraftCard/VerticalCourseDraftCard";
 import css from "./index.module.css";
-import BannerComp from "./components/BannerComp/BannerComp";
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import CourseCard from "./components/CourseCard/CourseCard";
+import HeroBanner from "./components/HeroBanner/HeroBanner";
 export default function Page(props) {
   const [slug, setSlug] = useState("topCourses")
   const jsonData = [
@@ -33,7 +34,7 @@ export default function Page(props) {
         <VerticalCategoryMenuBar />
         <div className={css.ma}>
           <div className={css.banner}>
-            <BannerComp />
+            <HeroBanner />
           </div>
           <div className="coursecontainerbg">
             <div className="coursecontainer">
