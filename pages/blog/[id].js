@@ -32,23 +32,6 @@ export async function getStaticProps({ params }) {
 }
 
 async function getCachedTemplate(templateId) {
-  // const endpointUrl = `${process.env.API_HOST}templates?filters[name][$eq]=${templateId}`;
-  // let templateData = "";
-
-  // try {
-  //   const response = await fetch(endpointUrl);
-  //   if (response.status === 200) {
-  //     const data = await response.json();
-  //     if (data.status === 200) {
-  //       templateData = data.data[0].attributes.template;
-  //     }
-
-  //   }
-  // } catch (error) {
-  //   console.error("Error fetching data:", error);
-  // }
-
-  // return templateData;
 
   const endpointUrl = process.env.API_HOST + 'templates?filters[name][$eq]=' + templateId;
   let templateData = "";

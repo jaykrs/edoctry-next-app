@@ -4,6 +4,7 @@ import css from "./CourseCard.module.css";
 import { MdArrowOutward } from "react-icons/md";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+
 const CourseCard = ({data={},extraCss={},from=""}) => {
 
   const router = useRouter();
@@ -32,13 +33,15 @@ const CourseCard = ({data={},extraCss={},from=""}) => {
       {
         Object.keys(data).length > 0 ? 
         <div className={css.outerDiv} id={data.id} style={extraCss}>
-        <div className={css.imgBox}>
-          <img src={data.attributes.course_logo !== null ? data.attributes.course_logo : ""} alt="course thumbnail" className={css.courseImg} />
-        </div>
-        <div className={css.cardBdy}>
+        <div className={css.itemBox} onClick={handleOnClick}>
+           <div className={css.imgBox}>
+            <img src={data.attributes.course_logo !== null ? data.attributes.course_logo : 'https://api.edoctry.com'+'/uploads/acadamy_eb826cf7af.jpg'} alt="course thumbnail" className={css.courseImg} />
+           </div>      
+  <div className={css.cardBdy}>
           <div className={css.ttl}>
-            <div  dangerouslySetInnerHTML={{ __html: data.attributes.course_title.substring(0, 30) + " ..." }} ></div>
+            <div  dangerouslySetInnerHTML={{ __html: data.attributes.course_title.substring(0, 100) }} ></div>
           </div>
+            <span  className={css.instructor} dangerouslySetInnerHTML={{ __html: data.attributes.instrucctorName !== null ? data.attributes.instrucctorName : 'admin' }} ></span>
           <div className={css.prc}>
             <span className={css.newPrc}>
               {new Intl.NumberFormat("en-IN", {
@@ -52,12 +55,12 @@ const CourseCard = ({data={},extraCss={},from=""}) => {
                 currency: "INR",
               }).format(data.attributes.course_fee_premium)}
             </span>
-            <button className="btn btn-outline-primary btn-sm" style={{marginLeft:"2px"}}  onClick={handleOnClick}>View <MdArrowOutward size={20}  /></button>
-          </div>
-          {/* <div className={css.tags}>
             
-          </div> */}
+          </div>
+          
         </div>
+        </div>
+        
       </div> : ""
       }
     </>

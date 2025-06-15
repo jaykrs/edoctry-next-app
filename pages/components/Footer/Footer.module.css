@@ -42,8 +42,11 @@
 }
 
 .cli > a {
-  text-decoration: none;
-  color: var(--white);
+  text-decoration: auto;
+  color: #85858c;
+  font-size: 14px;
+  line-height: 26px;
+  padding-bottom: 5px;
 }
 
 .creds {
