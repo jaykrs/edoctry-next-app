@@ -4,31 +4,44 @@ import VerticalCourseDraftCard from "./utils/VerticalCourseDraftCard/VerticalCou
 import css from "./index.module.css";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import CourseCard from "./components/CourseCard/CourseCard";
 import HeroBanner from "./components/HeroBanner/HeroBanner";
 import RichTextComp from "./components/RichTextComp/RichTextComp";
 export default function Page(props) {
-  const [slug, setSlug] = useState("topCourses")
+  const [slug, setSlug] = useState("topCourses");
+  const [CourseData, setCourseData] = useState([]);
   const jsonData = [
     {
       id: "tab-1",
       ttl: "Top Courses",
       slug: "topCourses",
+      linkTxt: 'Top Courses'
     },
     {
       id: "tab-2",
       ttl: "Popular Trending courses",
       slug: "popularTrending",
+      linkTxt: "Popular Courses"
     },
     {
       id: "tab-3",
       ttl: "java popular course",
       slug: "java",
+      linkTxt : "java trak"
     },
-
   ];
+
+  useEffect(() => {
+    if (slug === 'topCourses') {
+      setCourseData(props.coursesSet1);
+    } else if (slug === 'popularTrending') {
+      setCourseData(props.coursesSet2);
+    } else {
+      setCourseData(props.coursesSet3);
+    }
+  }, [slug]);
   return (
     <>
       <Layout1 title="Home Page" metadata={"home,courses,web,server"}>
@@ -38,7 +51,7 @@ export default function Page(props) {
             <HeroBanner />
           </div>
           <div className={css.banner}>
-            <RichTextComp richTextName="homesection1"/>
+            <RichTextComp richTextName="homesection1" />
           </div>
           <div className="coursecontainerbg">
             <div className="coursecontainer">
@@ -59,7 +72,16 @@ export default function Page(props) {
                   ))}
                 </div>
               </div>
+
               {
+                  <VerticalCourseDraftCard
+                    ttl= {slug=="topCourses"? jsonData[0]?.ttl : slug =='popularTrending'? jsonData[1]?.ttl : jsonData[2]?.ttl}
+                    link="/coursesDetails"
+                    linkTxt={slug=="topCourses"? jsonData[0]?.linkTxt : slug =='popularTrending'? jsonData[1]?.linkTxt : jsonData[2]?.linkTxt}
+                    data={CourseData}
+                  />
+              }
+              {/* {
                 slug === "topCourses" ?
                   <VerticalCourseDraftCard
                     ttl=""
@@ -79,12 +101,12 @@ export default function Page(props) {
                         linkTxt="java trak"
                         data={props.coursesSet3}
                       /> : ""
-              }
+              } */}
 
 
             </div>
           </div>
-           
+
         </div>
       </Layout1>
 
