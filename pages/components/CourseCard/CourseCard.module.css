@@ -1,7 +1,8 @@
 .outerDiv {
-  width: 250px;
+  width: 210px;
   height: 330px;
   position: relative;
+  border: 1px solid #ebe0e0;
 }
 
 .innerDiv {
@@ -12,54 +13,36 @@
 }
 
 .imgBox {
-  max-width:100%;
-  max-height: 320px;
-  object-fit: contain;
-}
-.itemBox {
   width: 100%;
-  min-height: 320px;
-  border: 1px solid var(--gray86);
+  height: 75%;
+  /* border: 1px solid var(--gray86); */
 }
+
 .courseImg {
   width: 100%;
-  height: 180px;
-  object-fit: cover;
+  height: 100%;
+  object-fit: fill;
 }
 
 .cardBdy {
   width: 100%;
   padding: 0.5rem;
-  margin-top: auto;
 }
 
 .ttl {
   width: 100%;
-  line-height: 1.4;
+  line-height: 1.5em;
   height: auto;
-  font-size: 16px;
-  font-weight: 600;
-  color: #37474f;
-  letter-spacing: -0.01px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--gray);
+
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  margin: 4px 0;
-}
-
-.ttls {
-  color: #90a4ae;
-}
-
-.instructor {
-    color: #90a4ae;
-    display: inline-block;
-    font-size: 14px;
-    font-weight: 700;
-    margin: 8px 0;
-    width: 100%;
+  margin: 5px 0;
 }
 
 .authDet,
@@ -90,22 +73,22 @@
 
 .prc {
   width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .newPrc {
-  margin-right: 0.5rem;
-  font-size: 14px;
-  font-weight: 500;
-  color: #0d47a1;
-  
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-right: 0.2rem;
+  color: var(--gray);
 }
 
 .oldPrc {
-  font-size: 14px;
-  font-weight: 500;
-  color: #0d47a1;
-  float:right;
+  font-size: 0.8rem;
   text-decoration: line-through;
+  color: var(--light-gray);
 }
 
 .hovCard {
