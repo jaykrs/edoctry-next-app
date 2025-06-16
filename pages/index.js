@@ -73,6 +73,7 @@ export default function Page(props) {
                 </div>
               </div>
 
+
               {
                   <VerticalCourseDraftCard
                     ttl= {slug=="topCourses"? jsonData[0]?.ttl : slug =='popularTrending'? jsonData[1]?.ttl : jsonData[2]?.ttl}
