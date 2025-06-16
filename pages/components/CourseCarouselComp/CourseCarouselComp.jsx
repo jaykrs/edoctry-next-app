@@ -6,7 +6,7 @@ import ArrowsComp from "../ArrowComp/ArrowsComp";
 import css from "./CourseCarouselComp.module.css";
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
-const CourseCarouselComp = ({ ttl, link = null, linkTxt = "", coursesData=[],from }) => {
+const CourseCarouselComp = ({ ttl, link = null, linkTxt = "", coursesData = [], from }) => {
   // const { ttl, link = null, linkTxt = "", coursesData } = props;
   const [stateList, setStateList] = useState([]);
   const [state, setState] = useState({
@@ -18,6 +18,9 @@ const CourseCarouselComp = ({ ttl, link = null, linkTxt = "", coursesData=[],fro
     pagPreBtn: false,
   })
   useEffect(() => {
+
+  }, []);
+  useEffect(() => {
     let endOffset = state.currentPage * state.recordsPerPage;
     const currentItems = coursesData.slice((state.currentPage - 1) * state.recordsPerPage, endOffset);
     setStateList(currentItems);
@@ -26,6 +29,15 @@ const CourseCarouselComp = ({ ttl, link = null, linkTxt = "", coursesData=[],fro
       return { ...prev, ["noOfPage"]: pageCount }
     })
   }, [])
+  useEffect(() => {
+    let endOffset = state.currentPage * state.recordsPerPage;
+    const currentItems = coursesData.slice((state.currentPage - 1) * state.recordsPerPage, endOffset);
+    setStateList(currentItems);
+    let pageCount = Math.ceil(coursesData.length / state.recordsPerPage);
+    setState(prev => {
+      return { ...prev, ["noOfPage"]: pageCount }
+    })
+  }, [coursesData])
   const settings = {
     dots: false,
     infinite: false,
@@ -94,48 +106,54 @@ const CourseCarouselComp = ({ ttl, link = null, linkTxt = "", coursesData=[],fro
       })
     }
   }
+
   return (
     <div className={css.scrollBox}>
-      {ttl ? (
-        <h2 className={css.ttl}>
-          {ttl}
-          <Link className={css.linkTxt} href={link}>
-            {linkTxt}
-          </Link>
-        </h2>
-      ) : null}
+      <div className={css.tltDiv}>
+        {ttl ? (
+          <h2 className={css.ttl}>
+            {ttl}
+            <Link className={css.linkTxt} href={link}>
+              {linkTxt}
+            </Link>
+          </h2>
+        ) : null}
+
+        {/* </Slider> */}
+        {coursesData.length >= 12 &&
+          <div className="outerDiv3">
+            <div className="paginationDiv">
+              <button className="paginationBtn" onClick={handlerPrev}>Prev</button>
+              {
+                (state.currentPage - 2) >= 1 &&
+                <p onClick={() => { handleCurrentState(state.currentPage - 2) }}>{state.currentPage - 2}</p>
+              }
+              {
+                (state.currentPage - 1) >= 1 &&
+                <p onClick={() => { handleCurrentState(state.currentPage - 1) }} >{state.currentPage - 1}</p>
+              }
+              <p style={{ backgroundColor: "#dcdcdc" }}>{state.currentPage}</p>
+              {
+                (state.currentPage + 1) <= state.noOfPage &&
+                <p onClick={() => { handleCurrentState(state.currentPage + 1) }} >{state.currentPage + 1}</p>
+              }
+              {
+                (state.currentPage + 2) <= state.noOfPage &&
+                <p onClick={() => { handleCurrentState(state.currentPage + 2) }} >{state.currentPage + 2}</p>
+              }
+              <button className="paginationBtn" onClick={handlerNext} >Next</button>
+            </div>
+          </div>
+        }
+      </div>
+
       {/* <Slider {...settings} > */}
       <div className={css.courseListView}>
         {stateList?.map((item, id) => {
           return <CourseCard key={id} data={item} link={link} from={from} />;
         })}
       </div>
-      {/* </Slider> */}
-      {  coursesData.length >= 12 &&
-        <div className="outerDiv3">
-        <div className="paginationDiv">
-          <button className="paginationBtn" onClick={handlerPrev}>Prev</button>
-          {
-            (state.currentPage - 2) >= 1 &&
-            <p onClick={() => { handleCurrentState(state.currentPage - 2) }}>{state.currentPage - 2}</p>
-          }
-          {
-            (state.currentPage - 1) >= 1 &&
-            <p onClick={() => { handleCurrentState(state.currentPage - 1) }} >{state.currentPage - 1}</p>
-          }
-          <p style={{ backgroundColor: "#dcdcdc" }}>{state.currentPage}</p>
-          {
-            (state.currentPage + 1) <= state.noOfPage &&
-            <p onClick={() => { handleCurrentState(state.currentPage + 1) }} >{state.currentPage + 1}</p>
-          }
-          {
-            (state.currentPage + 2) <= state.noOfPage &&
-            <p onClick={() => { handleCurrentState(state.currentPage + 2) }} >{state.currentPage + 2}</p>
-          }
-          <button className="paginationBtn" onClick={handlerNext} >Next</button>
-        </div>
-      </div>
-      }
+
     </div>
   );
 };
