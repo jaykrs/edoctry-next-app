@@ -12,7 +12,7 @@ const VerticalCourseDraftCard = (props) => {
     linkTxt = "",
     from=""
   } = props;
- console.log("from ", from)
+  
   return (
     <>
      <div className="{css.courseviewflex}">
